@@ -1,0 +1,38 @@
+Story
+
+    Name: Default
+	OneTimeStory: Yes
+    DependOn: None
+    Time: Day
+    StoryType: Player is captive
+
+    Restriction: Player age > 18
+    Restriction: Player gender = female 
+    Restriction: NPC is Noble
+
+    Act
+        Name:       Kiss the Banner
+        Image:      None
+        Location:   Map
+        Intro:      Your captors demand, in order to inspire the people, that their captives kiss their banner. It's your turn.
+
+        Choice: Kiss the banner.
+        
+            Consequence: Player renown -1            
+
+        Choice: Refuse.
+        
+            Goto: Refuse to kiss the banner
+
+    
+        Sequence
+            Name:       Refuse to kiss the banner   
+            Image:      None        
+            Intro:      Your captors wrap you in their banner and beat your body with clubs.
+
+            Choice: Endure the beating.
+
+                Consequence: Player health -10  
+           
+
+END

@@ -1,0 +1,29 @@
+Need an override with IGameStarter related to CampaignGameStarter.
+
+With the CampaignGameStarter, you can add menu to the game session:
+
+
+gameStarter.AddGameMenu("menuId", "menuText", this.MyInitDelegate);
+gameStarter.AddGameMenuOption("menuId", "optionId", "optionText", this.Condition, this.Consequence);
+
+Condition is the qualification of the option.
+Consequence is what is triggered by the button.
+
+To show the menu, we use:
+
+GameMenu.ActivateGameMenu("menuId");
+
+You can pause the game like this:
+
+MBCommon.PauseGameEngine();
+         Game.Current.GameStateManager.ActiveStateDisabledByUser = true;
+
+         ..and unpause it like that:
+
+         MBCommon.UnPauseGameEngine();
+         Game.Current.GameStateManager.ActiveStateDisabledByUser = false;
+
+         InformationManager.DisplayMessage() will display a message on bottom left screen.
+
+         InformationManager.AddQuickInformation(new string("This is a quick info")); will show a banner message on campaign screen.
+

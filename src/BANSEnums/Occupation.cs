@@ -1,0 +1,50 @@
+﻿// Code written by Gabriel Mailhot, 30/08/2020.
+
+namespace TalesEnums
+{
+   public enum Occupation
+   {
+      NOTASSIGNED = -1,
+      TAVERNKEEPER = 0,
+      MERCENARY = 1,
+      LORD = 2,
+      LADY = 3,
+      GOODSTRADER = 4,
+      ARENAMASTER = 5,
+      COMPANION = 6,
+      VILLAGER = 7,
+      SOLDIER = 8,
+      TOWNSFOLK = 9,
+      GUILDMASTER = 10,
+      MARSHALL = 11,
+      TOURNAMENTFIXER = 12,
+      RANSOMBROKER = 13,
+      WEAPONSMITH = 14,
+      ARMORER = 15,
+      HORSETRADER = 16,
+      TAVERNWENCH = 17,
+      SHOPKEEPER = 18,
+      TAVERNGAMEHOST = 19,
+      BANDIT = 20,
+      WANDERER = 21,
+      ARTISAN = 22,
+      MERCHANT = 23,
+      PREACHER = 24,
+      HEADMAN = 25,
+      GANGLEADER = 26,
+      RURALNOTABLE = 27,
+      OUTLAW = 28,
+      MINORFACTIONCHARACTER = 29,
+      PRISONGUARD = 30,
+      GUARD = 31,
+      SHOPWORKER = 32,
+      MUSICIAN = 33,
+      GANGSTER = 34,
+      BLACKSMITH = 35,
+      JUDGE = 36,
+      BANNERBEARER = 37,
+      CARAVANGUARD = 38,
+      SPECIAL = 39,
+      NUMBEROFOCCUPATIONS = 40
+   }
+}

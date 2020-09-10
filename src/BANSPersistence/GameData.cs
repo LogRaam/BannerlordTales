@@ -1,0 +1,19 @@
+﻿// Code written by Gabriel Mailhot, 02/08/2020.
+
+namespace TalesPersistence
+{
+   public class GameData
+   {
+      private static GameData instance;
+
+      public static GameData Instance
+      {
+         get => instance ?? (instance = new GameData());
+         set => instance = value;
+      }
+
+      public GameContext GameContext { get; set; } = new GameContext();
+
+      public StoryContext StoryContext { get; set; } = new StoryContext();
+   }
+}

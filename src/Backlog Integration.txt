@@ -1,0 +1,29 @@
+
++ Given	I activate this mod
++ When	I start the game 
++ Then	I can breakpoint into the source code, validating that I am attached to it
+
+
++ Given	I activate this mod
++ When	I start the game
++ Then	I print a Hello World message to menu screen
+
++ Given	I let game running
++ When	Tick is raised
++ Then	I can show an event menu
+
+
+Given	I encounter an enemy party
+When	I surrender
+Then	I can show a proprietary event
+
+
+Given	I am captured
+When	Captor party move on campaign map
+Then	I can trigger an event
+
+
+Given	I am captive
+When	Captor party lose a fight
+Then	Winner of the fight might free me
+Or then Winner of the fight might want to keep me as a prisonner

@@ -1,0 +1,19 @@
+﻿[*.cs]
+
+# Default severity for analyzer diagnostics with category 'Style'
+dotnet_analyzer_diagnostic.category-Style.severity = suggestion
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+# IDE0008: Use explicit type
+csharp_style_var_elsewhere = true:silent
+
+# IDE0008: Use explicit type
+csharp_style_var_for_built_in_types = false:silent
+
+# IDE0008: Use explicit type
+csharp_style_var_when_type_is_apparent = false:silent
+
+# IDE0011: Add braces
+csharp_prefer_braces = true:none

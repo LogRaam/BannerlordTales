@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Module>
+  <Name value="Lograam's Bannerlord Tales" />
+  <Id value="LogRaamBannerlordTales" />
+  <Version value="v0.0.1" />
+  <SingleplayerModule value="true" />
+  <MultiplayerModule value="false" />
+  <DependedModules>
+    <DependedModule Id="Native" />
+    <DependedModule Id="SandBoxCore" />
+    <DependedModule Id="Sandbox" />
+    <DependedModule Id="CustomBattle" />
+    <DependedModule Id="StoryMode" />
+  </DependedModules>
+  <SubModules>    
+    <SubModule>
+      <Name value="TalesTaleWorlds" />
+      <DLLName value="TalesTaleWorlds.dll" />
+      <SubModuleClassType value="TalesTaleWorlds.IntegratedLoaderSubModule" />
+      <Tags>
+        <Tag key="DedicatedServerType" value="none" />
+        <Tag key="IsNoRenderModeElement" value="false" />
+      </Tags>
+    </SubModule>
+  </SubModules>
+</Module>

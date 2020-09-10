@@ -1,0 +1,53 @@
+﻿Act
+   
+    Name:   FirstAct
+    Image:  FirstActImageName
+    Intro:  This is a text for the First Act event. ~
+
+    Captor: NPC
+    Location: Map 
+
+    Restriction: Player age > 18
+    Restriction: Player gender = female
+    Restriction: NPC gender is male
+    Restriction: Player Valor > 30
+
+
+    Choice: This is first choice text. ~
+        Condition:      Player health > 20%        
+        Consequence:    Player Health = R -10 -20    
+        Trigger:        GoToNextAct % 50
+        Trigger:        GoToAnotherAct % 50
+    #
+
+    Choice: This is second choice text. ~
+        Condition:      Player health is greater than 40%        
+        Consequence:    Player Health is between -10 and -20    
+        Trigger:        GoToLastAct        
+    #
+
+END
+
+Act
+   
+    Name:   SecondAct
+    Image:  SecondActImageName
+    Intro:  This is a text for the Second Act event. ~
+
+    Captor: NPC
+    Location: Map 
+
+    Restriction: Player age > 18
+    Restriction: Player gender = female
+    Restriction: NPC gender is male
+    Restriction: Party location = Map
+    Restriction: Daytime
+
+    Choice: This is another text. ~
+        Condition:      Player health > 20%        
+        Consequence:    Player Health = R -10 -20    
+        Trigger:        GoToNextAct % 50
+        Trigger:        GoToAnotherAct % 50
+    #
+
+END

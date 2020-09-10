@@ -1,0 +1,100 @@
+Story
+
+    Name: Test
+	OneTimeStory: no
+    DependOn: None
+    Time: Night
+    StoryType: is captive
+
+    Restriction: age > 18
+    Restriction: gender is female            
+    restriction: culture is empire
+        
+    Restriction: npc age > 18
+    Restriction: npc gender is male
+    restriction: npc culture is nord
+    restriction: npc is lord
+    
+
+    Act
+        Name:       My Act 1
+        Image:      None
+        Location:   Map
+        Intro:      This is an intro for act 1.
+
+        Choice: Act 1 choice 1.
+            
+            Restriction: vigor > 1
+            Restriction: control < 2
+            Restriction: endurance = 3
+            Restriction: cunning > 4
+            Restriction: social < 5
+            Restriction: intelligence = 6
+            Restriction: health > 20%
+            Restriction: gold > 1000
+            restriction: renown < 100
+            restriction: onehanded > 10
+            restriction: TWOHANDED > 11
+            restriction: polearm > 12
+            restriction: bow > 13
+            restriction: crossbow > 14
+            restriction: throwing > 15
+            restriction: riding > 16
+            restriction: athletics > 17
+            restriction: crafting > 18
+            restriction: scouting > 19
+            restriction: tactics > 20
+            restriction: roguery > 21
+            restriction: charm > 22
+            restriction: leadership > 23
+            restriction: trade > 24
+            restriction: steward > 25
+            restriction: medicine > 26
+            restriction: engineering > 27
+
+            Consequence: renown -1
+            Consequence: health -1
+            Consequence: gold -1
+            Consequence: risk of becoming pregnant
+            Consequence: experience +200
+            Consequence: Relation -1
+
+        Choice: Act 1 choice 2.
+        
+            Goto: My Sequence 1
+
+    
+        Sequence
+            Name:       My Sequence 1   
+            Image:      None        
+            Intro:      This is an intro to sequence 1.
+
+            Choice: This is the only choice available.
+
+                Consequence: health -10  
+     
+     Act
+        Name:       My Act 2
+        Image:      None
+        Location:   Map
+        Intro:      This is an intro for act 2.
+
+        Choice: Act 2 choice 1.
+        
+            Consequence: Player renown -1            
+
+        Choice: Act 2 choice 2.
+        
+            Goto: My Sequence 2
+
+    
+        Sequence
+            Name:       My Sequence 2
+            Image:      None        
+            Intro:      This is an intro to sequence 2.
+
+            Choice: This is the only choice available.
+
+                Consequence: health -20%
+
+END

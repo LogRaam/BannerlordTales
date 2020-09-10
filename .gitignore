@@ -196,6 +196,16 @@ coverage*.info
 _NCrunch_*
 .*crunch*.local.xml
 nCrunchTemp_*
+*.ncrunchsolution
+
+#Code Graph
+CodeGraphData/
+*.vsdx
+*.dgml
+
+#NDepend
+*NDepend*
+*.ndproj
 
 # MightyMoose
 *.mm.*

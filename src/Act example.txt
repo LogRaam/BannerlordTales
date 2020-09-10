@@ -1,0 +1,64 @@
+Story 
+        
+    OneTimeStory: Yes
+    DependOn: ActID
+    Time: Anytime
+    StoryType: Player is captive
+    
+    Restriction: Player age > 18
+    Restriction: Player gender = female 
+    Restriction: Player Valor < 30
+
+    Act
+        Name:       GiveAName
+        Image:      ImageName
+        Location:   Map
+        Intro:      This is a descriptive test for this act. 
+
+        Choice: This is another text 
+            Condition:      Player health > 20%        
+            Consequence:    Player Health = R -10 -20    
+            Trigger:        GoToNextAct 50%
+            Trigger:        GoToAnotherAct
+        
+
+
+    Act
+        Name:   GoToNextAct
+        Image:  ImageName2
+        Intro:  This is a text for the event GoToNextAct. 
+
+        Captor: NPC
+        Location: Map 
+
+        Restriction: Player age > 18
+        Restriction: Player gender = female 
+        Restriction: Player Valor < 30
+
+        Choice: This is another text GoToNextAct. 
+            
+            Condition:      Player health > 20%      
+            Consequence:    Player Health = R -10 -20
+            Id:             AnID
+            Trigger:        GoToAnotherAct
+        
+
+        Choice: This is another text2 GoToNextAct. 
+            
+            Condition:      Player health > 20%                        
+            Trigger:        ToTheEnd
+        
+
+        Choice: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
+                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+                deserunt mollit anim id est laborum. 
+            
+            Condition:      Player health > 20%            
+            Consequence:    Player Health = R -10 -20      
+            Trigger:        ToTheEnd
+        
+
+END
