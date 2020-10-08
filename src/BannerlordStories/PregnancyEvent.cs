@@ -1,10 +1,14 @@
-﻿// Code written by Gabriel Mailhot, 2020.  Updated 2020
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
+using TalesContract;
+
+#endregion
 
 namespace TalesEntities
 {
     #region
-
-    using TalesContract;
 
     #endregion
 
@@ -19,7 +23,7 @@ namespace TalesEntities
 
         public void StopPregnancy(IHero hero)
         {
-           // TODO: In case hero is pregnant, we must abort pregnancy
+            // TODO: In case hero is pregnant, we must abort pregnancy
         }
     }
 }

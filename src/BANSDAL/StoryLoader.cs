@@ -1,32 +1,36 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
+using System.Collections.Generic;
+using System.IO;
+
+#endregion
 
 namespace TalesDAL
 {
-   #region
+    #region
 
-   using System.Collections.Generic;
-   using System.IO;
+    #endregion
 
-   #endregion
+    public class StoryLoader
+    {
+        public void ImportStoriesFrom(DirectoryInfo folder)
+        {
+            var files = folder.GetFiles("*.txt");
 
-   public class StoryLoader
-   {
-      public void ImportStoriesFrom(DirectoryInfo folder)
-      {
-         FileInfo[] files = folder.GetFiles("*.txt");
+            foreach (var file in files) new StoryImporter().ImportFrom(file);
+        }
 
-         foreach (FileInfo file in files) new StoryImporter().ImportFrom(file);
-      }
+        #region private
 
-      #region private
+        private List<FileInfo> RetrievePathsFrom(DirectoryInfo folder)
+        {
+            var result = new List<FileInfo>();
 
-      private List<FileInfo> RetrievePathsFrom(DirectoryInfo folder)
-      {
-         var result = new List<FileInfo>();
+            return result;
+        }
 
-         return result;
-      }
-
-      #endregion
-   }
+        #endregion
+    }
 }

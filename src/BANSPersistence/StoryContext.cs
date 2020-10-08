@@ -1,9 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 02/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using _45_TalesGameState;
 using TalesContract;
 using TalesDAL;
 using TaleWorlds.Library;
@@ -12,60 +14,125 @@ using TaleWorlds.Library;
 
 namespace TalesPersistence
 {
-   #region
+    #region
 
-   #endregion
+    #endregion
 
-   public class StoryContext
-   {
-      private DirectoryInfo _customStoriesFolder;
-      private DirectoryInfo _moduleFolder;
-      private DirectoryInfo _storyImageFiles;
+    public class StoryContext
+    {
+        private DirectoryInfo _customStoriesFolder;
+        private DirectoryInfo _moduleFolder;
+        private DirectoryInfo _storyImageFiles;
 
-      public DirectoryInfo CustomStoriesFolder
-      {
-         get
-         {
-            if (GameData.Instance.GameContext.CurrentGameStarted()) _customStoriesFolder = new DirectoryInfo(ModuleFolder.FullName + "CustomStories");
+        public Textures BackgroundImages { get; set; } = new Textures();
 
-            return _customStoriesFolder;
-         }
-         set => _customStoriesFolder = value;
-      }
+        public DirectoryInfo CustomStoriesFolder
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _customStoriesFolder = new DirectoryInfo(ModuleFolder.FullName + "\\CustomStories");
 
-      public DirectoryInfo ModuleFolder
-      {
-         get
-         {
-            if (GameData.Instance.GameContext.CurrentGameStarted()) _moduleFolder = new DirectoryInfo(BasePath.Name + "Modules/LogRaamBannerlordTales");
+                return _customStoriesFolder;
+            }
+            set => _customStoriesFolder = value;
+        }
 
-            return _moduleFolder;
-         }
-         set => _moduleFolder = value;
-      }
+        public DirectoryInfo ModuleFolder
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _moduleFolder = new DirectoryInfo(BasePath.Name + "Modules/LogRaamBannerlordTales");
 
-      public List<IStory> PlayedStories { get; set; } = new List<IStory>(); // TODO: should import sync data
+                return _moduleFolder;
+            }
+            set => _moduleFolder = value;
+        }
 
-      public List<IStory> Stories { get; set; } = new List<IStory>();
 
-      public List<FileInfo> StoryImageFiles { get; set; } = new List<FileInfo>();
+        public List<IAct> PlayedActs { get; set; } = new List<IAct>(); // TODO: should import sync data
 
-      public DirectoryInfo StoryImagesFolder
-      {
-         get
-         {
-            if (GameData.Instance.GameContext.CurrentGameStarted()) _storyImageFiles = new DirectoryInfo(ModuleFolder.FullName + "StoryImages");
+        public List<IStory> PlayedStories { get; set; } = new List<IStory>(); // TODO: should import sync data
 
-            return _storyImageFiles;
-         }
-         set => _storyImageFiles = value;
-      }
+        public List<IStory> Stories { get; set; } = new List<IStory>();
 
-      public List<IStory> ImportStoriesFromDisk()
-      {
-         if (ModuleFolder == null) return new List<IStory>();
+        public DirectoryInfo StoryImagesFolder
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _storyImageFiles = new DirectoryInfo(ModuleFolder.FullName + "\\StoryImages");
 
-         return new StoryDal().LoadStoriesFromFolder(CustomStoriesFolder);
-      }
-   }
+                return _storyImageFiles;
+            }
+            set => _storyImageFiles = value;
+        }
+
+        public void AddToPlayedActs(string id)
+        {
+            var p = id.Split('_');
+            var s = p[0];
+            var a = p[1];
+            var act = GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == s).Acts.First(n => n.Name == a);
+            if (act != null) GameData.Instance.StoryContext.PlayedActs.Add(act);
+        }
+
+        public bool AllLinksExistFor(IAct act)
+        {
+            foreach (var choice in act.Choices)
+            {
+                if (choice.Triggers == null || choice.Triggers.Count == 0) continue;
+
+                foreach (var trigger in choice.Triggers)
+                    if (!TriggerRefExist(trigger))
+                        return false;
+            }
+
+            return true;
+        }
+
+        public bool AllLinksExistFor(ISequence sequence)
+        {
+            return AllLinksExistFor((IAct)sequence);
+        }
+
+
+        public List<IStory> ImportStoriesFromDisk()
+        {
+            return ModuleFolder == null
+                ? new List<IStory>()
+                : new StoryDal().LoadStoriesFromFolder(CustomStoriesFolder);
+        }
+
+        #region private
+
+        private bool TriggerActRefExist(ITrigger trigger, IStory S)
+        {
+            foreach (var act in S.Acts)
+                if (trigger.Link == act.Name)
+                    return true;
+
+            return false;
+        }
+
+        private bool TriggerRefExist(ITrigger trigger)
+        {
+            foreach (var S in Stories)
+            {
+                if (TriggerActRefExist(trigger, S)) return true;
+                if (TriggerSequenceRefExist(trigger, S)) return true;
+            }
+
+            return false;
+        }
+
+        private bool TriggerSequenceRefExist(ITrigger trigger, IStory S)
+        {
+            foreach (var seq in S.Sequences)
+                if (trigger.Link == seq.Name)
+                    return true;
+
+            return false;
+        }
+
+        #endregion
+    }
 }

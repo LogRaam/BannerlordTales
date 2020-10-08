@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 namespace TalesEnums
 {
@@ -9,6 +9,8 @@ namespace TalesEnums
       GENDER,
       HEALTH,
       GOLD,
-      RENOWN
+      RENOWN,
+      CULTURE,
+      OCCUPATION
    }
 }

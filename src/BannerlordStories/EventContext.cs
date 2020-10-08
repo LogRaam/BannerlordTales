@@ -1,15 +1,19 @@
-﻿// Code written by Gabriel Mailhot, 12/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
+using TalesContract;
+
+#endregion
 
 namespace TalesEntities
 {
-   #region
+    #region
 
-   using TalesContract;
+    #endregion
 
-   #endregion
-
-   public class EventContext : IEventContext
-   {
-      public IHero Player { get; set; }
-   }
+    public class EventContext : IEventContext
+    {
+        public IHero Player { get; set; }
+    }
 }

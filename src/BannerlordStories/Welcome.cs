@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, on 30 of 07, 2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 namespace TalesEntities
 {

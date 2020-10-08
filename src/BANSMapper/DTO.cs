@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 05/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 //BUG: I may not need DTO after all.  Persistence implement directly TaleWorlds classes.
 
@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TalesContract;
+using TalesEntities.TW;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
@@ -23,7 +24,7 @@ namespace TalesMapper
    {
       public IHero Map(Hero hero)
       {
-         TalesEntities.TW.Hero result = new TalesEntities.TW.Hero {
+         BaseHero result = new BaseHero {
             Name = hero.Name.ToString(),
             Age = hero.Age,
             IsPrisoner = hero.IsPrisoner,
@@ -66,7 +67,7 @@ namespace TalesMapper
 
       public ITroopRoster Map(TroopRoster mainPartyPrisonRoster)
       {
-         TalesEntities.TW.TroopRoster result = new TalesEntities.TW.TroopRoster {
+         BaseTroopRoster result = new BaseTroopRoster {
             Count = mainPartyPrisonRoster.Count,
             IsPrisonRoster = mainPartyPrisonRoster.IsPrisonRoster,
             TotalHealthyCount = mainPartyPrisonRoster.TotalHealthyCount,
@@ -97,7 +98,7 @@ namespace TalesMapper
 
       private ICharacterObject Map(CharacterObject prisoner)
       {
-         TalesEntities.TW.CharacterObject result = new TalesEntities.TW.CharacterObject {
+         BaseCharacterObject result = new BaseCharacterObject {
             HeroObject = Map(prisoner.HeroObject)
          };
 

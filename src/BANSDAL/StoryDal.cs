@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
@@ -10,22 +10,19 @@ using TalesContract;
 
 namespace TalesDAL
 {
-   #region
+    #region
 
-   #endregion
+    #endregion
 
-   public class StoryDal
-   {
-      public List<IStory> LoadStoriesFromFolder(DirectoryInfo folder)
-      {
-         List<IStory> result = new List<IStory>();
-         FileInfo[] files = folder.GetFiles("*.txt");
-         foreach (FileInfo file in files)
-         {
-            result.Add(new StoryImporter().ImportFrom(file));
-         }
+    public class StoryDal
+    {
+        public List<IStory> LoadStoriesFromFolder(DirectoryInfo folder)
+        {
+            var result = new List<IStory>();
+            var files = folder.GetFiles("*.txt");
+            foreach (var file in files) result.Add(new StoryImporter().ImportFrom(file));
 
-         return result;
-      }
-   }
+            return result;
+        }
+    }
 }

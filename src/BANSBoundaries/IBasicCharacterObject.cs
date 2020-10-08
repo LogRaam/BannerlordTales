@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 01/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 namespace TalesContract
 {
@@ -23,7 +23,5 @@ namespace TalesContract
       public int Level { get; set; }
 
       public string Name { get; set; }
-
-      public ISkill Skill { get; set; }
    }
 }

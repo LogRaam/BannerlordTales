@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 03/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
@@ -21,5 +21,7 @@ namespace TalesContract
       string Id { get; set; }
 
       List<IEvaluation> Restrictions { get; set; }
+
+      List<ISequence> Sequences { get; set; }
    }
 }

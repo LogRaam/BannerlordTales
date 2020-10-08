@@ -1,19 +1,23 @@
-﻿// Code written by Gabriel Mailhot, 01/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
+using TalesEnums;
+
+#endregion
 
 namespace TalesContract
 {
-   using TalesEnums;
-
    public interface IBasicCultureObject
    {
-      public bool CanHaveSettlement { get; }
+      public bool CanHaveSettlement { get; set; }
 
-      public bool IsBandit { get; }
+      public CultureCode CultureCode { get; set; }
 
-      public bool IsMainCulture { get; }
+      public bool IsBandit { get; set; }
 
-      public string Name { get; }
+      public bool IsMainCulture { get; set; }
 
-      public CultureCode GetCultureCode();
+      public string Name { get; set; }
    }
 }

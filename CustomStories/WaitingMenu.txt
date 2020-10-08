@@ -1,0 +1,25 @@
+Story
+
+    Name: PrisonerWaiting
+	OneTimeStory: No
+    DependOn: None
+    Time: Anytime
+    StoryType: Waiting
+
+    Act
+        Name:       CaptiveChat1
+        Image:      lg_captive_cuff
+        Location:   Map
+        Intro:      You overhear a conversation between two men.  They seem unhappy about not being able to take advantage of the prisoners.  One of them offers to talk to the group leader about it.
+
+        Choice: Continue  
+        
+    Act
+        Name:       CaptiveChat2
+        Image:      LogCaptiveRopeFeet
+        Location:   Map
+        Intro:      Ties tighten your ankles are hurting you.  You try to loosen them a little.  A man sees you and tells you to be quiet.
+
+        Choice: Stop and stay quiet
+                                                
+END

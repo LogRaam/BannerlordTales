@@ -1,16 +1,20 @@
-﻿// Code written by Gabriel Mailhot, 05/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
+using System.Collections.Generic;
+using TaleWorlds.TwoDimension;
+
+#endregion
 
 namespace TalesPersistence
 {
-   #region
+    #region
 
-   using System.Collections.Generic;
-   using TaleWorlds.TwoDimension;
+    #endregion
 
-   #endregion
-
-   public static class Textures
-   {
-      public static Dictionary<string, Texture> TextureList { get; } = new Dictionary<string, Texture>();
-   }
+    public class Textures
+    {
+        public Dictionary<string, Texture> TextureList { get; } = new Dictionary<string, Texture>();
+    }
 }

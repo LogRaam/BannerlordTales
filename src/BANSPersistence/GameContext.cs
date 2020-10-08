@@ -1,150 +1,265 @@
-﻿// Code written by Gabriel Mailhot, 02/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
+using System;
+using System.Collections.Generic;
+using _45_TalesGameState;
 using TalesContract;
-using TalesMapper;
+using TalesEntities.TW;
+using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using Location = TalesEnums.Location;
 
 #endregion
 
 namespace TalesPersistence
 {
-   #region
+    #region
 
-   #endregion
+    #endregion
 
-   public class GameContext
-   {
-      private IBasicCharacterObject _player;
-      private bool? isCurrentlyInSettlement;
-      private bool? isCurrentlyOnMap;
-      private bool isDay;
-      private bool isNight;
-      private bool? playerIsCaptive;
-      private bool? playerIsCaptor;
+    public class GameContext
+    {
+        private IHero _captor;
+        private int _hoursInDay;
+        private bool? _isCurrentlyInSettlement;
+        private bool? _isCurrentlyOnMap;
+        private bool _isDay;
+        private bool _isNight;
+        private IHero _player;
+        private bool? _playerIsCaptor;
 
-      public bool? IsCurrentlyInCastle { get; set; }
-      public bool? IsCurrentlyInDungeon { get; set; }
-      public bool? IsCurrentlyInFortification { get; set; }
-      public bool? IsCurrentlyInHideout { get; set; }
 
-      public bool? IsCurrentlyInSettlement
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public IHero Captor
+        {
+            get
             {
-               isCurrentlyInSettlement = PartyBase.MainParty.IsSettlement;
+                if (CampaignState.CurrentGameStarted())
+                {
+                    if (Hero.MainHero.IsPrisoner) _captor = new BaseHero(Campaign.Current.MainParty.LeaderHero);
+                }
+
+                return _captor;
             }
 
-            return isCurrentlyInSettlement;
-         }
+            set => _captor = value;
+        }
 
-         set => isCurrentlyInSettlement = value != null && (bool) value;
-      }
+        public int EventChanceBonus { get; set; }
 
-      public bool? IsCurrentlyInTown { get; set; }
-      public bool? IsCurrentlyInVillage { get; set; }
-
-      public bool? IsCurrentlyOnMap
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public int HoursInDay
+        {
+            get
             {
-               isCurrentlyOnMap = Game.Current.GameStateManager.ActiveState is MapState;
+                if (CampaignState.CurrentGameStarted()) _hoursInDay = CampaignTime.HoursInDay;
+
+                return _hoursInDay;
+            }
+            set => _hoursInDay = value;
+        }
+
+        public bool? IsCurrentlyInCastle { get; set; }
+        public bool? IsCurrentlyInDungeon { get; set; }
+        public bool? IsCurrentlyInFortification { get; set; }
+        public bool? IsCurrentlyInHideout { get; set; }
+
+        public bool? IsCurrentlyInSettlement
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _isCurrentlyInSettlement = PartyBase.MainParty.IsSettlement;
+
+                return _isCurrentlyInSettlement;
             }
 
-            return isCurrentlyOnMap;
-         }
+            set => _isCurrentlyInSettlement = value != null && (bool)value;
+        }
 
-         set => isCurrentlyOnMap = value;
-      }
+        public bool? IsCurrentlyInTown { get; set; }
+        public bool? IsCurrentlyInVillage { get; set; }
 
-      public bool IsDay
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public bool? IsCurrentlyOnMap
+        {
+            get
             {
-               isDay = Campaign.Current.IsDay;
-               isNight = !isDay;
+                if (CampaignState.CurrentGameStarted()) _isCurrentlyOnMap = Game.Current.GameStateManager.ActiveState is MapState;
+
+                return _isCurrentlyOnMap;
             }
 
-            return isDay;
-         }
+            set => _isCurrentlyOnMap = value;
+        }
 
-         set => isDay = value;
-      }
-
-      public bool IsNight
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public bool IsDay
+        {
+            get
             {
-               isNight = Campaign.Current.IsDay;
-               isDay = !isNight;
+                if (CampaignState.CurrentGameStarted())
+                {
+                    _isDay = Campaign.Current.IsDay;
+                    _isNight = !_isDay;
+                }
+
+                return _isDay;
             }
 
-            return isDay;
-         }
+            set => _isDay = value;
+        }
 
-         set => isDay = value;
-      }
-
-      public IBasicCharacterObject Npc { get; set; } //TODO: must return Npc in Event (Captor, Captive, Dialogue?)
-
-      public IBasicCharacterObject Player
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public bool IsNight
+        {
+            get
             {
-               _player = new DTO().Map(Game.Current.PlayerTroop);
+                if (CampaignState.CurrentGameStarted())
+                {
+                    _isNight = Campaign.Current.IsDay;
+                    _isDay = !_isNight;
+                }
+
+                return _isDay;
             }
 
-            return _player;
-         }
-         set => _player = value;
-      }
+            set => _isDay = value;
+        }
 
 
-      public bool? PlayerIsCaptive
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public string LastGameMenuOpened { get; set; }
+
+        public IHero Player
+        {
+            get
             {
-               playerIsCaptive = Hero.MainHero.IsPrisoner;
+                if (CampaignState.CurrentGameStarted()) _player = new BaseHero(Game.Current.PlayerTroop);
+
+                return _player;
+            }
+            set => _player = value;
+        }
+
+
+        public bool? PlayerIsCaptor
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _playerIsCaptor = Campaign.Current.MainParty.LeaderHero.IsHumanPlayerCharacter && Campaign.Current.MainParty.PrisonRoster.Count > 0;
+
+                return _playerIsCaptor;
             }
 
-            return playerIsCaptive;
-         }
+            set => _playerIsCaptor = value;
+        }
 
-         set => playerIsCaptive = value;
-      }
 
-      public bool? PlayerIsCaptor
-      {
-         get
-         {
-            if (CurrentGameStarted())
+        public bool IsActLocationValidInContext(IAct act)
+        {
+            switch (act.Location)
             {
-               playerIsCaptor = Campaign.Current.MainParty.LeaderHero.IsHumanPlayerCharacter && Campaign.Current.MainParty.PrisonRoster.Count > 0;
+                case Location.UNKNOWN:                                               return true;
+                case Location.MAP when IsCurrentlyOnMap != null:                     return (bool)IsCurrentlyOnMap;
+                case Location.SETTLEMENT when IsCurrentlyInSettlement != null:       return (bool)IsCurrentlyInSettlement;
+                case Location.VILLAGE when IsCurrentlyInVillage != null:             return (bool)IsCurrentlyInVillage;
+                case Location.DUNGEON when IsCurrentlyInDungeon != null:             return (bool)IsCurrentlyInDungeon;
+                case Location.CASTLE when IsCurrentlyInCastle != null:               return (bool)IsCurrentlyInCastle;
+                case Location.FORTIFICATION when IsCurrentlyInFortification != null: return (bool)IsCurrentlyInFortification;
+                case Location.TOWN when IsCurrentlyInTown != null:                   return (bool)IsCurrentlyInTown;
+                case Location.HIDEOUT when IsCurrentlyInHideout != null:             return (bool)IsCurrentlyInHideout;
+
+                default: return true;
+            }
+        }
+
+
+        public bool ReadyToShowNewEvent()
+        {
+            var f = EventChanceBonus + HoursInDay;
+            var result = new Random().Next(100 + f) > 100;
+
+            if (result) ResetEventChanceBonus();
+
+            return result;
+        }
+
+        public void ResetEventChanceBonus()
+        {
+            EventChanceBonus = 0;
+        }
+
+        public IAct RetrieveActToPlay()
+        {
+            var qualifiedActs = GetAllQualifiedActsAndSequences();
+
+            if (qualifiedActs.Count == 0) return null;
+
+            return ChooseOneToPlay(qualifiedActs);
+        }
+
+        #region private
+
+        private static bool StoryAlreadyPlayed(IStory story)
+        {
+            if (!story.Header.CanBePlayedOnlyOnce) return false;
+
+            foreach (var playedStory in GameData.Instance.StoryContext.PlayedStories)
+                if (playedStory.Id == story.Id)
+                    return true;
+
+            return false;
+        }
+
+        private IAct ChooseOneToPlay(List<IAct> qualifiedActs)
+        {
+            if (qualifiedActs.Count == 0) return null;
+
+            var index = new Random().Next(0, qualifiedActs.Count);
+            GameData.Instance.StoryContext.PlayedActs.Add(qualifiedActs[index]);
+
+            return qualifiedActs[index];
+        }
+
+        private List<IAct> GetAllQualifiedActsAndSequences()
+        {
+            var result = new List<IAct>();
+            foreach (var s in GameData.Instance.StoryContext.Stories)
+            {
+                var story = new Story(s);
+
+                if (story.AlreadyPlayed()) continue;
+
+                result.AddRange(GetQualifiedActs(story));
             }
 
-            return playerIsCaptor;
-         }
+            return result;
+        }
 
-         set => playerIsCaptor = value;
-      }
+        private List<IAct> GetQualifiedActs(IStory story)
+        {
+            var result = new List<IAct>();
+            foreach (var a in story.Acts)
+            {
+                var act = new Act(a);
 
-      internal bool CurrentGameStarted()
-      {
-         return Campaign.Current != null && Campaign.Current.GameStarted;
-      }
-   }
+                if (!act.AlreadyPlayed()) continue;
+
+                if (act.IsQualifiedRightNow()) result.Add(act);
+            }
+
+            return result;
+        }
+
+        private List<IAct> GetQualifiedSequences(IStory story)
+        {
+            var result = new List<IAct>();
+            foreach (var s in story.Sequences)
+            {
+                var sequence = new Sequence(s);
+                if (sequence.IsQualifiedRightNow()) result.Add(sequence);
+            }
+
+            return result;
+        }
+
+        #endregion
+    }
 }

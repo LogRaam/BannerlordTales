@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 12/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 namespace TalesEnums
 {
@@ -9,6 +9,7 @@ namespace TalesEnums
       PLAYER_IS_CAPTOR,
       PLAYER_ON_CAMPAIGN_MAP,
       PLAYER_IN_SETTLEMENT,
+      WAITING,
       NONE
    }
 }

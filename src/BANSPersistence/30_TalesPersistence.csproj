@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7E2651AA-2AD7-4252-AE8D-586EF0B2EC19}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TalesPersistence</RootNamespace>
+    <AssemblyName>TalesPersistence</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Win64_Shipping_Client\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TaleWorlds.CampaignSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\bin\Win64_Shipping_Client\TaleWorlds.CampaignSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="TaleWorlds.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\bin\Win64_Shipping_Client\TaleWorlds.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TaleWorlds.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\bin\Win64_Shipping_Client\TaleWorlds.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="TaleWorlds.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\bin\Win64_Shipping_Client\TaleWorlds.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="TaleWorlds.ObjectSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="TaleWorlds.TwoDimension, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\bin\Win64_Shipping_Client\TaleWorlds.TwoDimension.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\BasicCharacterObject.cs" />
+    <Compile Include="Entities\BasicCultureObject.cs" />
+    <Compile Include="Entities\Clan.cs" />
+    <Compile Include="Entities\Hero.cs" />
+    <Compile Include="Events\DailyEvent.cs" />
+    <Compile Include="Events\EventRequest.cs" />
+    <Compile Include="Events\HourlyEvent.cs" />
+    <Compile Include="GameContext.cs" />
+    <Compile Include="GameData.cs" />
+    <Compile Include="MenuState.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GameTextures.cs" />
+    <Compile Include="Stories\Act.cs" />
+    <Compile Include="Stories\ActRules.cs" />
+    <Compile Include="Stories\Choice.cs" />
+    <Compile Include="Stories\Sequence.cs" />
+    <Compile Include="Stories\Story.cs" />
+    <Compile Include="Stories\StoryRules.cs" />
+    <Compile Include="StoryContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\45_TalesGameState\45_TalesGameState.csproj">
+      <Project>{50cdf45a-7167-4a9b-a102-bfdec32a3d68}</Project>
+      <Name>45_TalesGameState</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\47_TalesMath\47_TalesMath.csproj">
+      <Project>{1805EAFE-B5E0-48FA-92CE-411D6CAF3A1A}</Project>
+      <Name>47_TalesMath</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BannerlordStories\37_TalesBaseEntities.csproj">
+      <Project>{86A2DE02-1A56-469F-93FB-D2C467CD2D11}</Project>
+      <Name>37_TalesBaseEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BANSBoundaries\50_TalesContract.csproj">
+      <Project>{42ac2dcf-34f0-4318-a9d6-3055747809c5}</Project>
+      <Name>50_TalesContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BANSDAL\40_TalesDAL.csproj">
+      <Project>{c9d17544-c699-4993-b04f-d7ddd0eae33e}</Project>
+      <Name>40_TalesDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BANSEnums\70_TalesEnums.csproj">
+      <Project>{67a0824b-c0b1-4e11-944c-04461c3c2f20}</Project>
+      <Name>70_TalesEnums</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

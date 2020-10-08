@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
@@ -10,19 +10,21 @@ using TalesContract;
 
 namespace TalesEntities.Stories
 {
-   #region
+    #region
 
-   #endregion
+    #endregion
 
-   public class BaseStory : IStory
-   {
-      public List<IAct> Acts { get; set; } = new List<IAct>();
+    public class BaseStory : IStory
+    {
+        public List<IAct> Acts { get; set; } = new List<IAct>();
 
-      public IStoryHeader Header { get; set; } = new StoryHeader();
+        public IStoryHeader Header { get; set; } = new StoryHeader();
 
-      public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
 
-      public List<IEvaluation> Restrictions { get; set; } = new List<IEvaluation>();
-   }
+        public List<IEvaluation> Restrictions { get; set; } = new List<IEvaluation>();
+
+        public List<ISequence> Sequences { get; set; } = new List<ISequence>();
+    }
 }

@@ -1,175 +1,402 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
+using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using TalesContract;
 using TalesEntities.Stories;
+using TalesEntities.TW;
 using TalesEnums;
 using TalesPersistence;
+using TalesPersistence.Stories;
 
 #endregion
 
 namespace BannerlordTales.Tests
 {
-   #region
+    #region
 
-   #endregion
+    #endregion
 
-   [TestFixture]
-   public class StoryTests
-   {
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory1_ReturnTrue()
-      {
-         // Arrange
-         GameData.Instance = new GameData {
-            GameContext = new GameContext {
-               PlayerIsCaptor = true,
-               IsDay = true
-            }
-         };
+    [TestFixture]
+    public class StoryTests
+    {
+        [Test]
+        public void AllLinksExistFor_Test()
+        {
+            // Arrange
 
-         Story sut = new Story {
-            Header = new StoryHeader {
-               Time = GameTime.DAYTIME,
-               TypeOfStory = StoryType.PLAYER_IS_CAPTOR
-            }
-         };
+            var sut = new StoryContext
+            {
+                Stories = new List<IStory>
+                {
+                    new Story
+                    {
+                        Acts = new List<IAct>
+                        {
+                            new Act
+                            {
+                                Name = "Something",
+                                Choices = new List<IChoice>
+                                {
+                                    new BaseChoice
+                                    {
+                                        Triggers = new List<ITrigger>
+                                        {
+                                            new BaseTrigger
+                                            {
+                                                Link = "Link 1"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            new Sequence
+                            {
+                                Name = "Link 1",
+                                Choices = new List<IChoice>
+                                {
+                                    new BaseChoice
+                                    {
+                                        Triggers = new List<ITrigger>
+                                        {
+                                            new BaseTrigger
+                                            {
+                                                Link = "Link 2"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new Story
+                    {
+                        Acts = new List<IAct>
+                        {
+                            new Act
+                            {
+                                Name = "A Name",
+                                Choices = new List<IChoice>
+                                {
+                                    new BaseChoice
+                                    {
+                                        Triggers = new List<ITrigger>
+                                        {
+                                            new BaseTrigger
+                                            {
+                                                Link = "Link 1"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            new Sequence
+                            {
+                                Name = "Link 2",
+                                Choices = new List<IChoice>
+                                {
+                                    new BaseChoice
+                                    {
+                                        Triggers = new List<ITrigger>
+                                        {
+                                            new BaseTrigger
+                                            {
+                                                Link = "A Name"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        Sequences = new List<ISequence>
+                        {
+                            new Sequence
+                            {
+                                Name = "Another",
+                                Choices = new List<IChoice>
+                                {
+                                    new BaseChoice
+                                    {
+                                        Triggers = new List<ITrigger>
+                                        {
+                                            new BaseTrigger
+                                            {
+                                                Link = "Something"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
 
-         // Act
-         bool actualResult = sut.IsQualifiedRightNow();
+            // Act
+            var t1 = sut.AllLinksExistFor(sut.Stories[0].Acts[0]);
+            var t2 = sut.AllLinksExistFor(sut.Stories[0].Acts[1]);
+            var t3 = sut.AllLinksExistFor(sut.Stories[1].Acts[0]);
+            var t4 = sut.AllLinksExistFor(sut.Stories[1].Acts[1]);
+            var t5 = sut.AllLinksExistFor(sut.Stories[1].Sequences[0]);
 
-         // Assert
-         actualResult.Should().BeTrue();
-      }
+            // Assert
+            t1.Should().BeTrue();
+            t2.Should().BeTrue();
+            t3.Should().BeTrue();
+            t4.Should().BeTrue();
+            t5.Should().BeTrue();
+        }
 
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory2_ReturnTrue()
-      {
-         // Arrange
-         GameData.Instance = new GameData {
-            GameContext = new GameContext {
-               PlayerIsCaptive = true,
-               IsDay = true
-            }
-         };
+        [Test]
+        public void IsQualifiedEventFor_QualifiedStory1_ReturnTrue()
+        {
+            // Arrange
+            GameData.Instance = new GameData
+            {
+                GameContext = new GameContext
+                {
+                    PlayerIsCaptor = true, IsDay = true
+                }
+            };
 
-         Story sut = new Story {
-            Header = new StoryHeader {
-               Time = GameTime.DAYTIME,
-               TypeOfStory = StoryType.PLAYER_IS_CAPTIVE
-            }
-         };
+            var sut = new Story
+            {
+                Header = new StoryHeader
+                {
+                    Time = GameTime.DAYTIME, TypeOfStory = StoryType.PLAYER_IS_CAPTOR
+                }
+            };
 
-         // Act
-         bool actualResult = sut.IsQualifiedRightNow();
+            // Act
+            var actualResult = sut.IsQualifiedRightNow();
 
-         // Assert
-         actualResult.Should().BeTrue();
-      }
+            // Assert
+            actualResult.Should().BeTrue();
+        }
 
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory3_ReturnTrue()
-      {
-         // Arrange
-         GameData.Instance = new GameData {
-            GameContext = new GameContext {
-               PlayerIsCaptive = true,
-               IsDay = true
-            }
-         };
+        [Test]
+        public void IsQualifiedEventFor_QualifiedStory2_ReturnTrue()
+        {
+            // Arrange
+            GameData.Instance = new GameData
+            {
+                GameContext = new GameContext
+                {
+                    Player = new BaseHero
+                    {
+                        Age = 18, IsFemale = true, IsHumanPlayerCharacter = true, IsPrisoner = true
+                    },
+                    IsDay = true
+                }
+            };
 
+            var sut = new Story
+            {
+                Header = new StoryHeader
+                {
+                    Time = GameTime.DAYTIME, TypeOfStory = StoryType.PLAYER_IS_CAPTIVE
+                }
+            };
 
-         Story sut = new Story {
-            Header = new StoryHeader {
-               Time = GameTime.DAYTIME,
-               TypeOfStory = StoryType.PLAYER_IS_CAPTIVE
-            }
-         };
+            // Act
+            var actualResult = sut.IsQualifiedRightNow();
 
-         // Act
-         bool actualResult = sut.IsQualifiedRightNow();
+            // Assert
+            actualResult.Should().BeTrue();
+        }
 
-         // Assert
-         actualResult.Should().BeTrue();
-      }
-
-
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory4_ReturnTrue()
-      {
-         // Arrange
-         new Stories().LoadStoriesFromDisk();
-         Story story = new Story(GameData.Instance.StoryContext.Stories[0]);
-         Act act = new Act(story.Acts[0]);
-
-         GameData.Instance.GameContext.IsCurrentlyOnMap = true;
-         GameData.Instance.GameContext.IsDay = true;
-
-         // Act
-         bool actualResult = story.IsQualifiedRightNow() && act.IsQualifiedRightNow();
-
-         // Assert
-         actualResult.Should().BeTrue();
-      }
-
-
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory5_ReturnFalse()
-      {
-         // Arrange
-         new Stories().SetupKissTheBanner();
-
-         GameData.Instance.GameContext.IsCurrentlyOnMap = false;
-         GameData.Instance.GameContext.IsCurrentlyInSettlement = true;
-
-         GameData.Instance.StoryContext.Stories[0].Acts[0].Location = Location.MAP;
-
-         Story sut = (Story) GameData.Instance.StoryContext.Stories[0];
-
-         // Act
-         bool actualResult = ((Act) sut.Acts[0]).IsQualifiedRightNow();
-
-         // Assert
-         actualResult.Should().BeFalse();
-      }
-
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory6_ReturnTrue()
-      {
-         // Arrange
-         new Stories().LoadStoriesFromDisk();
-         Story story = new Story(GameData.Instance.StoryContext.Stories[0]);
-         Act act = new Act(story.Acts[0]);
-
-         GameData.Instance.GameContext.IsCurrentlyOnMap = true;
-         GameData.Instance.GameContext.IsDay = true;
-
-         // Act
-         bool actualResult = story.IsQualifiedRightNow() && act.IsQualifiedRightNow();
-
-         // Assert
-         actualResult.Should().BeTrue();
-      }
+        [Test]
+        public void IsQualifiedEventFor_QualifiedStory3_ReturnTrue()
+        {
+            // Arrange
+            GameData.Instance = new GameData
+            {
+                GameContext = new GameContext
+                {
+                    IsDay = true,
+                    Player = new BaseHero
+                    {
+                        IsPrisoner = true
+                    }
+                }
+            };
 
 
-      [Test]
-      public void IsQualifiedEventFor_QualifiedStory7_ReturnTrue() //TODO: tester le fichier de test
-      {
-         // Arrange
-         new Stories().LoadStoriesFromDisk();
-         Story story = new Story(GameData.Instance.StoryContext.Stories[0]);
-         Act act = new Act(story.Acts[0]);
+            var sut = new Story
+            {
+                Header = new StoryHeader
+                {
+                    Time = GameTime.DAYTIME, TypeOfStory = StoryType.PLAYER_IS_CAPTIVE
+                }
+            };
 
-         GameData.Instance.GameContext.IsCurrentlyOnMap = true;
-         GameData.Instance.GameContext.IsDay = true;
+            // Act
+            var actualResult = sut.IsQualifiedRightNow();
 
-         // Act
-         bool actualResult = story.IsQualifiedRightNow() && act.IsQualifiedRightNow();
+            // Assert
+            actualResult.Should().BeTrue();
+        }
 
-         // Assert
-         actualResult.Should().BeTrue();
-      }
-   }
+
+        [Test]
+        public void IsQualifiedEventFor_QualifiedStory4_ReturnTrue()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test"));
+            var act = new Act(story.Acts[0]);
+
+            GameData.Instance.GameContext.IsNight = true;
+            GameData.Instance.StoryContext.PlayedStories.Add(story);
+
+            GameData.Instance.GameContext.Player = new BaseHero
+            {
+                Age = 19,
+                IsFemale = true,
+                Culture = new BaseBasicCultureObject
+                {
+                    CultureCode = CultureCode.EMPIRE
+                },
+                Vigor = 5,
+                IsPrisoner = true
+            };
+
+            GameData.Instance.GameContext.Captor = new BaseHero
+            {
+                Age = 23
+            };
+
+            GameData.Instance.GameContext.IsCurrentlyOnMap = true;
+
+
+            // Act
+            var r1 = story.IsQualifiedRightNow();
+            var r2 = act.IsQualifiedRightNow();
+
+            // Assert
+            r1.Should().BeTrue(); //because PlayedStories
+            r2.Should().BeTrue();
+        }
+
+
+        [Test]
+        public void IsQualifiedEventFor_QualifiedStory5_ReturnFalse()
+        {
+            // Arrange
+            new Stories().SetupKissTheBanner();
+
+            GameData.Instance.GameContext.IsCurrentlyOnMap = false;
+            GameData.Instance.GameContext.IsCurrentlyInSettlement = true;
+
+            GameData.Instance.StoryContext.Stories[0].Acts[0].Location = Location.MAP;
+
+            var sut = (Story)GameData.Instance.StoryContext.Stories[0];
+
+            // Act
+            var actualResult = ((Act)sut.Acts[0]).IsQualifiedRightNow();
+
+            // Assert
+            actualResult.Should().BeFalse();
+        }
+
+        [Test]
+        public void TestStory_Act_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "PrisonerWaiting"));
+
+            // Act
+            var sut = new Act(story.Acts[0]);
+
+            // Assert
+            story.Acts.Count.Should().Be(2);
+            story.Acts[0].ParentStory.Should().Be(story.Header.Name);
+            story.Acts[1].ParentStory.Should().Be(story.Header.Name);
+            sut.ParentStory.Should().Be(story.Header.Name);
+            story.Header.Name.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void TestStory_FullTest_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test"));
+            var act1 = new Act(story.Acts[0]);
+            var act2 = new Act(story.Acts[1]);
+            var seq1 = new Sequence(story.Sequences[0]);
+            var seq2 = new Sequence(story.Sequences[1]);
+
+            GameData.Instance.GameContext.IsNight = true;
+            GameData.Instance.StoryContext.PlayedStories.Add(story);
+
+            GameData.Instance.GameContext.Player = new BaseHero
+            {
+                Age = 19,
+                IsFemale = true,
+                Culture = new BaseBasicCultureObject
+                {
+                    CultureCode = CultureCode.EMPIRE
+                },
+                Vigor = 5,
+                IsPrisoner = true
+            };
+
+            GameData.Instance.GameContext.Captor = new BaseHero
+            {
+                Age = 23
+            };
+
+            GameData.Instance.GameContext.IsCurrentlyOnMap = true;
+
+
+            // Act
+            var s1 = story.IsQualifiedRightNow();
+            var a1 = act1.IsQualifiedRightNow();
+            var a2 = act2.IsQualifiedRightNow();
+            var sq1 = seq1.IsQualifiedRightNow();
+            var sq2 = seq2.IsQualifiedRightNow();
+
+            // Assert
+            s1.Should().BeTrue();
+            a1.Should().BeTrue();
+            a2.Should().BeTrue();
+            sq1.Should().BeTrue();
+            sq2.Should().BeTrue();
+        }
+
+        [Test]
+        public void TestStory_WaitingMenu_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "PrisonerWaiting"));
+
+            // Assert
+            story.Acts.Count.Should().Be(2);
+        }
+
+        [Test]
+        public void TestStory_WaitingMenu2_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "PrisonerWaiting"));
+
+            // Assert
+            story.Acts.Count.Should().Be(2);
+            story.Acts[0].ParentStory.Should().Be(story.Header.Name);
+            story.Acts[1].ParentStory.Should().Be(story.Header.Name);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
 #region
 
@@ -16,6 +16,7 @@ namespace TalesContract
       public Operator Operator { get; set; }
 
       public PersonalityTraits? PersonalityTrait { get; set; }
+      public bool PregnancyRisk { get; set; }
 
       public int RandomEnd { get; set; }
 
