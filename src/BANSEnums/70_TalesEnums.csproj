@@ -54,6 +54,7 @@
     <Compile Include="CultureCode.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="FactionRank.cs" />
+    <Compile Include="HeroOccupation.cs" />
     <Compile Include="Occupation.cs" />
     <Compile Include="PartyFlag.cs" />
     <Compile Include="PartyType.cs" />

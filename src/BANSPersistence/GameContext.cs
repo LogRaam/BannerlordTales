@@ -4,9 +4,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _45_TalesGameState;
 using TalesContract;
+using TalesDAL;
 using TalesEntities.TW;
+using TalesEnums;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -23,6 +26,8 @@ namespace TalesPersistence
     public class GameContext
     {
         private IHero _captor;
+        private GameTime _gameTime;
+        private int _hourOfDay;
         private int _hoursInDay;
         private bool? _isCurrentlyInSettlement;
         private bool? _isCurrentlyOnMap;
@@ -48,6 +53,30 @@ namespace TalesPersistence
         }
 
         public int EventChanceBonus { get; set; }
+
+        public GameTime GameTime
+        {
+            get
+            {
+                _gameTime = GameTime.ANYTIME;
+                if (IsDay) _gameTime = GameTime.DAYTIME;
+                if (IsNight) _gameTime = GameTime.NIGHTTIME;
+
+                return _gameTime;
+            }
+            set => _gameTime = value;
+        }
+
+        public int HourOfDay
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _hourOfDay = CampaignTime.Now.GetHourOfDay;
+
+                return _hourOfDay;
+            }
+            set => _hourOfDay = value;
+        }
 
         public int HoursInDay
         {
@@ -173,10 +202,14 @@ namespace TalesPersistence
 
         public bool ReadyToShowNewEvent()
         {
-            var f = EventChanceBonus + HoursInDay;
-            var result = new Random().Next(100 + f) > 100;
+            var f = EventChanceBonus + HourOfDay;
+            TalesRandom.InitRandomNumber(Guid.NewGuid().GetHashCode());
+
+            var diceRoll = TalesRandom.GenerateRandomNumber(100 + f);
+            var result = diceRoll > 100;
 
             if (result) ResetEventChanceBonus();
+            GameData.Instance.GameContext.EventChanceBonus++;
 
             return result;
         }
@@ -221,17 +254,18 @@ namespace TalesPersistence
         private List<IAct> GetAllQualifiedActsAndSequences()
         {
             var result = new List<IAct>();
-            foreach (var s in GameData.Instance.StoryContext.Stories)
+            foreach (var s in GameData.Instance.StoryContext.Stories.Where(n => n.Header.TypeOfStory != StoryType.WAITING && n.Header.Name.ToUpper() != "TEST"))
             {
                 var story = new Story(s);
 
                 if (story.AlreadyPlayed()) continue;
 
-                result.AddRange(GetQualifiedActs(story));
+                result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
             }
 
             return result;
         }
+
 
         private List<IAct> GetQualifiedActs(IStory story)
         {
@@ -240,7 +274,7 @@ namespace TalesPersistence
             {
                 var act = new Act(a);
 
-                if (!act.AlreadyPlayed()) continue;
+                if (act.AlreadyPlayed()) continue;
 
                 if (act.IsQualifiedRightNow()) result.Add(act);
             }

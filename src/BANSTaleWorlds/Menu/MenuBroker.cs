@@ -12,6 +12,7 @@ using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
 using TaleWorlds.CampaignSystem.Overlay;
+using TaleWorlds.Engine.GauntletUI;
 
 #endregion
 
@@ -40,31 +41,39 @@ namespace TalesTaleWorlds.Menu
             return "LogCaptivePrisoner";
         }
 
-        public string GetWaitingMenu()
+        public IAct GetWaitingMenu()
         {
             var ev = PickEventFromStories();
 
-            if (ev != "NoActFound") return ev;
-
-            var n = new List<string>
-            {
-                "menu_captivity_end_wilderness_escape", "menu_captivity_end_propose_ransom_wilderness"
-            };
-
-            TalesRandom.InitRandomNumber(Guid.NewGuid().GetHashCode());
-
-            var i = TalesRandom.GenerateRandomNumber(1);
-
-            return n[i];
+            return ev;
         }
 
         internal void CreateGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
             if (string.IsNullOrEmpty(story.Id)) story.Id = Guid.NewGuid().ToString();
 
+            CreateActGameMenuFor(gameStarter, story);
+            CreateSequenceGameMenuFor(gameStarter, story);
+        }
+
+        internal void ShowMenuFor(IAct act)
+        {
+            if (act == null) return;
+
+            new GameFunction().PauseGame();
+
+            GameMenu.ActivateGameMenu(act.Id);
+            if (!string.IsNullOrEmpty(act.Image)) SetBackgroundImage(act.Image);
+            GameData.Instance.StoryContext.PlayedActs.Add(act);
+        }
+
+        #region private
+
+        private void CreateActGameMenuFor(CampaignGameStarter gameStarter, IStory story)
+        {
             foreach (var act in story.Acts)
             {
-                var menuId = story.Header.Name.Replace(" ", "") + "_" + act.Name.Replace(" ", "");
+                var menuId = act.Id;
                 var m = new MenuCallBackDelegate(act);
 
                 gameStarter.AddGameMenu(menuId, act.Intro, m.ActMenuSetup, GameOverlays.MenuOverlayType.None, GameMenu.MenuFlags.none, "BannerlordTales");
@@ -77,41 +86,43 @@ namespace TalesTaleWorlds.Menu
             }
         }
 
-        internal void ShowMenuFor(MenuCallbackArgs menuCallbackArgs, IAct act)
+        private void CreateSequenceGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
-            if (act == null) return;
+            foreach (var sequence in story.Sequences)
+            {
+                var menuId = story.Header.Name.Replace(" ", "") + "_" + sequence.Name.Replace(" ", "");
+                var m = new MenuCallBackDelegate(sequence);
 
-            new GameFunction().PauseGame();
+                gameStarter.AddGameMenu(menuId, sequence.Intro, m.ActMenuSetup, GameOverlays.MenuOverlayType.None, GameMenu.MenuFlags.none, "BannerlordTales");
 
-            GameMenu.ActivateGameMenu(act.Id);
-            if (!string.IsNullOrEmpty(act.Image)) menuCallbackArgs.MenuContext.SetBackgroundMeshName(act.Image);
+                foreach (var choice in sequence.Choices)
+                {
+                    var o = new OptionCallBackDelegate(choice);
+                    gameStarter.AddGameMenuOption(menuId, choice.Id, choice.Text, o.OnConditionDelegate, o.OnConsequenceDelegate, m.IsLeave(choice.Id), m.Index(choice.Id), m.IsRepeatable(choice.Id));
+                }
+            }
         }
 
-        #region private
-
-        private string PickEventFromStories()
+        private IAct PickEventFromStories()
         {
             var stories = RetrieveWaitingStories();
 
-            if (stories.Count == 0) return "NoActFound";
+            if (stories.Count == 0) return null;
 
             var s = new StoryBroker();
-            var acts = s.RetrieveUnplayedActsFrom(stories);
-            if (acts.Count == 0)
-            {
-                acts = GameData.Instance.StoryContext.PlayedActs.ToAct();
-            }
+            var acts = s.RetrieveNonPlayedActsFrom(stories);
+            if (acts.Count == 0) acts = GameData.Instance.StoryContext.PlayedActs.ToAct();
 
-            if (acts.Count == 0) return "NoActFound";
+            if (acts.Count == 0) return null;
 
             TalesRandom.InitRandomNumber(Guid.NewGuid().GetHashCode());
 
             var i = TalesRandom.GenerateRandomNumber(acts.Count);
             var selectedAct = new Act(acts[i]);
 
-            if (selectedAct.IsQualifiedRightNow()) return selectedAct.ParentStory + "_" + selectedAct.Name;
+            if (selectedAct.IsQualifiedRightNow()) return selectedAct;
 
-            return "NoActFound";
+            return null;
         }
 
         private List<IStory> RetrieveWaitingStories()
@@ -122,6 +133,17 @@ namespace TalesTaleWorlds.Menu
                     Result.Add(story);
 
             return Result;
+        }
+
+
+        private void SetBackgroundImage(string imageName)
+        {
+            if (imageName == "None") return;
+
+            //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[34] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
+            UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[13] = GameData.Instance.StoryContext.BackgroundImages.TextureList[imageName];
+            //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[28] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
+            //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[12] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
         }
 
         #endregion

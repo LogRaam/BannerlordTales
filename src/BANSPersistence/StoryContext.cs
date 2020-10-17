@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using _45_TalesGameState;
 using TalesContract;
 using TalesDAL;
@@ -66,12 +65,8 @@ namespace TalesPersistence
             set => _storyImageFiles = value;
         }
 
-        public void AddToPlayedActs(string id)
+        public void AddToPlayedActs(IAct act)
         {
-            var p = id.Split('_');
-            var s = p[0];
-            var a = p[1];
-            var act = GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == s).Acts.First(n => n.Name == a);
             if (act != null) GameData.Instance.StoryContext.PlayedActs.Add(act);
         }
 

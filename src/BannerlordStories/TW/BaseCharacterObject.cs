@@ -55,7 +55,11 @@ namespace TalesEntities.TW
 
         public BaseCharacterObject(CharacterObject character)
         {
-            throw new NotImplementedException();
+            if (character == null) return;
+
+            HeroObject = new BaseHero(character.HeroObject);
+            IsPlayerCharacter = character.IsPlayerCharacter;
+            Name = character.Name.ToString();
         }
 
 
@@ -65,6 +69,8 @@ namespace TalesEntities.TW
 
         public BaseCharacterObject(IHero hero)
         {
+            if (hero == null) return;
+
             HeroObject = hero;
             IsPlayerCharacter = hero.IsHumanPlayerCharacter;
             Name = hero.Name;
@@ -469,7 +475,7 @@ namespace TalesEntities.TW
 
         private CharacterObject Origin()
         {
-            return CharacterObject.FindFirst(n => n.IsPlayerCharacter == IsPlayerCharacter && n.Name.ToString() == Name);
+            return CharacterObject.FindFirst(n => n.IsPlayerCharacter == _isPlayerCharacter && n.Name.ToString() == _name);
         }
 
         #endregion

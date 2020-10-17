@@ -3,11 +3,9 @@
 #region
 
 using TalesPersistence;
-using TalesPersistence.Events;
 using TalesTaleWorlds.Menu;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
-using TaleWorlds.Engine.GauntletUI;
 
 #endregion
 
@@ -40,27 +38,19 @@ namespace TalesTaleWorlds.Behavior
 
         #region private
 
+        /// <summary>
+        ///     This event is the starting point to show game menus.  It is triggered by the game's designed event probability.
+        /// </summary>
+        /// <param name="menu">MenuCallbackArgs given by the game engine</param>
         private void AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu)
         {
-            var waitShowed = ShowWaitingMenu(menu);
-
-            if (waitShowed) return;
-
-            ShowEventMenu(menu);
-
-            /*
-            if (Game.Current.GameStateManager.ActiveState is MapState mapState)
-            {
-               //GameMenu.ActivateGameMenu("Default_KisstheBanner");
-               mapState.MenuContext.SetBackgroundMeshName("encounter_looter");
-            }
-            */
+            ShowWaitingMenu(menu);
         }
 
 
         private void DailyTickEventRaised()
         {
-            //GameData.Instance.GameContext.ResetEventChanceBonus();  //TODO: Maybe I don<t need to reset the chance bonus here..
+            GameData.Instance.GameContext.ResetEventChanceBonus();
         }
 
         private void GameMenuOpenedEventRaised(MenuCallbackArgs obj)
@@ -71,48 +61,41 @@ namespace TalesTaleWorlds.Behavior
 
         private void HourlyTickEventRaised()
         {
-            //TODO: Evaluate if it is preferable to use the HourlyTickEventRaised to trigger a menu.
+            ShowActMenu();
         }
 
-        private void SetBackgroundImage(MenuBroker m, string id)
+
+        private void ShowActMenu()
         {
-            var backGround = m.GetBackgroundFrom(id);
-            //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[34] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
-            UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[13] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
-            //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[28] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
-            //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[12] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
+            if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
+
+            var act = GameData.Instance.GameContext.RetrieveActToPlay();
+
+            if (act == null) return;
+
+            new MenuBroker().ShowMenuFor(act);
         }
+
 
         private void ShowCustomWaitingMenu(MenuCallbackArgs menuCallback)
         {
             var m = new MenuBroker();
-            new GameFunction().PauseGame();
-            var waitingMenu = m.GetWaitingMenu();
-
-
-            GameMenu.ActivateGameMenu(waitingMenu);
-            SetBackgroundImage(m, waitingMenu);
-            GameData.Instance.StoryContext.AddToPlayedActs(waitingMenu);
+            m.ShowMenuFor(m.GetWaitingMenu());
         }
 
-        private void ShowEventMenu(MenuCallbackArgs menuCallbackArgs)
+
+        /// <summary>
+        ///     Will show waiting menu if callback result is either: menu_captivity_end_wilderness_escape or
+        ///     menu_captivity_end_propose_ransom_wilderness.
+        /// </summary>
+        /// <param name="menuCallback"></param>
+        /// <returns></returns>
+        private void ShowWaitingMenu(MenuCallbackArgs menuCallback)
         {
-            if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
-
-            var act = new HourlyEvent().Execute();
-
-            if (act == null) return;
-
-            new MenuBroker().ShowMenuFor(menuCallbackArgs, act);
-        }
-
-        private bool ShowWaitingMenu(MenuCallbackArgs menuCallback)
-        {
-            if (menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_wilderness_escape" && menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_propose_ransom_wilderness") return false;
+            if (menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_wilderness_escape"
+                && menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_propose_ransom_wilderness") return;
 
             ShowCustomWaitingMenu(menuCallback);
-
-            return true;
         }
 
         #endregion

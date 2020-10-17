@@ -13,6 +13,8 @@ namespace TalesEntities.TW
     {
         public BaseCampaignTime(CampaignTime time)
         {
+            if (time == null) return;
+
             CurrentHourInDay = time.CurrentHourInDay;
             ElapsedDaysUntilNow = time.ElapsedDaysUntilNow;
             ElapsedHoursUntilNow = time.ElapsedHoursUntilNow;

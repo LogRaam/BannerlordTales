@@ -26,7 +26,7 @@ namespace BannerlordTales.Tests
 
             //Assert
             GameData.Instance.StoryContext.Stories.Count.Should().BeGreaterThan(0);
-            actualResult.Should().NotStartWith("_");
+            actualResult.Id.Should().Contain("_");
         }
     }
 }

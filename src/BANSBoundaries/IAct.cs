@@ -13,7 +13,7 @@ namespace TalesContract
     {
         List<IChoice> Choices { get; set; }
 
-        public string Id { get; set; }
+        public string Id { get; }
 
         string Image { get; set; }
 

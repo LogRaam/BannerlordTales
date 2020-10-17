@@ -12,9 +12,11 @@ namespace TalesEntities.TW
 {
     public class BaseFaction : IFaction
     {
-        public BaseFaction(TaleWorlds.CampaignSystem.IFaction originMapFaction)
+        public BaseFaction(TaleWorlds.CampaignSystem.IFaction faction)
         {
-            throw new NotImplementedException();
+            if (faction == null) return;
+
+            Name = faction.Name.ToString();
         }
 
         public BaseFaction()
@@ -43,7 +45,7 @@ namespace TalesEntities.TW
         public IEnumerable<IHero> Lords { get; }
         public float MainHeroCrimeRating { get; set; }
         public IFaction MapFaction { get; }
-        public string Name { get; }
+        public string Name { get; set; }
         public ICampaignTime NotAttackableByPlayerUntilTime { get; set; }
         public IEnumerable<ISettlement> Settlements { get; }
         public string StringId { get; }

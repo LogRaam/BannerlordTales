@@ -1,41 +1,45 @@
-﻿// Code written by Gabriel Mailhot, 01/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
+using System.Collections.Generic;
+
+#endregion
 
 namespace TalesContract
 {
-   #region
+    #region
 
-   using System.Collections.Generic;
+    #endregion
 
-   #endregion
+    public interface IVillage
+    {
+        public IList<IVillage> All { get; }
 
-   public interface IVillage
-   {
-      public IList<IVillage> All { get; }
+        public ISettlement Bound { get; set; }
 
-      public ISettlement Bound { get; set; }
+        public float Hearth { get; set; }
 
-      public float Hearth { get; set; }
+        public float HearthChange { get; }
 
-      public float HearthChange { get; }
+        public int HearthLevel { get; set; }
 
-      public bool IsDeserted { get; }
+        public bool IsDeserted { get; }
 
-      public float LastDemandSatisfiedTime { get; set; }
+        public float LastDemandSatisfiedTime { get; set; }
 
-      public ITown MarketTown { get; }
+        public ITown MarketTown { get; }
 
-      public float Militia { get; }
+        public float Militia { get; }
 
-      public float MilitiaChange { get; }
+        public float MilitiaChange { get; }
 
-      public int TradeTaxAccumulated { get; set; }
+        public int TradeTaxAccumulated { get; set; }
 
-      public IList<IMobileParty> VillagerPartiesAll { get; set; }
+        public IList<IMobileParty> VillagerPartiesAll { get; set; }
 
-      public IMobileParty VillagerParty { get; set; }
+        public IMobileParty VillagerParty { get; set; }
 
-      public IVillageType VillageType { get; set; }
-
-      public int HearthLevel();
-   }
+        public IVillageType VillageType { get; set; }
+    }
 }

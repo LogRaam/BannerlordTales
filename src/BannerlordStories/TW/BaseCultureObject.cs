@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using System.Collections.Generic;
 using TalesContract;
 using TalesEnums;
@@ -18,9 +17,9 @@ namespace TalesEntities.TW
 
     public class BaseCultureObject : ICultureObject
     {
-        public BaseCultureObject(CultureObject originCulture)
+        public BaseCultureObject(CultureObject culture)
         {
-            throw new NotImplementedException();
+            //TODO
         }
 
         public BaseCultureObject()

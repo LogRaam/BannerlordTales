@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using TalesContract;
 using TaleWorlds.CampaignSystem;
 
@@ -12,9 +11,15 @@ namespace TalesEntities.TW
 {
     public class BaseCharacterTraits : ICharacterTraits
     {
-        public BaseCharacterTraits(CharacterTraits getHeroTraits)
+        public BaseCharacterTraits(CharacterTraits traits)
         {
-            throw new NotImplementedException();
+            if (traits == null) return;
+
+            Calculating = traits.Calculating;
+            Generosity = traits.Generosity;
+            Honor = traits.Honor;
+            Mercy = traits.Mercy;
+            Valor = traits.Valor;
         }
 
         public BaseCharacterTraits()

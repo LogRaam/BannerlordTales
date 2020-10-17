@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using System.Collections.Generic;
 using TalesContract;
 using TalesEnums;
@@ -15,9 +14,11 @@ namespace TalesEntities.TW
 {
     public class BaseMobileParty : IMobileParty
     {
-        public BaseMobileParty(MobileParty originPartyBelongedTo)
+        public BaseMobileParty(MobileParty mobileParty)
         {
-            throw new NotImplementedException();
+            if (mobileParty == null) return;
+
+            Name = mobileParty.Name.ToString();
         }
 
         public BaseMobileParty()

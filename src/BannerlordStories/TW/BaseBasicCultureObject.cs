@@ -19,6 +19,8 @@ namespace TalesEntities.TW
 
         public BaseBasicCultureObject(BasicCultureObject culture)
         {
+            if (culture == null) return;
+
             CanHaveSettlement = culture.CanHaveSettlement;
 
             Enum.TryParse(culture.GetCultureCode().ToString(), true, out CultureCode p);

@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using TalesContract;
 using TaleWorlds.Core;
 
@@ -16,9 +15,9 @@ namespace TalesEntities.TW
 
     public class BaseSkill : ISkill
     {
-        public BaseSkill(CharacterSkills getHeroSkills)
+        public BaseSkill(CharacterSkills skills)
         {
-            throw new NotImplementedException();
+            //TODO
         }
 
         public BaseSkill()

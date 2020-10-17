@@ -93,6 +93,7 @@
     <Compile Include="TW\BaseTown.cs" />
     <Compile Include="TW\BaseTrigger.cs" />
     <Compile Include="TW\BaseTroopRoster.cs" />
+    <Compile Include="TW\BaseVillage.cs" />
     <Compile Include="Welcome.cs" />
   </ItemGroup>
   <ItemGroup>

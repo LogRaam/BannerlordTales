@@ -2,10 +2,7 @@
 
 #region
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using _45_TalesGameState;
 using TalesContract;
 using TaleWorlds.CampaignSystem;
 using IFaction = TalesContract.IFaction;
@@ -16,28 +13,17 @@ namespace TalesEntities.TW
 {
     public class BaseTown : ITown
     {
-        private bool _afterSneakFight;
-        private string _id;
-
         public BaseTown(Town town)
         {
-            throw new NotImplementedException();
+            //TODO
         }
 
         public BaseTown()
         {
         }
 
-        public bool AfterSneakFight
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _afterSneakFight = Origin.AfterSneakFight;
+        public bool AfterSneakFight { get; set; }
 
-                return _afterSneakFight;
-            }
-            set => _afterSneakFight = value;
-        }
 
         public IList<ITown> AllCastles { get; set; }
         public IList<ITown> AllFiefs { get; set; }
@@ -75,8 +61,5 @@ namespace TalesEntities.TW
         public float SecurityChange { get; set; }
         public int TradeTaxAccumulated { get; set; }
         public IReadOnlyList<IVillage> Villages { get; set; }
-
-
-        private Town Origin => Town.AllTowns.First(n => n.Name.ToString() == _id);
     }
 }

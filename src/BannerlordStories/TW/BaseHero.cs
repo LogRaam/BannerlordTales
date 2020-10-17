@@ -141,9 +141,11 @@ namespace TalesEntities.TW
 
         public BaseHero(Hero hero)
         {
+            if (hero == null) return;
+
             _id = hero.Id;
             _name = hero.Name.ToString();
-            _firstName = hero.FirstName.ToString();
+            _firstName = hero.FirstName?.ToString();
             _isHumanPlayerCharacter = hero.IsHumanPlayerCharacter;
         }
 
@@ -153,6 +155,8 @@ namespace TalesEntities.TW
 
         public BaseHero(BasicCharacterObject character)
         {
+            if (character == null) return;
+
             _id = character.Id;
             _name = character.Name.ToString();
             _isHumanPlayerCharacter = character.IsPlayerCharacter;

@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using System.Collections.Generic;
 using TalesContract;
 using TaleWorlds.CampaignSystem;
@@ -13,9 +12,11 @@ namespace TalesEntities.TW
 {
     public class BaseClan : IClan
     {
-        public BaseClan(Clan originClan)
+        public BaseClan(Clan clan)
         {
-            throw new NotImplementedException();
+            if (clan == null) return;
+
+            FullName = clan.FullName.ToString();
         }
 
         public BaseClan()
@@ -74,5 +75,14 @@ namespace TalesEntities.TW
         public int TributeWallet { get; set; }
         public IList<IVillage> Villages { get; set; }
         public IList<IMobileParty> WarParties { get; set; }
+
+        #region private
+
+        private Clan Origin()
+        {
+            return Clan.FindFirst(n => n.FullName.ToString() == FullName);
+        }
+
+        #endregion
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Entities\BasicCharacterObject.cs" />
     <Compile Include="Entities\BasicCultureObject.cs" />
     <Compile Include="Entities\Clan.cs" />
+    <Compile Include="Entities\Evaluation.cs" />
     <Compile Include="Entities\Hero.cs" />
     <Compile Include="Events\DailyEvent.cs" />
     <Compile Include="Events\EventRequest.cs" />

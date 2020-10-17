@@ -21,7 +21,6 @@ namespace TalesPersistence.Stories
             Location = act.Location;
             Image = act.Image;
             Restrictions = act.Restrictions;
-            Id = act.Id;
             Choices = act.Choices;
             ParentStory = act.ParentStory;
         }

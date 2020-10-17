@@ -23,7 +23,7 @@ namespace TalesTaleWorlds
                 m.CreateGameMenuFor(gameStarter, story);
         }
 
-        public List<Act> RetrieveUnplayedActsFrom(List<IStory> stories)
+        public List<Act> RetrieveNonPlayedActsFrom(List<IStory> stories)
         {
             var result = new List<Act>();
             foreach (var story in stories)

@@ -18,7 +18,7 @@ namespace TalesEntities.Stories
     {
         public List<IChoice> Choices { get; set; } = new List<IChoice>();
 
-        public string Id { get; set; }
+        public string Id => ParentStory.Replace(" ", "") + "_" + Name.Replace(" ", "");
 
         public string Image { get; set; }
 

@@ -18,6 +18,8 @@ namespace TalesEntities.TW
 
         public BaseBasicCharacterObject(BasicCharacterObject character)
         {
+            if (character == null) return;
+
             Age = character.Age;
             Culture = new BaseBasicCultureObject(character.Culture);
             HasMount = character.HasMount();
