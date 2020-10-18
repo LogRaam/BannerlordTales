@@ -115,8 +115,6 @@ namespace TalesTaleWorlds.Menu
 
             if (acts.Count == 0) return null;
 
-            TalesRandom.InitRandomNumber(Guid.NewGuid().GetHashCode());
-
             var i = TalesRandom.GenerateRandomNumber(acts.Count);
             var selectedAct = new Act(acts[i]);
 

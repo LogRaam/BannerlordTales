@@ -4,6 +4,7 @@
 
 using System;
 using TalesContract;
+using TalesDAL;
 using TalesEntities.Stories;
 using TalesEnums;
 
@@ -36,6 +37,13 @@ namespace TalesPersistence.Entities
         }
 
         public Evaluation() { }
+
+        public int GetModifierValue()
+        {
+            return !string.IsNullOrEmpty(Value)
+                ? int.Parse(Value)
+                : TalesRandom.GenerateRandomNumber(RandomStart, RandomEnd);
+        }
 
         public bool IsAccepted()
         {
@@ -82,12 +90,10 @@ namespace TalesPersistence.Entities
                 case null:                       throw new NullReferenceException("Characteristic is null");
                 default:                         throw new ArgumentOutOfRangeException();
             }
-
-            return false;
         }
 
 
-        private bool EvalGender(Hero subject)
+        private bool EvalGender(IHero subject)
         {
             var t = Value.ToUpper();
 
@@ -97,7 +103,7 @@ namespace TalesPersistence.Entities
             return t == "MALE";
         }
 
-        private bool EvalOccupation(Hero subject)
+        private bool EvalOccupation(IHero subject)
         {
             switch (Value.ToUpper())
             {
@@ -125,7 +131,6 @@ namespace TalesPersistence.Entities
             }
         }
 
-
         private bool EvalOperation(int n)
         {
             var value = int.Parse(Value);
@@ -151,18 +156,57 @@ namespace TalesPersistence.Entities
 
         private bool PartyTypeAccepted()
         {
-            //TODO: must find a way to evaluate party type from encounters
-            return true;
+            switch (PartyType)
+            {
+                case PartyType.UNKNOWN:       throw new ApplicationException("PartyType Trait unknown: " + PartyType);
+                case PartyType.DEFAULT:       return EvalOperation(IdentifySubject().Mercy);
+                case PartyType.LORD:          return EvalOperation(IdentifySubject().Generosity);
+                case PartyType.BANDIT:        return EvalOperation(IdentifySubject().Honor);
+                case PartyType.VILLAGER:      return EvalOperation(IdentifySubject().Valor);
+                case PartyType.GARRISONPARTY: return EvalOperation(IdentifySubject().Valor);
+                case PartyType.CARAVAN:       return EvalOperation(IdentifySubject().Valor);
+                default:                      throw new ArgumentOutOfRangeException();
+            }
         }
 
         private bool PersonalityTraitAccepted()
         {
-            throw new NotImplementedException();
+            switch (PersonalityTrait)
+            {
+                case PersonalityTraits.UNKNOWN:    throw new ApplicationException("Personality Trait unknown: " + PersonalityTrait);
+                case PersonalityTraits.MERCY:      return EvalOperation(IdentifySubject().Mercy);
+                case PersonalityTraits.GENEROSITY: return EvalOperation(IdentifySubject().Generosity);
+                case PersonalityTraits.HONOR:      return EvalOperation(IdentifySubject().Honor);
+                case PersonalityTraits.VALOR:      return EvalOperation(IdentifySubject().Valor);
+                default:                           throw new ArgumentOutOfRangeException();
+            }
         }
 
         private bool SkillAccepted()
         {
-            throw new NotImplementedException();
+            switch (Skill)
+            {
+                case Skills.UNKNOWN:     throw new ApplicationException("Personality Trait unknown: " + PersonalityTrait);
+                case Skills.ONEHANDED:   return EvalOperation(IdentifySubject().OneHanded);
+                case Skills.TWOHANDED:   return EvalOperation(IdentifySubject().TwoHanded);
+                case Skills.POLEARM:     return EvalOperation(IdentifySubject().Polearm);
+                case Skills.BOW:         return EvalOperation(IdentifySubject().Bow);
+                case Skills.CROSSBOW:    return EvalOperation(IdentifySubject().Crossbow);
+                case Skills.THROWING:    return EvalOperation(IdentifySubject().Throwing);
+                case Skills.RIDING:      return EvalOperation(IdentifySubject().Riding);
+                case Skills.ATHLETICS:   return EvalOperation(IdentifySubject().Athletics);
+                case Skills.CRAFTING:    return EvalOperation(IdentifySubject().Crafting);
+                case Skills.SCOUTING:    return EvalOperation(IdentifySubject().Scouting);
+                case Skills.TACTICS:     return EvalOperation(IdentifySubject().Tactics);
+                case Skills.ROGUERY:     return EvalOperation(IdentifySubject().Roguery);
+                case Skills.CHARM:       return EvalOperation(IdentifySubject().Charm);
+                case Skills.LEADERSHIP:  return EvalOperation(IdentifySubject().Leadership);
+                case Skills.TRADE:       return EvalOperation(IdentifySubject().Trade);
+                case Skills.STEWARD:     return EvalOperation(IdentifySubject().Steward);
+                case Skills.MEDICINE:    return EvalOperation(IdentifySubject().Medecine);
+                case Skills.ENGINEERING: return EvalOperation(IdentifySubject().Engineering);
+                default:                 throw new ArgumentOutOfRangeException();
+            }
         }
 
 

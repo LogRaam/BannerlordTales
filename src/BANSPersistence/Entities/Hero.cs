@@ -12,7 +12,7 @@ using TalesEnums;
 
 namespace TalesPersistence.Entities
 {
-    internal class Hero : BaseHero
+    public class Hero : BaseHero
     {
         public Hero(IHero hero)
         {
@@ -135,6 +135,11 @@ namespace TalesPersistence.Entities
             if (consequence.Characteristic != null) return IsCharacteristicConformFor(consequence);
 
             return true;
+        }
+
+        public TaleWorlds.CampaignSystem.Hero ToHero()
+        {
+            return TaleWorlds.CampaignSystem.Hero.FindFirst(n => n.Name.ToString() == Name && n.IsHumanPlayerCharacter == IsHumanPlayerCharacter && n.IsFemale == IsFemale);
         }
 
         #region private
