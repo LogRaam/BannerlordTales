@@ -15,7 +15,6 @@ namespace TalesPersistence.Stories
         {
             Header = baseStory.Header;
             Acts = baseStory.Acts;
-            Id = baseStory.Id;
             Restrictions = baseStory.Restrictions;
             Sequences = baseStory.Sequences;
         }

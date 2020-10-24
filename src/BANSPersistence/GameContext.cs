@@ -228,6 +228,15 @@ namespace TalesPersistence
             return ChooseOneToPlay(qualifiedActs);
         }
 
+        public IAct RetrieveAlreadyPlayedActToPlay()
+        {
+            var qualifiedActs = GetAlreadyPlayedQualifiedActsAndSequences();
+
+            if (qualifiedActs.Count == 0) return null;
+
+            return ChooseOneToPlay(qualifiedActs);
+        }
+
         #region private
 
         private static bool StoryAlreadyPlayed(IStory story)
@@ -259,6 +268,21 @@ namespace TalesPersistence
                 var story = new Story(s);
 
                 if (story.AlreadyPlayed()) continue;
+
+                result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
+            }
+
+            return result;
+        }
+
+
+        private List<IAct> GetAlreadyPlayedQualifiedActsAndSequences()
+        {
+            var result = new List<IAct>();
+            foreach (var s in GameData.Instance.StoryContext.PlayedStories.Where(n => n.Header.TypeOfStory != StoryType.WAITING && n.Header.Name.ToUpper() != "TEST" && n.Header.CanBePlayedOnlyOnce == false))
+            {
+                var story = new Story(s);
+
 
                 result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
             }

@@ -44,6 +44,7 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseChoice
                                     {
+                                        Text = "abc",
                                         Triggers = new List<ITrigger>
                                         {
                                             new BaseTrigger
@@ -61,6 +62,7 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseChoice
                                     {
+                                        Text = "def",
                                         Triggers = new List<ITrigger>
                                         {
                                             new BaseTrigger
@@ -84,6 +86,7 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseChoice
                                     {
+                                        Text = "ghi",
                                         Triggers = new List<ITrigger>
                                         {
                                             new BaseTrigger
@@ -101,6 +104,7 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseChoice
                                     {
+                                        Text = "jkl",
                                         Triggers = new List<ITrigger>
                                         {
                                             new BaseTrigger
@@ -121,6 +125,7 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseChoice
                                     {
+                                        Text = "mno",
                                         Triggers = new List<ITrigger>
                                         {
                                             new BaseTrigger
@@ -315,9 +320,9 @@ namespace BannerlordTales.Tests
 
             // Assert
             story.Acts.Count.Should().Be(2);
-            story.Acts[0].ParentStory.Should().Be(story.Header.Name);
-            story.Acts[1].ParentStory.Should().Be(story.Header.Name);
-            sut.ParentStory.Should().Be(story.Header.Name);
+            story.Acts[0].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            story.Acts[1].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            sut.ParentStory.Header.Name.Should().Be(story.Header.Name);
             story.Header.Name.Should().NotBeNullOrEmpty();
         }
 
@@ -372,6 +377,26 @@ namespace BannerlordTales.Tests
         }
 
         [Test]
+        public void TestStory_Triggers_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test"));
+
+            // Assert
+            story.Acts.Count.Should().Be(3);
+            story.Acts[0].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            story.Acts[1].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            story.Acts[2].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            story.Acts.First(n => n.Name == "MyAct3").Choices.First(n => n.Text == "Act2choice2").Triggers.Count.Should().Be(2);
+            story.Acts.First(n => n.Name == "MyAct3").Choices.First(n => n.Text == "Act2choice2").Triggers[0].Link.Should().Be("MySequence3");
+            story.Acts.First(n => n.Name == "MyAct3").Choices.First(n => n.Text == "Act2choice2").Triggers[0].ChanceToTrigger.Should().Be(25);
+            story.Acts.First(n => n.Name == "MyAct3").Choices.First(n => n.Text == "Act2choice2").Triggers[1].ChanceToTrigger.Should().Be(75);
+        }
+
+        [Test]
         public void TestStory_WaitingMenu_ShouldPass()
         {
             // Arrange
@@ -395,8 +420,25 @@ namespace BannerlordTales.Tests
 
             // Assert
             story.Acts.Count.Should().Be(2);
-            story.Acts[0].ParentStory.Should().Be(story.Header.Name);
-            story.Acts[1].ParentStory.Should().Be(story.Header.Name);
+            story.Acts[0].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            story.Acts[1].ParentStory.Header.Name.Should().Be(story.Header.Name);
+        }
+
+        [Test]
+        public void TestStory_WaitingMenu3_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Default"));
+
+            // Assert
+            story.Acts.Count.Should().Be(1);
+            story.Acts[0].ParentStory.Header.Name.Should().Be(story.Header.Name);
+            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Value.Should().Be("-10");
+            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Subject.Should().Be(Actor.PLAYER);
+            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Characteristic.Should().Be(Characteristics.HEALTH);
         }
     }
 }

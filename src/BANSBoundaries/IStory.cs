@@ -8,20 +8,20 @@ using System.Collections.Generic;
 
 namespace TalesContract
 {
-   #region
+    #region
 
-   #endregion
+    #endregion
 
-   public interface IStory
-   {
-      List<IAct> Acts { get; set; }
+    public interface IStory
+    {
+        List<IAct> Acts { get; set; }
 
-      IStoryHeader Header { get; set; }
+        IStoryHeader Header { get; set; }
 
-      string Id { get; set; }
+        string Id { get; }
 
-      List<IEvaluation> Restrictions { get; set; }
+        List<IEvaluation> Restrictions { get; set; }
 
-      List<ISequence> Sequences { get; set; }
-   }
+        List<ISequence> Sequences { get; set; }
+    }
 }

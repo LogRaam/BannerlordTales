@@ -13,7 +13,6 @@ namespace TalesPersistence.Stories
     {
         public Choice(IChoice baseChoice)
         {
-            Id = baseChoice.Id;
             Text = baseChoice.Text;
             Conditions = baseChoice.Conditions;
             Consequences = baseChoice.Consequences;

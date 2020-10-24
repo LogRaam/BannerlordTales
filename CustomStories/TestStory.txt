@@ -17,12 +17,12 @@ Story
     
 
     Act
-        Name:       My Act 1
+        Name:       MyAct1
         Image:      None
         Location:   Map
         Intro:      This is an intro for act 1.
 
-        Choice: Act 1 choice 1.
+        Choice: Act1choice1.
             
             Condition: vigor > 1
             Condition: control < 2
@@ -59,13 +59,13 @@ Story
             Consequence: experience +200
             Consequence: Relation -1
 
-        Choice: Act 1 choice 2.
+        Choice: Act1choice2.
         
-            Goto: My Sequence 1
+            Goto: MySequence1
 
     
     Sequence
-        Name:       My Sequence 1   
+        Name:       MySequence1   
         Image:      None        
         Intro:      This is an intro to sequence 1.
 
@@ -74,22 +74,48 @@ Story
             Consequence: health -10  
      
      Act
-        Name:       My Act 2
+        Name:       MyAct2
         Image:      None
         Location:   Map
         Intro:      This is an intro for act 2.
 
-        Choice: Act 2 choice 1.
+        Choice: Act2choice1
         
             Consequence: Player renown -1            
 
-        Choice: Act 2 choice 2.
+        Choice: Act2choice2
         
-            Goto: My Sequence 2
+            Goto: MySequence2
 
     
     Sequence
-        Name:       My Sequence 2
+        Name:       MySequence2
+        Image:      None        
+        Intro:      This is an intro to sequence 2.
+
+        Choice: This is the only choice available.
+
+            Consequence: health -20%
+
+
+     Act
+        Name:       MyAct3
+        Image:      None
+        Location:   Map
+        Intro:      This is an intro for act 2.
+
+        Choice: Act2choice1
+        
+            Consequence: Player renown -1            
+
+        Choice: Act2choice2
+        
+            Goto: MySequence3 25%  
+            Goto: MySequence4 75%
+
+    
+    Sequence
+        Name:       MySequence3
         Image:      None        
         Intro:      This is an intro to sequence 2.
 

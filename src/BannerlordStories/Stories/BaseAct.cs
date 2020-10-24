@@ -18,7 +18,7 @@ namespace TalesEntities.Stories
     {
         public List<IChoice> Choices { get; set; } = new List<IChoice>();
 
-        public string Id => ParentStory.Replace(" ", "") + "_" + Name.Replace(" ", "");
+        public string Id => ParentStory.Header.Name.Replace(" ", "") + "_" + Name.Replace(" ", "");
 
         public string Image { get; set; }
 
@@ -27,7 +27,8 @@ namespace TalesEntities.Stories
         public Location Location { get; set; } = Location.UNKNOWN;
 
         public string Name { get; set; }
-        public string ParentStory { get; set; }
+
+        public IStory ParentStory { get; set; }
 
         public List<IEvaluation> Restrictions { get; set; } = new List<IEvaluation>();
     }

@@ -62,6 +62,9 @@ namespace TalesTaleWorlds.Behavior
         private void HourlyTickEventRaised()
         {
             ShowActMenu();
+
+            new MenuBroker().ShowCaptiveWaiting();
+            new GameFunction().UnPauseGame();
         }
 
 
@@ -71,7 +74,7 @@ namespace TalesTaleWorlds.Behavior
 
             var act = GameData.Instance.GameContext.RetrieveActToPlay();
 
-            if (act == null) return;
+            if (act == null) act = GameData.Instance.GameContext.RetrieveAlreadyPlayedActToPlay();
 
             new MenuBroker().ShowMenuFor(act);
         }

@@ -120,6 +120,7 @@ namespace TalesTaleWorlds
         private static void LoadCustomStoriesIntoRuntime()
         {
             GameData.Instance.StoryContext.CustomStoriesFolder = new DirectoryInfo(GameData.Instance.StoryContext.ModuleFolder.FullName + "\\CustomStories");
+
             GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk();
         }
 

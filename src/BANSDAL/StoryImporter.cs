@@ -42,14 +42,14 @@ namespace TalesDAL
                     if (story[i].ReferTo("ACT"))
                     {
                         var act = ExtractActFrom(story, ref i);
-                        act.ParentStory = result.Header.Name;
+                        act.ParentStory = result;
                         result.Acts.Add(act);
                     }
 
                     if (story[i].ReferTo("SEQUENCE"))
                     {
                         var sequence = ExtractSequenceFrom(story, ref i);
-                        sequence.ParentStory = result.Header.Name;
+                        sequence.ParentStory = result;
                         result.Sequences.Add(sequence);
                     }
 
@@ -111,7 +111,12 @@ namespace TalesDAL
                 if (story[i].ReferTo("IMAGE: ")) act.Image = SetValueFrom(story[i]);
                 if (story[i].ReferTo("LOCATION: ")) act.Location = SetLocationFrom(story[i]);
                 if (story[i].ReferTo("INTRO: ")) act.Intro = ExtractText(story, ref i);
-                if (story[i].ReferTo("CHOICE:")) act.Choices.Add(ExtractChoice(story, ref i));
+                if (story[i].ReferTo("CHOICE:"))
+                {
+                    var c = ExtractChoice(story, ref i);
+                    c.ParentAct = act;
+                    act.Choices.Add(c);
+                }
 
                 if (!story[i].ReferTo("CHOICE") && !story[i].ReferTo("ACT") && !story[i].ReferTo("SEQUENCE")) MovePointerForward(story, ref i);
             }
@@ -133,7 +138,6 @@ namespace TalesDAL
             {
                 if (story[i].ReferTo("CONDITION:")) result.Conditions.Add(ExtractEvaluationFrom(story[i]));
                 if (story[i].ReferTo("CONSEQUENCE:")) result.Consequences.Add(ExtractEvaluationFrom(story[i]));
-                if (story[i].ReferTo("ID:")) result.Id = SetValueFrom(story[i]);
                 if (story[i].ReferTo("GOTO:")) result.Triggers.Add(SetTriggerFrom(story[i]));
                 MovePointerForward(story, ref i);
             }
@@ -147,7 +151,7 @@ namespace TalesDAL
             if (!line.Contains(" OCCUPATION ") && IsThereACultureWithinThis(line)) line = FormatLineForOccupation(line);
 
             var v = GetValueFrom(line);
-            var item = GetSubjectItem(line);
+            var item = GetSubjectItem(line.Replace("PLAYER", ""));
 
             var result = new BaseEvaluation
             {
@@ -183,7 +187,12 @@ namespace TalesDAL
                 if (story[i].ReferTo("IMAGE: ")) seq.Image = SetValueFrom(story[i]);
                 if (story[i].ReferTo("LOCATION: ")) seq.Location = SetLocationFrom(story[i]);
                 if (story[i].ReferTo("INTRO: ")) seq.Intro = ExtractText(story, ref i);
-                if (story[i].ReferTo("CHOICE:")) seq.Choices.Add(ExtractChoice(story, ref i));
+                if (story[i].ReferTo("CHOICE:"))
+                {
+                    var s = ExtractChoice(story, ref i);
+                    s.ParentAct = seq;
+                    seq.Choices.Add(s);
+                }
 
                 if (!story[i].ReferTo("ACT") && !story[i].ReferTo("CHOICE") && !story[i].ReferTo("SEQUENCE")) MovePointerForward(story, ref i);
             }
@@ -334,7 +343,7 @@ namespace TalesDAL
 
         private string GetSimpleValueFrom(string line)
         {
-            line = line.ToUpper();
+            line = line.ToUpper().Trim();
 
             if (!line.Contains(" IS GREATER THAN ") && !line.Contains(" IS LOWER THAN ")) line = line.Replace(" IS ", " = ");
 

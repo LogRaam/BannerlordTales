@@ -2,7 +2,6 @@
 
 #region
 
-using System;
 using System.Collections.Generic;
 using TalesContract;
 
@@ -20,7 +19,7 @@ namespace TalesEntities.Stories
 
         public IStoryHeader Header { get; set; } = new StoryHeader();
 
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id => Header.Name;
 
 
         public List<IEvaluation> Restrictions { get; set; } = new List<IEvaluation>();

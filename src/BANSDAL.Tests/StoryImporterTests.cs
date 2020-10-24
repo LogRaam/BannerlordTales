@@ -100,13 +100,14 @@ namespace TalesDAL.Tests
             var param = new List<string>
             {
                 "STORY",
+                "Name: aStoryName",
                 "Act",
+                "Name: aName",
                 "Choice: this is a choice.",
-                "Id:             AnID",
                 "END"
             };
 
-            var expectedResult = "AnID";
+            var expectedResult = "aStoryName_aName_thisisachoice.";
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -1557,7 +1558,7 @@ namespace TalesDAL.Tests
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Acts[0].ParentStory.Should().Be("MyStory");
+            actualResult.Acts[0].ParentStory.Header.Name.Should().Be("MyStory");
             actualResult.Acts[0].Name.Should().Be("MyAct");
         }
 

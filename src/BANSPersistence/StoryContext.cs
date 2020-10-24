@@ -89,6 +89,26 @@ namespace TalesPersistence
             return AllLinksExistFor((IAct)sequence);
         }
 
+        public IAct FindAct(string name)
+        {
+            foreach (var story in Stories)
+                foreach (var act in story.Acts)
+                    if (act.Name.ToUpper() == name.ToUpper())
+                        return act;
+
+            return null;
+        }
+
+        public IAct FindSequence(string name)
+        {
+            foreach (var story in Stories)
+                foreach (var sequence in story.Sequences)
+                    if (sequence.Name.ToUpper() == name.ToUpper())
+                        return sequence;
+
+            return null;
+        }
+
 
         public List<IStory> ImportStoriesFromDisk()
         {
@@ -119,9 +139,9 @@ namespace TalesPersistence
             return false;
         }
 
-        private bool TriggerSequenceRefExist(ITrigger trigger, IStory S)
+        private bool TriggerSequenceRefExist(ITrigger trigger, IStory story)
         {
-            foreach (var seq in S.Sequences)
+            foreach (var seq in story.Sequences)
                 if (trigger.Link == seq.Name)
                     return true;
 

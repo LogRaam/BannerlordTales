@@ -11,7 +11,7 @@ namespace TalesContract
 {
     public interface IAct
     {
-        List<IChoice> Choices { get; set; }
+        List<IChoice> Choices { get; }
 
         public string Id { get; }
 
@@ -22,7 +22,7 @@ namespace TalesContract
         Location Location { get; set; }
 
         string Name { get; set; }
-        public string ParentStory { get; set; }
+        public IStory ParentStory { get; set; }
 
         public List<IEvaluation> Restrictions { get; set; }
     }

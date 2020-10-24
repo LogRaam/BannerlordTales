@@ -21,7 +21,6 @@ namespace TalesPersistence.Stories
             Image = sequence.Image;
             Intro = sequence.Intro;
             Location = sequence.Location;
-            Id = sequence.Id;
             Restrictions = sequence.Restrictions;
             ParentStory = sequence.ParentStory;
         }

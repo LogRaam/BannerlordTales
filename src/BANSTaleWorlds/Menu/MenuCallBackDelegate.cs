@@ -23,8 +23,8 @@ namespace TalesTaleWorlds.Menu
 
         public void ActMenuSetup(MenuCallbackArgs args)
         {
-            args.MenuContext.GameMenu.AllowWaitingAutomatically();
-            args.MenuContext.GameMenu.SetMenuAsWaitMenuAndInitiateWaiting();
+            //args.MenuContext.GameMenu.AllowWaitingAutomatically();
+            //args.MenuContext.GameMenu.SetMenuAsWaitMenuAndInitiateWaiting();
             //TODO: Load background image
             //TODO: Replace string flags by values (stringbuilder)
         }

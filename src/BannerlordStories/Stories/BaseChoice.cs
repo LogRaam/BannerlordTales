@@ -19,7 +19,9 @@ namespace TalesEntities.Stories
 
         public List<IEvaluation> Consequences { get; set; } = new List<IEvaluation>();
 
-        public string Id { get; set; }
+        public string Id => ParentAct.ParentStory.Header.Name.Replace(" ", "") + "_" + ParentAct.Name.Replace(" ", "") + "_" + Text.Replace(" ", "");
+
+        public IAct ParentAct { get; set; }
 
         public string Text { get; set; }
 
