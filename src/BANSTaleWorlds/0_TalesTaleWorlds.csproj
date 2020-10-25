@@ -86,7 +86,6 @@
     <Compile Include="Behavior\TalesCampaignBehavior.cs" />
     <Compile Include="CampaignSync.cs" />
     <Compile Include="ExtendedMethod.cs" />
-    <Compile Include="GameFunction.cs" />
     <Compile Include="IntegratedLoaderSubModule.cs" />
     <Compile Include="Menu\MenuBroker.cs" />
     <Compile Include="Menu\MenuCallBackDelegate.cs" />

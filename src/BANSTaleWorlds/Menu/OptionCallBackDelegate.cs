@@ -68,7 +68,7 @@ namespace TalesTaleWorlds.Menu
 
         private void ApplyCharacteristicConsequence(IEvaluation consequence)
         {
-            if (consequence.Attribute == null) return;
+            if (consequence.Characteristic == null) return;
 
             var value = new Evaluation(consequence).GetModifierValue();
             var hero = GetActorFrom(consequence).ToHero();
@@ -93,7 +93,7 @@ namespace TalesTaleWorlds.Menu
 
         private void ApplyPersonalityTraitConsequence(IEvaluation consequence)
         {
-            if (consequence.Attribute == null) return;
+            if (consequence.PersonalityTrait == null) return;
 
             var value = new Evaluation(consequence).GetModifierValue();
             var hero = GetActorFrom(consequence).ToHero();
@@ -122,7 +122,7 @@ namespace TalesTaleWorlds.Menu
 
         private void ApplySkillConsequence(IEvaluation consequence)
         {
-            if (consequence.Attribute == null) return;
+            if (consequence.Skill == null) return;
 
             var value = new Evaluation(consequence).GetModifierValue();
             var hero = GetActorFrom(consequence).ToHero();

@@ -12,7 +12,7 @@ Story
 
     Act
         Name:       Kiss the Banner
-        Image:      None
+        Image:      LogKissBanner
         Location:   Map
         Intro:      Your captors demand, in order to inspire the people, that their captives kiss their banner. It's your turn.
 
@@ -27,7 +27,7 @@ Story
     
         Sequence
             Name:       Refuse to kiss the banner   
-            Image:      None        
+            Image:      LogKissBanner        
             Intro:      Your captors wrap you in their banner and beat your body with clubs.
 
             Choice: Endure the beating.

@@ -199,6 +199,11 @@ namespace TalesPersistence
             }
         }
 
+        public void PauseGame()
+        {
+            if (CampaignState.CurrentGameStarted()) new GameFunction().PauseGame();
+        }
+
 
         public bool ReadyToShowNewEvent()
         {
@@ -221,7 +226,7 @@ namespace TalesPersistence
 
         public IAct RetrieveActToPlay()
         {
-            var qualifiedActs = GetAllQualifiedActsAndSequences();
+            var qualifiedActs = GetAllQualifiedActs();
 
             if (qualifiedActs.Count == 0) return null;
 
@@ -235,6 +240,11 @@ namespace TalesPersistence
             if (qualifiedActs.Count == 0) return null;
 
             return ChooseOneToPlay(qualifiedActs);
+        }
+
+        public void UnPauseGame()
+        {
+            if (CampaignState.CurrentGameStarted()) new GameFunction().UnPauseGame();
         }
 
         #region private
@@ -260,7 +270,7 @@ namespace TalesPersistence
             return qualifiedActs[index];
         }
 
-        private List<IAct> GetAllQualifiedActsAndSequences()
+        private List<IAct> GetAllQualifiedActs()
         {
             var result = new List<IAct>();
             foreach (var s in GameData.Instance.StoryContext.Stories.Where(n => n.Header.TypeOfStory != StoryType.WAITING && n.Header.Name.ToUpper() != "TEST"))

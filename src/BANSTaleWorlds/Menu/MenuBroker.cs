@@ -4,8 +4,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TalesContract;
 using TalesDAL;
+using TalesEntities.Stories;
 using TalesEnums;
 using TalesPersistence;
 using TalesPersistence.Stories;
@@ -43,6 +45,8 @@ namespace TalesTaleWorlds.Menu
 
         public IAct GetWaitingMenu()
         {
+            GameFunction.Log("GetWaitingMenu()");
+
             var ev = PickEventFromStories();
 
             return ev;
@@ -50,13 +54,18 @@ namespace TalesTaleWorlds.Menu
 
         public void ShowCaptiveWaiting()
         {
+            if (!GameData.Instance.GameContext.Player.IsPrisoner)
+                return;
+
+            GameFunction.Log("ShowCaptiveWaiting()");
             UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[13] = GameData.Instance.StoryContext.BackgroundImages.TextureList["LogCaptivePrisoner"];
             GameMenu.ExitToLast();
-            new GameFunction().UnPauseGame();
+            //GameData.Instance.GameContext.UnPauseGame();
         }
 
         public void ShowMenuFor(string triggerLink)
         {
+            GameFunction.Log("ShowMenuFor(string triggerLink)");
             var s = GameData.Instance.StoryContext.FindSequence(triggerLink) ?? GameData.Instance.StoryContext.FindAct(triggerLink);
 
             if (s == null) throw new NullReferenceException("ERROR: Cannot find IAct: " + triggerLink);
@@ -66,20 +75,27 @@ namespace TalesTaleWorlds.Menu
 
         public void ShowMenuFor(IAct act)
         {
+            GameFunction.Log("ShowMenuFor(IAct act)");
+
             if (act == null) return;
 
-            new GameFunction().PauseGame();
+            //GameData.Instance.GameContext.PauseGame();
+
 
             if (act.ParentStory.Header.TypeOfStory == StoryType.WAITING) GameMenu.ActivateGameMenu(act.Id);
             else GameMenu.SwitchToMenu(act.Id);
 
             if (!string.IsNullOrEmpty(act.Image) || act.Image.ToUpper() != "NONE") SetBackgroundImage(act.Image);
-            GameData.Instance.StoryContext.PlayedActs.Add(act);
+
+            if (act.GetType() != typeof(BaseSequence))
+                if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null)
+                    GameData.Instance.StoryContext.PlayedActs.Add(act);
         }
 
 
         internal void CreateGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
+            GameFunction.Log("CreateGameMenuFor(CampaignGameStarter gameStarter, IStory story)");
             CreateActGameMenuFor(gameStarter, story);
             CreateSequenceGameMenuFor(gameStarter, story);
         }
@@ -88,6 +104,7 @@ namespace TalesTaleWorlds.Menu
 
         private void CreateActGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
+            GameFunction.Log("CreateActGameMenuFor(CampaignGameStarter gameStarter, IStory story)");
             foreach (var act in story.Acts)
             {
                 var m = new MenuCallBackDelegate(act);
@@ -104,6 +121,7 @@ namespace TalesTaleWorlds.Menu
 
         private void CreateSequenceGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
+            GameFunction.Log("CreateSequenceGameMenuFor(CampaignGameStarter gameStarter, IStory story)");
             foreach (var sequence in story.Sequences)
             {
                 var m = new MenuCallBackDelegate(sequence);
@@ -120,6 +138,7 @@ namespace TalesTaleWorlds.Menu
 
         private IAct PickEventFromStories()
         {
+            GameFunction.Log("PickEventFromStories()");
             var stories = RetrieveWaitingStories();
 
             if (stories.Count == 0) return null;
@@ -140,6 +159,7 @@ namespace TalesTaleWorlds.Menu
 
         private List<IStory> RetrieveWaitingStories()
         {
+            GameFunction.Log("RetrieveWaitingStories()");
             var result = new List<IStory>();
             foreach (var story in GameData.Instance.StoryContext.Stories)
                 if (story.Header.TypeOfStory == StoryType.WAITING)
@@ -151,6 +171,8 @@ namespace TalesTaleWorlds.Menu
 
         private void SetBackgroundImage(string imageName)
         {
+            GameFunction.Log("SetBackgroundImage(string imageName)");
+
             if (imageName == "None") return;
 
             //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[34] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];

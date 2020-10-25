@@ -6,6 +6,8 @@ namespace TalesPersistence
     {
         private static GameData instance;
 
+        public bool IsDebug = true;
+
         public static GameData Instance
         {
             get => instance ?? (instance = new GameData());
