@@ -26,6 +26,15 @@ namespace TalesTaleWorlds.Menu
 
     public class MenuBroker
     {
+        public void ExitToCaptiveWaitingMenu()
+        {
+            if (!GameData.Instance.GameContext.Player.IsPrisoner)
+                return;
+
+            UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[13] = GameData.Instance.StoryContext.BackgroundImages.TextureList["LogCaptivePrisoner"];
+            GameMenu.ExitToLast();
+        }
+
         public string GetBackgroundFrom(string id)
         {
             var s = id.Split('_')[1];
@@ -45,27 +54,22 @@ namespace TalesTaleWorlds.Menu
 
         public IAct GetWaitingMenu()
         {
-            GameFunction.Log("GetWaitingMenu()");
-
             var ev = PickEventFromStories();
 
             return ev;
         }
 
-        public void ShowCaptiveWaiting()
+        public void ShowActMenu()
         {
-            if (!GameData.Instance.GameContext.Player.IsPrisoner)
-                return;
+            if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
 
-            GameFunction.Log("ShowCaptiveWaiting()");
-            UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[13] = GameData.Instance.StoryContext.BackgroundImages.TextureList["LogCaptivePrisoner"];
-            GameMenu.ExitToLast();
-            //GameData.Instance.GameContext.UnPauseGame();
+            var act = GameData.Instance.GameContext.RetrieveActToPlay() ?? GameData.Instance.GameContext.RetrieveAlreadyPlayedActToPlay();
+
+            if (act != null) ShowMenuFor(act);
         }
 
         public void ShowMenuFor(string triggerLink)
         {
-            GameFunction.Log("ShowMenuFor(string triggerLink)");
             var s = GameData.Instance.StoryContext.FindSequence(triggerLink) ?? GameData.Instance.StoryContext.FindAct(triggerLink);
 
             if (s == null) throw new NullReferenceException("ERROR: Cannot find IAct: " + triggerLink);
@@ -73,29 +77,17 @@ namespace TalesTaleWorlds.Menu
             ShowMenuFor(s);
         }
 
-        public void ShowMenuFor(IAct act)
+        public void ShowWaitingMenu(MenuCallbackArgs menuCallback)
         {
-            GameFunction.Log("ShowMenuFor(IAct act)");
+            if (menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_wilderness_escape"
+                && menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_propose_ransom_wilderness") return;
 
-            if (act == null) return;
-
-            //GameData.Instance.GameContext.PauseGame();
-
-
-            if (act.ParentStory.Header.TypeOfStory == StoryType.WAITING) GameMenu.ActivateGameMenu(act.Id);
-            else GameMenu.SwitchToMenu(act.Id);
-
-            if (!string.IsNullOrEmpty(act.Image) || act.Image.ToUpper() != "NONE") SetBackgroundImage(act.Image);
-
-            if (act.GetType() != typeof(BaseSequence))
-                if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null)
-                    GameData.Instance.StoryContext.PlayedActs.Add(act);
+            ShowCustomWaitingMenu(menuCallback);
         }
 
 
         internal void CreateGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
-            GameFunction.Log("CreateGameMenuFor(CampaignGameStarter gameStarter, IStory story)");
             CreateActGameMenuFor(gameStarter, story);
             CreateSequenceGameMenuFor(gameStarter, story);
         }
@@ -104,7 +96,6 @@ namespace TalesTaleWorlds.Menu
 
         private void CreateActGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
-            GameFunction.Log("CreateActGameMenuFor(CampaignGameStarter gameStarter, IStory story)");
             foreach (var act in story.Acts)
             {
                 var m = new MenuCallBackDelegate(act);
@@ -121,7 +112,6 @@ namespace TalesTaleWorlds.Menu
 
         private void CreateSequenceGameMenuFor(CampaignGameStarter gameStarter, IStory story)
         {
-            GameFunction.Log("CreateSequenceGameMenuFor(CampaignGameStarter gameStarter, IStory story)");
             foreach (var sequence in story.Sequences)
             {
                 var m = new MenuCallBackDelegate(sequence);
@@ -138,7 +128,6 @@ namespace TalesTaleWorlds.Menu
 
         private IAct PickEventFromStories()
         {
-            GameFunction.Log("PickEventFromStories()");
             var stories = RetrieveWaitingStories();
 
             if (stories.Count == 0) return null;
@@ -159,7 +148,6 @@ namespace TalesTaleWorlds.Menu
 
         private List<IStory> RetrieveWaitingStories()
         {
-            GameFunction.Log("RetrieveWaitingStories()");
             var result = new List<IStory>();
             foreach (var story in GameData.Instance.StoryContext.Stories)
                 if (story.Header.TypeOfStory == StoryType.WAITING)
@@ -171,8 +159,6 @@ namespace TalesTaleWorlds.Menu
 
         private void SetBackgroundImage(string imageName)
         {
-            GameFunction.Log("SetBackgroundImage(string imageName)");
-
             if (imageName == "None") return;
 
             //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[34] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
@@ -181,6 +167,25 @@ namespace TalesTaleWorlds.Menu
             //UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[12] = GameData.Instance.StoryContext.BackgroundImages.TextureList[backGround];
 
             //if (Game.Current.GameStateManager.ActiveState is MapState mapState) mapState.MenuContext.SetBackgroundMeshName(imageName);
+        }
+
+        private void ShowCustomWaitingMenu(MenuCallbackArgs menuCallback)
+        {
+            ShowMenuFor(GetWaitingMenu());
+        }
+
+        private void ShowMenuFor(IAct act)
+        {
+            if (act == null) return;
+
+            if (act.ParentStory.Header.TypeOfStory == StoryType.WAITING) GameMenu.ActivateGameMenu(act.Id);
+            else GameMenu.SwitchToMenu(act.Id);
+
+            if (!string.IsNullOrEmpty(act.Image) || act.Image.ToUpper() != "NONE") SetBackgroundImage(act.Image);
+
+            if (act.GetType() != typeof(BaseSequence))
+                if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null)
+                    GameData.Instance.StoryContext.PlayedActs.Add(act);
         }
 
         #endregion

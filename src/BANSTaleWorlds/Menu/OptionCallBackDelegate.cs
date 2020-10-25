@@ -2,19 +2,13 @@
 
 #region
 
-using System;
 using System.Linq;
 using TalesContract;
 using TalesDAL;
-using TalesEnums;
-using TalesPersistence;
 using TalesPersistence.Entities;
 using TalesPersistence.Stories;
-using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.GameMenus;
-using TaleWorlds.Core;
 using TaleWorlds.Localization;
-using TraitObject = TaleWorlds.CampaignSystem.TraitObject;
 
 #endregion
 
@@ -41,105 +35,13 @@ namespace TalesTaleWorlds.Menu
 
         public void OnConsequenceDelegate(MenuCallbackArgs args)
         {
-            foreach (var consequence in _choice.Consequences) ApplyConsequence(consequence);
+            foreach (var consequence in _choice.Consequences) new Evaluation(consequence).ApplyConsequenceInGame();
 
             if (_choice.Triggers.Count > 0) PlayTriggers();
-            else new MenuBroker().ShowCaptiveWaiting();
+            else new MenuBroker().ExitToCaptiveWaitingMenu();
         }
 
         #region private
-
-        private void ApplyAttributeConsequence(IEvaluation consequence)
-        {
-            if (consequence.Attribute == null) return;
-
-            var value = new Evaluation(consequence).GetModifierValue();
-            var hero = GetActorFrom(consequence).ToHero();
-
-            if (consequence.Attribute is Attributes.UNKNOWN) throw new ApplicationException("consequence.Attribute unknown");
-
-            if (consequence.Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
-            if (consequence.Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
-            if (consequence.Attribute is Attributes.ENDURANCE) SetAttribute(hero, CharacterAttributesEnum.Endurance, value);
-            if (consequence.Attribute is Attributes.CUNNING) SetAttribute(hero, CharacterAttributesEnum.Cunning, value);
-            if (consequence.Attribute is Attributes.SOCIAL) SetAttribute(hero, CharacterAttributesEnum.Social, value);
-            if (consequence.Attribute is Attributes.INTELLIGENCE) SetAttribute(hero, CharacterAttributesEnum.Intelligence, value);
-        }
-
-        private void ApplyCharacteristicConsequence(IEvaluation consequence)
-        {
-            if (consequence.Characteristic == null) return;
-
-            var value = new Evaluation(consequence).GetModifierValue();
-            var hero = GetActorFrom(consequence).ToHero();
-
-
-            if (consequence.Characteristic == Characteristics.UNKNOWN) throw new ApplicationException("consequence.Characteristic unknown");
-
-            if (consequence.Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
-            if (consequence.Characteristic == Characteristics.GOLD) hero.Gold += value;
-            if (consequence.Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
-        }
-
-        private void ApplyConsequence(IEvaluation consequence)
-        {
-            //TODO: I should show a message with each applied consequence.
-            ApplyPregnancyRiskConsequence(consequence);
-            ApplyAttributeConsequence(consequence);
-            ApplyCharacteristicConsequence(consequence);
-            ApplyPersonalityTraitConsequence(consequence);
-            ApplySkillConsequence(consequence);
-        }
-
-        private void ApplyPersonalityTraitConsequence(IEvaluation consequence)
-        {
-            if (consequence.PersonalityTrait == null) return;
-
-            var value = new Evaluation(consequence).GetModifierValue();
-            var hero = GetActorFrom(consequence).ToHero();
-
-            if (consequence.PersonalityTrait == PersonalityTraits.MERCY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
-            if (consequence.PersonalityTrait == PersonalityTraits.GENEROSITY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
-            if (consequence.PersonalityTrait == PersonalityTraits.HONOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "HONOR"), hero.GetHeroTraits().Honor + value);
-            if (consequence.PersonalityTrait == PersonalityTraits.VALOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "VALOR"), hero.GetHeroTraits().Valor + value);
-        }
-
-        private void ApplyPregnancyRiskConsequence(IEvaluation consequence)
-        {
-            if (!consequence.PregnancyRisk) return;
-
-            if (consequence.ValueIsPercentage)
-            {
-                if (TalesRandom.EvalPercentage(int.Parse(consequence.Value))) MakePregnant(consequence);
-
-                return;
-            }
-
-            if (string.IsNullOrEmpty(consequence.Value) && consequence.RandomEnd > 0)
-                if (TalesRandom.EvalPercentageRange(consequence.RandomStart, consequence.RandomEnd))
-                    MakePregnant(consequence);
-        }
-
-        private void ApplySkillConsequence(IEvaluation consequence)
-        {
-            if (consequence.Skill == null) return;
-
-            var value = new Evaluation(consequence).GetModifierValue();
-            var hero = GetActorFrom(consequence).ToHero();
-
-            SetSkill(hero, consequence.Skill.ToString(), value);
-        }
-
-
-        private Hero GetActorFrom(IEvaluation consequence)
-        {
-            var actor = consequence.Subject == Actor.NPC
-                ? new Hero(GameData.Instance.GameContext.Captor)
-                : new Hero(GameData.Instance.GameContext.Player);
-
-            return actor;
-        }
-
 
         private bool IsChoiceShouldBeDisabled()
         {
@@ -148,7 +50,7 @@ namespace TalesTaleWorlds.Menu
             {
                 var eval = new Evaluation(condition);
 
-                if (eval.IsAccepted()) continue;
+                if (eval.CanBePlayedInContext()) continue;
 
                 disabled = true;
 
@@ -158,12 +60,6 @@ namespace TalesTaleWorlds.Menu
             return disabled;
         }
 
-        private void MakePregnant(IEvaluation consequence)
-        {
-            var actor = GetActorFrom(consequence);
-
-            if (!actor.IsPregnant) MakePregnantAction.Apply(actor.ToHero());
-        }
 
         private void PlayHighestChanceToTrigger()
         {
@@ -192,17 +88,6 @@ namespace TalesTaleWorlds.Menu
             }
 
             PlayHighestChanceToTrigger();
-        }
-
-        private void SetAttribute(TaleWorlds.CampaignSystem.Hero hero, CharacterAttributesEnum attribute, int value)
-        {
-            hero.SetAttributeValue(attribute, hero.GetAttributeValue(attribute) + value);
-        }
-
-        private void SetSkill(TaleWorlds.CampaignSystem.Hero hero, string skill, int value)
-        {
-            var s = SkillObject.FindFirst(n => n.StringId.ToUpper() == skill);
-            hero.SetSkillValue(s, hero.GetSkillValue(s) + value);
         }
 
         #endregion

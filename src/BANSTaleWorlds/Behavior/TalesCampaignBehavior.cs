@@ -44,73 +44,26 @@ namespace TalesTaleWorlds.Behavior
         /// <param name="menu">MenuCallbackArgs given by the game engine</param>
         private void AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu)
         {
-            GameFunction.Log("AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu)");
-            ShowWaitingMenu(menu);
+            new MenuBroker().ShowWaitingMenu(menu);
         }
 
 
         private void DailyTickEventRaised()
         {
-            GameFunction.Log("DailyTickEventRaised()");
             GameData.Instance.GameContext.ResetEventChanceBonus();
         }
 
         private void GameMenuOpenedEventRaised(MenuCallbackArgs obj)
         {
-            GameFunction.Log("GameMenuOpenedEventRaised(MenuCallbackArgs obj)");
             GameData.Instance.GameContext.LastGameMenuOpened = obj.MenuContext.GameMenu.StringId;
         }
 
 
         private void HourlyTickEventRaised()
         {
-            GameFunction.Log("HourlyTickEventRaised()");
-
-            GameFunction.Log("call ShowActMenu()");
-            ShowActMenu();
-
-            GameFunction.Log("call new MenuBroker().ShowCaptiveWaiting()");
-            new MenuBroker().ShowCaptiveWaiting();
-
-            GameFunction.Log("call GameData.Instance.GameContext.UnPauseGame()");
-            //GameData.Instance.GameContext.UnPauseGame();
-        }
-
-
-        private void ShowActMenu()
-        {
-            GameFunction.Log("ShowActMenu()");
-
-            if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
-
-            var act = GameData.Instance.GameContext.RetrieveActToPlay() ?? GameData.Instance.GameContext.RetrieveAlreadyPlayedActToPlay();
-
-            if (act != null) new MenuBroker().ShowMenuFor(act);
-        }
-
-
-        private void ShowCustomWaitingMenu(MenuCallbackArgs menuCallback)
-        {
-            GameFunction.Log("ShowCustomWaitingMenu(MenuCallbackArgs menuCallback)");
-            var m = new MenuBroker();
-            m.ShowMenuFor(m.GetWaitingMenu());
-        }
-
-
-        /// <summary>
-        ///     Will show waiting menu if callback result is either: menu_captivity_end_wilderness_escape or
-        ///     menu_captivity_end_propose_ransom_wilderness.
-        /// </summary>
-        /// <param name="menuCallback"></param>
-        /// <returns></returns>
-        private void ShowWaitingMenu(MenuCallbackArgs menuCallback)
-        {
-            GameFunction.Log("ShowWaitingMenu(MenuCallbackArgs menuCallback)");
-
-            if (menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_wilderness_escape"
-                && menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_propose_ransom_wilderness") return;
-
-            ShowCustomWaitingMenu(menuCallback);
+            var mb = new MenuBroker();
+            mb.ShowActMenu();
+            mb.ExitToCaptiveWaitingMenu();
         }
 
         #endregion

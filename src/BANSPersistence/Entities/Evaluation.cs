@@ -7,6 +7,9 @@ using TalesContract;
 using TalesDAL;
 using TalesEntities.Stories;
 using TalesEnums;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.Core;
 
 #endregion
 
@@ -38,14 +41,17 @@ namespace TalesPersistence.Entities
 
         public Evaluation() { }
 
-        public int GetModifierValue()
+
+        public void ApplyConsequenceInGame()
         {
-            return !string.IsNullOrEmpty(Value)
-                ? int.Parse(Value)
-                : TalesRandom.GenerateRandomNumber(RandomStart, RandomEnd);
+            ApplyPregnancyRiskConsequence();
+            ApplyAttributeConsequence();
+            ApplyCharacteristicConsequence();
+            ApplyPersonalityTraitConsequence();
+            ApplySkillConsequence();
         }
 
-        public bool IsAccepted()
+        public bool CanBePlayedInContext()
         {
             if (!AttributeAccepted()) return false;
             if (!CharacteristicAccepted()) return false;
@@ -58,6 +64,77 @@ namespace TalesPersistence.Entities
         }
 
         #region private
+
+        private void ApplyAttributeConsequence()
+        {
+            if (Attribute == null) return;
+
+            var value = GetModifierValue();
+            var hero = IdentifySubject().ToHero();
+
+            if (Attribute is Attributes.UNKNOWN) throw new ApplicationException("consequence.Attribute unknown");
+
+            if (Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
+            if (Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
+            if (Attribute is Attributes.ENDURANCE) SetAttribute(hero, CharacterAttributesEnum.Endurance, value);
+            if (Attribute is Attributes.CUNNING) SetAttribute(hero, CharacterAttributesEnum.Cunning, value);
+            if (Attribute is Attributes.SOCIAL) SetAttribute(hero, CharacterAttributesEnum.Social, value);
+            if (Attribute is Attributes.INTELLIGENCE) SetAttribute(hero, CharacterAttributesEnum.Intelligence, value);
+        }
+
+        private void ApplyCharacteristicConsequence()
+        {
+            if (Characteristic == null) return;
+
+            var value = GetModifierValue();
+            var hero = IdentifySubject().ToHero();
+
+            if (Characteristic == Characteristics.UNKNOWN) throw new ApplicationException("consequence.Characteristic unknown");
+
+            if (Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
+            if (Characteristic == Characteristics.GOLD) hero.Gold += value;
+            if (Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
+        }
+
+        private void ApplyPersonalityTraitConsequence()
+        {
+            if (PersonalityTrait == null) return;
+
+            var value = GetModifierValue();
+            var hero = IdentifySubject().ToHero();
+
+            if (PersonalityTrait == PersonalityTraits.MERCY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
+            if (PersonalityTrait == PersonalityTraits.GENEROSITY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
+            if (PersonalityTrait == PersonalityTraits.HONOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "HONOR"), hero.GetHeroTraits().Honor + value);
+            if (PersonalityTrait == PersonalityTraits.VALOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "VALOR"), hero.GetHeroTraits().Valor + value);
+        }
+
+
+        private void ApplyPregnancyRiskConsequence()
+        {
+            if (!PregnancyRisk) return;
+
+            if (ValueIsPercentage)
+            {
+                if (TalesRandom.EvalPercentage(int.Parse(Value))) MakePregnant();
+
+                return;
+            }
+
+            if (string.IsNullOrEmpty(Value) && RandomEnd > 0)
+                if (TalesRandom.EvalPercentageRange(RandomStart, RandomEnd))
+                    MakePregnant();
+        }
+
+        private void ApplySkillConsequence()
+        {
+            if (Skill == null) return;
+
+            var value = GetModifierValue();
+            var hero = IdentifySubject().ToHero();
+
+            SetSkill(hero, Skill.ToString(), value);
+        }
 
         private bool AttributeAccepted()
         {
@@ -146,11 +223,26 @@ namespace TalesPersistence.Entities
             }
         }
 
+
+        private int GetModifierValue()
+        {
+            return !string.IsNullOrEmpty(Value)
+                ? int.Parse(Value)
+                : TalesRandom.GenerateRandomNumber(RandomStart, RandomEnd);
+        }
+
         private Hero IdentifySubject()
         {
             return Subject == Actor.NPC
                 ? new Hero(GameData.Instance.GameContext.Captor)
                 : new Hero(GameData.Instance.GameContext.Player);
+        }
+
+        private void MakePregnant()
+        {
+            var actor = IdentifySubject();
+
+            if (!actor.IsPregnant) MakePregnantAction.Apply(actor.ToHero());
         }
 
 
@@ -180,6 +272,18 @@ namespace TalesPersistence.Entities
                 case PersonalityTraits.VALOR:      return EvalOperation(IdentifySubject().Valor);
                 default:                           throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void SetAttribute(TaleWorlds.CampaignSystem.Hero hero, CharacterAttributesEnum attribute, int value)
+        {
+            hero.SetAttributeValue(attribute, hero.GetAttributeValue(attribute) + value);
+        }
+
+
+        private void SetSkill(TaleWorlds.CampaignSystem.Hero hero, string skill, int value)
+        {
+            var s = SkillObject.FindFirst(n => n.StringId.ToUpper() == skill);
+            hero.SetSkillValue(s, hero.GetSkillValue(s) + value);
         }
 
         private bool SkillAccepted()
