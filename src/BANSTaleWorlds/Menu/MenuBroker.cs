@@ -146,6 +146,13 @@ namespace TalesTaleWorlds.Menu
                 : null;
         }
 
+        private void RegisterPlayedAct(IAct act)
+        {
+            if (act.GetType() == typeof(BaseSequence)) return;
+
+            if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null) GameData.Instance.StoryContext.PlayedActs.Add(act);
+        }
+
         private List<IStory> RetrieveWaitingStories()
         {
             var result = new List<IStory>();
@@ -183,9 +190,7 @@ namespace TalesTaleWorlds.Menu
 
             if (!string.IsNullOrEmpty(act.Image) || act.Image.ToUpper() != "NONE") SetBackgroundImage(act.Image);
 
-            if (act.GetType() != typeof(BaseSequence))
-                if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null)
-                    GameData.Instance.StoryContext.PlayedActs.Add(act);
+            RegisterPlayedAct(act);
         }
 
         #endregion
