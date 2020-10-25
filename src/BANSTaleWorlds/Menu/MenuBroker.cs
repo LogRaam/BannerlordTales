@@ -132,14 +132,13 @@ namespace TalesTaleWorlds.Menu
 
             if (stories.Count == 0) return null;
 
-            var s = new StoryBroker();
-            var acts = s.RetrieveNonPlayedActsFrom(stories);
+            var acts = new StoryBroker().RetrieveNonPlayedActsFrom(stories);
+
             if (acts.Count == 0) acts = GameData.Instance.StoryContext.PlayedActs.ToAct();
 
             if (acts.Count == 0) return null;
 
-            var i = TalesRandom.GenerateRandomNumber(acts.Count);
-            var selectedAct = new Act(acts[i]);
+            var selectedAct = new Act(acts[TalesRandom.GenerateRandomNumber(acts.Count)]);
 
             return selectedAct.IsQualifiedRightNow()
                 ? selectedAct

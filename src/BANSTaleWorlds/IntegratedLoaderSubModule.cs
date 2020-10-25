@@ -18,10 +18,6 @@ using Path = System.IO.Path;
 
 namespace TalesTaleWorlds
 {
-    #region
-
-    #endregion
-
     public class IntegratedLoaderSubModule : MBSubModuleBase
     {
         public override void BeginGameStart(Game game)
@@ -34,49 +30,26 @@ namespace TalesTaleWorlds
             return base.DoLoading(game);
         }
 
-        public override void OnCampaignStart(Game game, object starterObject)
-        {
-        }
+        public override void OnCampaignStart(Game game, object starterObject) { }
 
-        public override void OnGameEnd(Game game)
-        {
-            // TODO: Unpatch harmony
-        }
+        public override void OnGameEnd(Game game) { }
 
-        public override void OnGameInitializationFinished(Game game)
-        {
-        }
+        public override void OnGameInitializationFinished(Game game) { }
 
-        public override void OnGameLoaded(Game game, object initializerObject)
-        {
-        }
+        public override void OnGameLoaded(Game game, object initializerObject) { }
 
-        public override void OnMissionBehaviourInitialize(Mission mission)
-        {
-        }
+        public override void OnMissionBehaviourInitialize(Mission mission) { }
 
-        public override void OnMultiplayerGameStart(Game game, object starterObject)
-        {
-        }
+        public override void OnMultiplayerGameStart(Game game, object starterObject) { }
 
-        public override void OnNewGameCreated(Game game, object initializerObject)
-        {
-        }
+        public override void OnNewGameCreated(Game game, object initializerObject) { }
 
-        protected override void OnApplicationTick(float dt)
-        {
-            // BUG: OnApplicationTick() happens when loading screen...it may be preferable to not process stages during loading.
+        protected override void OnApplicationTick(float dt) { }
 
-            // TODO: Process Captive Stages
-            // TODO: Process Animations
-        }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-
-            // TODO: Init Settings for MCM
-            // TODO: Apply Harmony Patches
             InformationManager.DisplayMessage(new InformationMessage(new Welcome().WelcomeMessage, Colors.Yellow));
         }
 
@@ -96,17 +69,9 @@ namespace TalesTaleWorlds
             base.OnSubModuleLoad();
 
             GameData.Instance.StoryContext.ModuleFolder = new DirectoryInfo(Path.GetDirectoryName(ModuleInfo.GetPath("LogRaamBannerlordTales")) ?? string.Empty);
-
-            // TODO: Retrieve mod version.  Alert user if wrong version used.
-            // TODO: Init Harmony
-            // TODO: Validate all module loaded successful
-
-            // TODO: Load the notification Sprites
         }
 
-        protected override void OnSubModuleUnloaded()
-        {
-        }
+        protected override void OnSubModuleUnloaded() { }
 
         #region private
 
