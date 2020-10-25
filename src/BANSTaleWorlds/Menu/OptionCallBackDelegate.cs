@@ -82,7 +82,7 @@ namespace TalesTaleWorlds.Menu
             {
                 if (!TalesRandom.EvalPercentage((trigger.ChanceToTrigger * interval) / 100)) continue;
 
-                new MenuBroker().ShowMenuFor(trigger.Link);
+                new MenuBroker().GotoMenuFor(trigger.Link);
 
                 return;
             }

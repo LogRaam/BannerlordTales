@@ -59,6 +59,15 @@ namespace TalesTaleWorlds.Menu
             return ev;
         }
 
+        public void GotoMenuFor(string triggerLink)
+        {
+            var act = GameData.Instance.StoryContext.FindSequence(triggerLink) ?? GameData.Instance.StoryContext.FindAct(triggerLink);
+
+            if (act == null) throw new NullReferenceException("ERROR: Cannot find IAct: " + triggerLink);
+
+            ShowMenuFor(act);
+        }
+
         public void ShowActMenu()
         {
             if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
@@ -66,15 +75,6 @@ namespace TalesTaleWorlds.Menu
             var act = GameData.Instance.GameContext.RetrieveActToPlay() ?? GameData.Instance.GameContext.RetrieveAlreadyPlayedActToPlay();
 
             if (act != null) ShowMenuFor(act);
-        }
-
-        public void ShowMenuFor(string triggerLink)
-        {
-            var s = GameData.Instance.StoryContext.FindSequence(triggerLink) ?? GameData.Instance.StoryContext.FindAct(triggerLink);
-
-            if (s == null) throw new NullReferenceException("ERROR: Cannot find IAct: " + triggerLink);
-
-            ShowMenuFor(s);
         }
 
         public void ShowWaitingMenu(MenuCallbackArgs menuCallback)
