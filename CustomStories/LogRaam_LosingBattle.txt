@@ -1,0 +1,253 @@
+Story
+
+	Name:         Losing Battle
+	OneTimeStory: Yes
+    DependOn:     None
+    Time:         Anytime
+    StoryType:    Player is captive
+
+    Restriction: Player age > 18
+    Restriction: Player gender is female
+    Restriction: NPC gender is male
+    Restriction: NPC is Raider
+
+
+    Act
+    --------------------------------------
+        Location: Map
+        Name:     Laying on the ground
+        Intro:    That last hit almost killed you.  Now that you're on the ground, you're struggling to stay conscious.  Several enemies are gathering in a circle while a man of great stature moves towards you.
+        Image:    lg_battle_lost_closeup
+        
+        Choice: Try to come to your senses and get back on your feet.
+            Goto: Standup Fail 50%
+            Goto: Standup      50%
+
+        Choice: Wait and see what happens next...
+            Goto: Wait
+    
+
+    Sequence
+    --------------------------------------
+        Name:  Standup Fail 
+        Intro: You try to get up but your vision becomes blurred and you collapse to the ground.  «That's right, bow down to me.  You have given me a lot of trouble and I think I deserve a little reward», The man says.  He kneels down beside you and undresses you.  Every time you try to fight, he punches you in the face to knock you out.  Then he pulls you by your thighs violently.
+        Image: None
+
+        Choice: Continue...                     
+            Goto: Standup Fail Final
+
+
+    Sequence
+    --------------------------------------
+        Name:  Standup Fail Final 
+        Intro: As he starts to fuck you, you can see the rest of the group looting the dead as if nothing was wrong.  You lose consciousness under the multiple hip blows your rapist gives you.
+        Image: LogAbuseBattleLost
+
+        Choice: Pass out...
+            Consequence: health R -60 -20
+            Consequence: renown R -10 -1
+            Consequence: risk of becoming pregnant
+    
+
+    Sequence
+    --------------------------------------
+        Name:  Standup 
+        Intro: You manage to come to your senses and get up with misery.  You look at the man who approaches you.
+        Image: None
+
+        Choice: Challenge him by spitting on the ground.
+            Consequence: renown +1
+            Goto: Spit
+            
+        Choice: Congratulates the assailant on his combat skills.
+            Goto: Congrat
+
+        Choice: Attempt to escape.            
+            Goto: Flee
+
+
+    Sequence
+    --------------------------------------
+        Name:  Spit 
+        Intro: You look at your assailant in the eyes and spit at the ground with contempt.  The man looks at you quietly from head to toe.  His width is probably twice as wide as yours.  «Looks like you still have some strength left in you little girl.»  He waves to his companions, «Take her away. I want ten lashes for every man we've lost».  Two men come to you with a rope.
+        Image: None
+
+        Choice: Resist.            
+            Goto: Resist Failed    50%
+            Goto: Resist Succeeded 50%
+            
+        Choice: Offering money to avoid being whipped.
+            Goto: Give Gold
+
+        Choice: Letting yourself be tied up while staring the man straight in the eye.            
+            Goto: Whip
+
+
+    Sequence
+    --------------------------------------
+        Name:  Congrat 
+        Intro: The man frowns.  He's completely taken aback by your compliment.  «Get her, she's coming with us!»  Several men are rushing at you to tie you up.
+        Image: LogCaptivePostNight
+
+        Choice: Continue...
+
+
+    Sequence
+    --------------------------------------
+        Name:  Flee 
+        Intro: When the man is within range, you hit him violently in the groin.  His face turns red and he collapses to the ground screaming in pain.
+        Image: LogBattleGroin
+
+        Choice: Continue...
+            Goto: Flee Success 75%
+            Goto: Flee Failed  25%
+
+
+    Sequence
+    --------------------------------------
+        Name:  Flee Success
+        Intro: You scurry away as you make your way through the group, amazed that you can still move so fast.  After a few minutes of running, you manage to hide.  Your enemies won't find you today.  You run away with what little you have left.
+        Image: LogBattleFlee
+
+        Choice: Continue...
+            Consequence: Roguery +1
+            Consequence: Escaping from captor
+     
+     
+    Sequence
+    --------------------------------------
+        Name:  Give Gold
+        Intro: The men in the group suddenly shut up.  The big, strong man looks at you keenly: "Where are you hiding your gold, you little bitch?" He pulls out his knife and approaches you with a firm step.
+        Image: None
+
+        Choice: Reveal where some of your money is hidden.
+            Goto: Reveal Hideout
+
+        Choice: Lie.
+            Goto: Lies
+
+        Choice: Change your mind and don't say anything.
+            Goto: Refuse To Tell
+
+
+    Sequence
+    --------------------------------------
+        Name:  Reveal Hideout
+        Intro: "Perfect!" The man puts away his knife.  "Tie her up, we're taking her with us to find the money."  They tie you up with a rope and they go out to find the gold.  After a few hours of searching, they find a pouch and a small box full of money.  The man approaches you with a big smile on his face: "You're full of surprise, my lovely one.  I am proud of you.  And I suspect you have a lot more hidden away somewhere."  He grabs your chin and lifts your face to get a better look at you.  "Keep an eye on her, and don't let anyone touch her without my permission or he'll have to deal with me."
+        Image: LogMiscGoldStash
+
+        Choice: Continue...
+            Consequence: Gold R -1000 -100
+
+
+    Sequence
+    --------------------------------------
+        Name:  Lies
+        Intro: "Fine!" The man puts away his knife.  "Tie her up, we're taking her with us to find the money."  They tie you up with a rope and they go out to find the gold.  After a few hours of searching, the man approaches you angrily.  He looks straight in the eye.  "She lied to us.  Undress her and hold her tight."
+        Image: None
+
+        Choice: Continue...
+            Consequence: Relation R -5 -1
+            Goto: Lies Final
+
+
+    Sequence
+    --------------------------------------
+        Name:  Lies Final
+        Intro: He pulls down his trousers and puts his shaft into your mouth.  "That's good, take it, 'will wash your mouth so you never lie again."
+        Image: LogAbuseBlowjob
+
+        Choice: Take it and wait for him to cum.            
+            Consequence: Renown R -5 -1
+
+
+    Sequence
+    --------------------------------------
+        Name:  Resist Fail
+        Intro: You're struggling to keep the men from tying you down.  One of them hits you violently in the face and you almost pass out.  Dizzy, you can't resist.
+        Image: None
+
+        Choice: Continue...
+            Consequence: Health R -10 -5
+            Goto: Whip
+
+
+    Sequence
+    --------------------------------------
+        Name:  Refuse To tell
+        Intro: "Ah! You lost your tongue, bitch!"  He turns around and puts the knife back in his scabbard.  "Grab her and make her talk."  Men throw themselves at you and hold you down.
+        Image: None
+
+        Choice: Continue...
+            Consequence: Relation -5
+            Goto: Whip
+
+
+    Sequence
+    --------------------------------------
+        Name:  Whip
+        Intro: They get you naked and tie you to trees.  The troop watches you silently while they crack the whip on your skin.  Each blow lacerates your back and buttocks and causes severe pain.
+        Image: lg_punished_tied_on_tree_nude
+
+        Choice: Continue...
+            Consequence: Health R -50 -30            
+
+
+    Sequence
+    --------------------------------------
+        Name:  Resist Succeeded
+        Intro: As soon as they try to tie your hands, you grab one of the men and bite him in the face.  You suddenly turn around and punch the other one in the throat.  Surprised, the others don't know what to do.
+        Image: None
+
+        Choice: Run away...
+            Goto: Flee Success
+
+
+    Sequence
+    --------------------------------------
+        Name:  Wait
+        Intro: The man exclaims, "Look at the little whore. Look how docile she is."  The rest of the group starts shouting encouragement as the man starts to lower his trousers.  You can see his large cock starting to get erect.
+        Image: None
+
+        Choice: Attempt to escape.
+            Goto: Battle Flee 2
+
+        Choice: Close your eyes and wait...
+            Goto: Abandon
+
+
+
+    Sequence
+    --------------------------------------
+        Name:  Flee Failed
+        Intro: "Get her!" You start running as fast as you can despite the pain you feel all over your body.  Unfortunately, you get a hard blow to the legs that knocks you back down to the ground.
+        Image: None
+
+        Choice: Continue...
+            Goto: Flee Failed Final
+
+
+    Sequence
+    --------------------------------------
+        Name:  Flee Failed Final
+        Intro: Several people throw themselves on you and prevent you from moving.  "You bitch, you are going to pay!"  The man you've mugged rushes towards you and starts beating you.   Dizzy, you suddenly feel something penetrating you violently.  You can't stop screaming in pain.  You see men from your clan lying on the ground as they take turns fucking you.  You slowly pass out.
+        Image: LogAbuseGangGrass
+
+        Choice: Pass out...
+            Consequence: Health R -50 -30
+            Consequence: Renown -30
+            Consequence: risk of becoming pregnant
+
+
+    Sequence
+    --------------------------------------
+        Name:  Abandon
+        Intro: You can hear cheers as the man violently thrusts his cock into you.  The pain is intense.  You are weak and you can't help it. After a few good strokes of the hips, the man comes inside you, grunting and leaning with all his strength against your ass.  He gets up and brings up his trousers.   "Who's next?". He walks away uninterested while the others get ready to take turns fucking you.
+        Image: LogAbuseBehindBlondThroat
+
+        Choice: Endure pain
+            Consequence: Health R -10 -5
+            Consequence: Renown -30
+            Consequence: risk of becoming pregnant
+
+END

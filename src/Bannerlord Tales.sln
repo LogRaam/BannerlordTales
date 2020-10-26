@@ -30,8 +30,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stories", "Stories", "{496E10AB-ACCC-4369-B0E0-4B2BDB8EC378}"
 	ProjectSection(SolutionItems) = preProject
 		..\CustomStories\DefaultStories.txt = ..\CustomStories\DefaultStories.txt
+		..\CustomStories\LogRaam_LosingBattle.txt = ..\CustomStories\LogRaam_LosingBattle.txt
+		..\CustomStories\LogRaam_WaitingMenus.txt = ..\CustomStories\LogRaam_WaitingMenus.txt
 		..\CustomStories\TestStory.txt = ..\CustomStories\TestStory.txt
-		..\CustomStories\WaitingMenu.txt = ..\CustomStories\WaitingMenu.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74EE86E5-FBC7-4484-B4BD-C053698D3D54}"
@@ -39,6 +40,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "45_TalesGameState", "45_TalesGameState\45_TalesGameState.csproj", "{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "47_TalesMath", "47_TalesMath\47_TalesMath.csproj", "{1805EAFE-B5E0-48FA-92CE-411D6CAF3A1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{1741D25C-35ED-403B-A2D5-CDCFBB6C8930}"
+	ProjectSection(SolutionItems) = preProject
+		Story.txt = Story.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,31 @@
+﻿Story
+
+    Name: 
+	OneTimeStory: 
+    DependOn: 
+    Time: 
+    StoryType: 
+
+    Restriction: Player age > 18
+    Restriction: Player gender is female
+    Restriction: NPC gender is male
+    Restriction: NPC is Raider
+
+    Act
+        Location:
+        Name:       
+        Intro:
+        Image:
+
+    Choice: 
+        
+            Consequence: 
+            Goto:
+
+    Sequence
+        Name:       
+        Intro:
+        Image:                
+        
+
+END
