@@ -28,21 +28,43 @@ namespace TalesDAL
 
         public static int GenerateRandomNumber(int max)
         {
+            var n = max;
+            if (n < 0) n = -n;
+
             lock (SyncObj)
             {
-                if (_random == null) _random = new Random(); // Or exception...
+                if (_random == null) _random = new Random();
 
-                return _random.Next(max);
+                return max < 0
+                    ? -_random.Next(n)
+                    : _random.Next(n);
             }
         }
 
         public static int GenerateRandomNumber(int min, int max)
         {
+            var m = min;
+            var n = max;
+
+            if (m < 0 && n >= 0) throw new ApplicationException("Error trying to generate random number; min and max must be either negatives or positives.  This mod doesn't support randomize between negative min and positive max.");
+
+            if (m < 0) m = -m;
+            if (n < 0) n = -n;
+
+            if (m > n)
+            {
+                var t = n;
+                n = m;
+                m = t;
+            }
+
             lock (SyncObj)
             {
-                if (_random == null) _random = new Random(); // Or exception...
+                if (_random == null) _random = new Random();
 
-                return _random.Next(min, max);
+                return max < 0
+                    ? -_random.Next(m, n)
+                    : _random.Next(m, n);
             }
         }
 
