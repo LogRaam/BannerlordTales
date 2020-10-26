@@ -500,6 +500,7 @@ namespace TalesDAL
         {
             var t = line.ToUpper();
 
+            if (t.Contains("SURRENDER")) return StoryType.PLAYER_SURRENDER;
             if (t.Contains("CAPTIVE")) return StoryType.PLAYER_IS_CAPTIVE;
             if (t.Contains("CAPTOR")) return StoryType.PLAYER_IS_CAPTOR;
             if (t.Contains("MAP")) return StoryType.PLAYER_ON_CAMPAIGN_MAP;

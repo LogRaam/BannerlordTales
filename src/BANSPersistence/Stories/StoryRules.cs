@@ -5,6 +5,7 @@
 using System;
 using TalesContract;
 using TalesEnums;
+using TalesPersistence.Context;
 
 #endregion
 
@@ -55,10 +56,14 @@ namespace TalesPersistence.Stories
                 case StoryType.PLAYER_IS_CAPTOR:       return GameData.Instance.GameContext.PlayerIsCaptor != null && (bool)GameData.Instance.GameContext.PlayerIsCaptor;
                 case StoryType.PLAYER_ON_CAMPAIGN_MAP: return GameData.Instance.GameContext.IsCurrentlyOnMap != null && (bool)GameData.Instance.GameContext.IsCurrentlyOnMap;
                 case StoryType.PLAYER_IN_SETTLEMENT:   return GameData.Instance.GameContext.IsCurrentlyInSettlement != null && (bool)GameData.Instance.GameContext.IsCurrentlyInSettlement;
+                case StoryType.PLAYER_SURRENDER:       return GameData.Instance.GameContext.Player.IsPrisoner;
                 case StoryType.NONE:                   return true;
                 case StoryType.UNKNOWN:                throw new ApplicationException("Story type undefined.");
+                case StoryType.WAITING:                break;
                 default:                               throw new ApplicationException("Story type undefined.");
             }
+
+            return true;
         }
 
         public bool IsTheRightTime()

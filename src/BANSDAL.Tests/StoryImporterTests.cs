@@ -1564,6 +1564,27 @@ namespace TalesDAL.Tests
 
 
         [Test]
+        public void StoryImporter_Test26_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY", "StoryType: surrender", "END"
+            };
+
+            var expectedResult = StoryType.PLAYER_SURRENDER;
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Header.TypeOfStory.Should().Be(expectedResult);
+        }
+
+
+        [Test]
         public void StoryImporter_Test3_ShouldWork()
         {
             // Arrange

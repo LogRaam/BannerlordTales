@@ -2,7 +2,7 @@
 
 #region
 
-using TalesPersistence;
+using TalesPersistence.Context;
 using TalesTaleWorlds.Menu;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
@@ -44,6 +44,7 @@ namespace TalesTaleWorlds.Behavior
         /// <param name="menu">MenuCallbackArgs given by the game engine</param>
         private void AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu)
         {
+            //TODO: I must show SURRENDER story type.
             new MenuBroker().ShowWaitingMenu(menu);
         }
 

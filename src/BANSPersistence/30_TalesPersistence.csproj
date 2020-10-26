@@ -72,26 +72,21 @@
     <Compile Include="Entities\Clan.cs" />
     <Compile Include="Entities\Evaluation.cs" />
     <Compile Include="Entities\Hero.cs" />
-    <Compile Include="Events\DailyEvent.cs" />
-    <Compile Include="Events\EventRequest.cs" />
-    <Compile Include="Events\HourlyEvent.cs" />
-    <Compile Include="GameContext.cs" />
-    <Compile Include="GameData.cs" />
+    <Compile Include="Context\GameContext.cs" />
+    <Compile Include="Context\GameData.cs" />
     <Compile Include="GameFunction.cs" />
-    <Compile Include="MenuState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameTextures.cs" />
     <Compile Include="Stories\Act.cs" />
-    <Compile Include="Stories\ActRules.cs" />
     <Compile Include="Stories\Choice.cs" />
     <Compile Include="Stories\Sequence.cs" />
     <Compile Include="Stories\Story.cs" />
     <Compile Include="Stories\StoryRules.cs" />
-    <Compile Include="StoryContext.cs" />
+    <Compile Include="Context\StoryContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\45_TalesGameState\45_TalesGameState.csproj">
-      <Project>{50cdf45a-7167-4a9b-a102-bfdec32a3d68}</Project>
+      <Project>{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}</Project>
       <Name>45_TalesGameState</Name>
     </ProjectReference>
     <ProjectReference Include="..\47_TalesMath\47_TalesMath.csproj">

@@ -4,6 +4,7 @@
 
 using TalesContract;
 using TalesEntities.Stories;
+using TalesPersistence.Context;
 
 #endregion
 
@@ -23,12 +24,13 @@ namespace TalesPersistence.Stories
         {
         }
 
-        public bool AlreadyPlayed()
+        public bool CanBePlayedOnceAndAlreadyPlayed()
         {
-            if (Header.CanBePlayedOnlyOnce)
-                foreach (var playedStorey in GameData.Instance.StoryContext.PlayedStories)
-                    if (playedStorey.Id == Id)
-                        return true;
+            if (!Header.CanBePlayedOnlyOnce) return false;
+
+            foreach (var story in GameData.Instance.StoryContext.PlayedStories)
+                if (story.Id == Id)
+                    return true;
 
             return false;
         }

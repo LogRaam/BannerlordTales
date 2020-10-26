@@ -7,6 +7,7 @@ using TalesContract;
 using TalesDAL;
 using TalesEntities.Stories;
 using TalesEnums;
+using TalesPersistence.Context;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;

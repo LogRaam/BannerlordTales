@@ -1,6 +1,6 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 26/10/2020.
 
-namespace TalesPersistence
+namespace TalesPersistence.Context
 {
     public class GameData
     {

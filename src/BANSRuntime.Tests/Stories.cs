@@ -8,7 +8,7 @@ using TalesContract;
 using TalesEntities.Stories;
 using TalesEntities.TW;
 using TalesEnums;
-using TalesPersistence;
+using TalesPersistence.Context;
 using TalesPersistence.Stories;
 
 #endregion
@@ -27,7 +27,10 @@ namespace BannerlordTales.Tests
                     IsCurrentlyInSettlement = false,
                     IsCurrentlyOnMap = true,
                     IsNight = false,
-                    Player = new BaseHero {Age = 18, IsFemale = true, IsHumanPlayerCharacter = true},
+                    Player = new BaseHero
+                    {
+                        Age = 18, IsFemale = true, IsHumanPlayerCharacter = true
+                    },
                     PlayerIsCaptor = true,
                     IsDay = true
                 },
@@ -48,8 +51,25 @@ namespace BannerlordTales.Tests
         {
             var s = new Story
             {
-                Header = new StoryHeader {CanBePlayedOnlyOnce = true, DependOn = "None", Time = GameTime.DAYTIME, TypeOfStory = StoryType.PLAYER_IS_CAPTOR},
-                Restrictions = new List<IEvaluation> {new BaseEvaluation {Subject = Actor.PLAYER, Characteristic = Characteristics.AGE, Operator = Operator.GREATERTHAN, Value = "18"}, new BaseEvaluation {Subject = Actor.PLAYER, Characteristic = Characteristics.GENDER, Operator = Operator.EQUALTO, Value = "female"}, new BaseEvaluation {Subject = Actor.NPC, PartyType = PartyType.LORD, Operator = Operator.EQUALTO, Value = "Noble"}},
+                Header = new StoryHeader
+                {
+                    CanBePlayedOnlyOnce = true, DependOn = "None", Time = GameTime.DAYTIME, TypeOfStory = StoryType.PLAYER_IS_CAPTOR
+                },
+                Restrictions = new List<IEvaluation>
+                {
+                    new BaseEvaluation
+                    {
+                        Subject = Actor.PLAYER, Characteristic = Characteristics.AGE, Operator = Operator.GREATERTHAN, Value = "18"
+                    },
+                    new BaseEvaluation
+                    {
+                        Subject = Actor.PLAYER, Characteristic = Characteristics.GENDER, Operator = Operator.EQUALTO, Value = "female"
+                    },
+                    new BaseEvaluation
+                    {
+                        Subject = Actor.NPC, PartyType = PartyType.LORD, Operator = Operator.EQUALTO, Value = "Noble"
+                    }
+                },
                 Acts = new List<IAct>
                 {
                     new Act
@@ -58,7 +78,31 @@ namespace BannerlordTales.Tests
                         Image = "None",
                         Location = Location.MAP,
                         Intro = "Your captors demand, in order to inspire the people, that their captives kiss their banner. It's your turn.",
-                        Choices = new List<IChoice> {new BaseChoice {Text = "Kiss the banner.", Consequences = {new BaseEvaluation {Subject = Actor.PLAYER, Characteristic = Characteristics.RENOWN, Operator = Operator.EQUALTO, Value = "-1"}}}, new BaseChoice {Text = "Refuse.", Triggers = {new BaseTrigger {ChanceToTrigger = 100, Link = "Refuse to kiss the banner"}}}}
+                        Choices = new List<IChoice>
+                        {
+                            new BaseChoice
+                            {
+                                Text = "Kiss the banner.",
+                                Consequences =
+                                {
+                                    new BaseEvaluation
+                                    {
+                                        Subject = Actor.PLAYER, Characteristic = Characteristics.RENOWN, Operator = Operator.EQUALTO, Value = "-1"
+                                    }
+                                }
+                            },
+                            new BaseChoice
+                            {
+                                Text = "Refuse.",
+                                Triggers =
+                                {
+                                    new BaseTrigger
+                                    {
+                                        ChanceToTrigger = 100, Link = "Refuse to kiss the banner"
+                                    }
+                                }
+                            }
+                        }
                     }
                 },
                 Sequences = new List<ISequence>
@@ -69,7 +113,20 @@ namespace BannerlordTales.Tests
                         Image = "None",
                         Location = Location.MAP,
                         Intro = "Your captors wrap you in their banner and beat your body with clubs.",
-                        Choices = new List<IChoice> {new BaseChoice {Text = "Endure the beating.", Consequences = {new BaseEvaluation {Subject = Actor.PLAYER, Characteristic = Characteristics.HEALTH, Operator = Operator.EQUALTO, Value = "-10"}}}}
+                        Choices = new List<IChoice>
+                        {
+                            new BaseChoice
+                            {
+                                Text = "Endure the beating.",
+                                Consequences =
+                                {
+                                    new BaseEvaluation
+                                    {
+                                        Subject = Actor.PLAYER, Characteristic = Characteristics.HEALTH, Operator = Operator.EQUALTO, Value = "-10"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             };

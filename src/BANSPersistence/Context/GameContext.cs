@@ -1,10 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 26/10/2020.
 
 #region
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using _45_TalesGameState;
 using TalesContract;
 using TalesDAL;
@@ -17,7 +16,7 @@ using Location = TalesEnums.Location;
 
 #endregion
 
-namespace TalesPersistence
+namespace TalesPersistence.Context
 {
     #region
 
@@ -42,9 +41,8 @@ namespace TalesPersistence
             get
             {
                 if (CampaignState.CurrentGameStarted())
-                {
-                    if (Hero.MainHero.IsPrisoner) _captor = new BaseHero(Campaign.Current.MainParty.LeaderHero);
-                }
+                    if (Hero.MainHero.IsPrisoner)
+                        _captor = new BaseHero(Campaign.Current.MainParty.LeaderHero);
 
                 return _captor;
             }
@@ -273,11 +271,14 @@ namespace TalesPersistence
         private List<IAct> GetAllQualifiedActs()
         {
             var result = new List<IAct>();
-            foreach (var s in GameData.Instance.StoryContext.Stories.Where(n => n.Header.TypeOfStory != StoryType.WAITING && n.Header.Name.ToUpper() != "TEST"))
+            foreach (var s in GameData.Instance.StoryContext.Stories)
             {
+                if (s.Header.TypeOfStory == StoryType.WAITING) continue;
+                if (s.Header.Name.ToUpper() == "TEST") continue;
+
                 var story = new Story(s);
 
-                if (story.AlreadyPlayed()) continue;
+                if (story.CanBePlayedOnceAndAlreadyPlayed()) continue;
 
                 result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
             }
@@ -289,10 +290,13 @@ namespace TalesPersistence
         private List<IAct> GetAlreadyPlayedQualifiedActsAndSequences()
         {
             var result = new List<IAct>();
-            foreach (var s in GameData.Instance.StoryContext.PlayedStories.Where(n => n.Header.TypeOfStory != StoryType.WAITING && n.Header.Name.ToUpper() != "TEST" && n.Header.CanBePlayedOnlyOnce == false))
+            foreach (var s in GameData.Instance.StoryContext.PlayedStories)
             {
-                var story = new Story(s);
+                if (s.Header.TypeOfStory == StoryType.WAITING) continue;
+                if (s.Header.Name.ToUpper() == "TEST") continue;
+                if (s.Header.CanBePlayedOnlyOnce) continue;
 
+                var story = new Story(s);
 
                 result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
             }

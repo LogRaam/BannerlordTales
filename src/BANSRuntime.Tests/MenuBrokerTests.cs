@@ -4,7 +4,7 @@
 
 using FluentAssertions;
 using NUnit.Framework;
-using TalesPersistence;
+using TalesPersistence.Context;
 using TalesTaleWorlds.Menu;
 
 #endregion

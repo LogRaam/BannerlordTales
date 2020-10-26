@@ -9,7 +9,7 @@ using TalesContract;
 using TalesDAL;
 using TalesEntities.Stories;
 using TalesEnums;
-using TalesPersistence;
+using TalesPersistence.Context;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;

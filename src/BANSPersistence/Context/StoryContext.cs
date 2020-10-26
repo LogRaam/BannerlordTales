@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 26/10/2020.
 
 #region
 
@@ -11,7 +11,7 @@ using TaleWorlds.Library;
 
 #endregion
 
-namespace TalesPersistence
+namespace TalesPersistence.Context
 {
     #region
 

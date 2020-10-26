@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using TalesContract;
-using TalesPersistence;
+using TalesPersistence.Context;
 using TalesPersistence.Stories;
 using TalesTaleWorlds.Menu;
 using TaleWorlds.CampaignSystem;
