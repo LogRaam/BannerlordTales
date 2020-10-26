@@ -309,7 +309,7 @@ namespace TalesDAL
         {
             if (line.Contains("BETWEEN ")) return GetRandomEndVerboseFrom(line);
 
-            if (!line.TrimStart().StartsWith("R")) return 0;
+            if (!line.TrimStart().StartsWith("R ")) return 0;
 
             var result = line.Split(' ').RemoveEmptyItems()[2].Trim();
 
@@ -327,7 +327,7 @@ namespace TalesDAL
         {
             if (line.Contains("BETWEEN ")) return GetRandomStartVerboseFrom(line);
 
-            if (!line.TrimStart().StartsWith("R")) return 0;
+            if (!line.TrimStart().StartsWith("R ")) return 0;
 
             var result = line.Split(' ').RemoveEmptyItems()[1].Trim();
 
