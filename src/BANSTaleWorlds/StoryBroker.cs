@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using TalesContract;
 using TalesPersistence.Context;
 using TalesPersistence.Stories;
-using TalesTaleWorlds.Menu;
+using TalesRuntime.Menu;
 using TaleWorlds.CampaignSystem;
 
 #endregion
 
-namespace TalesTaleWorlds
+namespace TalesRuntime
 {
     public class StoryBroker
     {

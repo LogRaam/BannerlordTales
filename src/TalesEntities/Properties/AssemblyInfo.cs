@@ -1,9 +1,8 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 26/10/2020.
 
 #region
 
 using System.Reflection;
-using System.Resources;
 using System.Runtime.InteropServices;
 
 #endregion
@@ -11,12 +10,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TalesRuntime")]
-[assembly: AssemblyDescription("TalewWorld implementation for LogRaam's Bannerlord Tales")]
+[assembly: AssemblyTitle("TalesEntities")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TalesRuntime")]
-[assembly: AssemblyCopyright("Copyright LogRaam©  2020")]
+[assembly: AssemblyProduct("TalesEntities")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -26,7 +25,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1a78acf1-8fad-4ee8-af01-d8eb367accd8")]
+[assembly: Guid("7a462b06-5f36-419b-b1bc-ed5a2fb9b6fe")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -40,4 +39,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguage("en")]

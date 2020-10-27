@@ -12,7 +12,7 @@ Story
         
     Restriction: npc age > 18
     Restriction: npc gender is male
-    restriction: npc culture is nord
+    restriction: npc culture is aserai
     restriction: npc is lord
     
 

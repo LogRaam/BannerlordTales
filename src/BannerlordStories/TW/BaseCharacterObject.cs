@@ -11,7 +11,7 @@ using Occupation = TalesEnums.Occupation;
 
 #endregion
 
-namespace TalesEntities.TW
+namespace TalesBase.TW
 {
     #region
 

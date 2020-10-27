@@ -4,9 +4,9 @@
 
 using System.Collections.Generic;
 using System.IO;
+using TalesBase.Stories;
+using TalesBase.TW;
 using TalesContract;
-using TalesEntities.Stories;
-using TalesEntities.TW;
 using TalesEnums;
 using TalesPersistence.Context;
 using TalesPersistence.Stories;

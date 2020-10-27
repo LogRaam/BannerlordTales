@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using TalesBase.Stories;
+using TalesBase.TW;
 using TalesContract;
-using TalesEntities.Stories;
-using TalesEntities.TW;
 using TalesEnums;
 using TalesPersistence.Context;
 using TalesPersistence.Stories;
@@ -272,7 +272,11 @@ namespace BannerlordTales.Tests
 
             GameData.Instance.GameContext.Captor = new BaseHero
             {
-                Age = 23
+                Age = 23,
+                Culture = new BaseBasicCultureObject
+                {
+                    CultureCode = CultureCode.ASERAI
+                }
             };
 
             GameData.Instance.GameContext.IsCurrentlyOnMap = true;
@@ -332,7 +336,7 @@ namespace BannerlordTales.Tests
         {
             // Arrange
             new Stories().LoadStoriesFromDisk();
-            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test"));
+            var story = GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test");
             var act1 = new Act(story.Acts[0]);
             var act2 = new Act(story.Acts[1]);
             var seq1 = new Sequence(story.Sequences[0]);
@@ -355,14 +359,18 @@ namespace BannerlordTales.Tests
 
             GameData.Instance.GameContext.Captor = new BaseHero
             {
-                Age = 23
+                Age = 23,
+                Culture = new BaseBasicCultureObject
+                {
+                    CultureCode = CultureCode.ASERAI
+                }
             };
 
             GameData.Instance.GameContext.IsCurrentlyOnMap = true;
 
 
             // Act
-            var s1 = story.IsQualifiedRightNow();
+            var s1 = new Story(story).IsQualifiedRightNow();
             var a1 = act1.IsQualifiedRightNow();
             var a2 = act2.IsQualifiedRightNow();
             var sq1 = seq1.IsQualifiedRightNow();
@@ -374,6 +382,22 @@ namespace BannerlordTales.Tests
             a2.Should().BeTrue();
             sq1.Should().BeTrue();
             sq2.Should().BeTrue();
+        }
+
+
+        [Test]
+        public void TestStory_Surrender1_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+
+            // Assert
+            story.Acts.Count.Should().Be(1);
+            story.Sequences.Count.Should().Be(19);
+            story.Header.TypeOfStory.Should().Be(StoryType.PLAYER_SURRENDER);
         }
 
         [Test]

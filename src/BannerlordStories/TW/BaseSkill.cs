@@ -7,7 +7,7 @@ using TaleWorlds.Core;
 
 #endregion
 
-namespace TalesEntities.TW
+namespace TalesBase.TW
 {
     #region
 

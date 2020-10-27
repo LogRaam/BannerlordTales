@@ -7,7 +7,7 @@ using TalesEnums;
 
 #endregion
 
-namespace TalesEntities.Stories
+namespace TalesBase.Stories
 {
     #region
 
@@ -15,16 +15,16 @@ namespace TalesEntities.Stories
 
     public class BaseEvaluation : IEvaluation
     {
-        public Attributes? Attribute { get; set; }
-        public Characteristics? Characteristic { get; set; }
-        public Operator Operator { get; set; }
-        public PartyType PartyType { get; set; }
-        public PersonalityTraits? PersonalityTrait { get; set; }
+        public Attributes? Attribute { get; set; } = Attributes.UNKNOWN;
+        public Characteristics? Characteristic { get; set; } = Characteristics.UNKNOWN;
+        public Operator Operator { get; set; } = Operator.UNKNOWN;
+        public PartyType PartyType { get; set; } = PartyType.UNKNOWN;
+        public PersonalityTraits? PersonalityTrait { get; set; } = PersonalityTraits.UNKNOWN;
         public bool PregnancyRisk { get; set; }
         public int RandomEnd { get; set; }
         public int RandomStart { get; set; }
-        public Skills? Skill { get; set; }
-        public Actor Subject { get; set; }
+        public Skills? Skill { get; set; } = Skills.UNKNOWN;
+        public Actor Subject { get; set; } = Actor.UNKNOWN;
         public GameTime Time { get; set; }
         public string Value { get; set; }
         public bool ValueIsPercentage { get; set; }

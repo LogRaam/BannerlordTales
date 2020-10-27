@@ -7,7 +7,7 @@ using TaleWorlds.CampaignSystem;
 
 #endregion
 
-namespace TalesEntities.TW
+namespace TalesBase.TW
 {
     public class BaseCampaignTime : ICampaignTime
     {

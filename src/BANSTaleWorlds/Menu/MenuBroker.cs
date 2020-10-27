@@ -4,10 +4,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using TalesBase.Stories;
 using TalesContract;
 using TalesDAL;
-using TalesEntities.Stories;
 using TalesEnums;
 using TalesPersistence.Context;
 using TalesPersistence.Stories;
@@ -18,7 +17,7 @@ using TaleWorlds.Engine.GauntletUI;
 
 #endregion
 
-namespace TalesTaleWorlds.Menu
+namespace TalesRuntime.Menu
 {
     #region
 
@@ -33,23 +32,6 @@ namespace TalesTaleWorlds.Menu
 
             UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[13] = GameData.Instance.StoryContext.BackgroundImages.TextureList["LogCaptivePrisoner"];
             GameMenu.ExitToLast();
-        }
-
-        public string GetBackgroundFrom(string id)
-        {
-            var s = id.Split('_')[1];
-            foreach (var story in GameData.Instance.StoryContext.Stories)
-            {
-                foreach (var sequence in story.Sequences)
-                    if (sequence.Name == s)
-                        return sequence.Image;
-
-                foreach (var act in story.Acts)
-                    if (act.Name == s)
-                        return act.Image;
-            }
-
-            return "LogCaptivePrisoner";
         }
 
         public IAct GetWaitingMenu()
@@ -73,6 +55,13 @@ namespace TalesTaleWorlds.Menu
             if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
 
             var act = GameData.Instance.GameContext.RetrieveActToPlay() ?? GameData.Instance.GameContext.RetrieveAlreadyPlayedActToPlay();
+
+            if (act != null) ShowMenuFor(act);
+        }
+
+        public void ShowSurrenderMenu()
+        {
+            var act = GameData.Instance.GameContext.RetrieveActToPlay(StoryType.PLAYER_SURRENDER);
 
             if (act != null) ShowMenuFor(act);
         }
@@ -149,7 +138,7 @@ namespace TalesTaleWorlds.Menu
         {
             if (act.GetType() == typeof(BaseSequence)) return;
 
-            if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null) GameData.Instance.StoryContext.PlayedActs.Add(act);
+            GameData.Instance.StoryContext.AddToPlayedActs(act);
         }
 
         private List<IStory> RetrieveWaitingStories()

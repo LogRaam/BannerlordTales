@@ -2,8 +2,8 @@
 
 #region
 
+using TalesBase.Stories;
 using TalesContract;
-using TalesEntities.Stories;
 
 #endregion
 

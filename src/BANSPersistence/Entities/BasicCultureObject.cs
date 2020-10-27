@@ -1,8 +1,12 @@
-﻿// Code written by Gabriel Mailhot, 27/09/2020.
+﻿// Code written by Gabriel Mailhot, 26/10/2020.
 
 #region
 
-using TalesEntities.TW;
+#endregion
+
+#region
+
+using TalesBase.TW;
 
 #endregion
 

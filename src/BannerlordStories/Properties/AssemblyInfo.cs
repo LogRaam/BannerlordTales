@@ -1,16 +1,21 @@
-﻿using System.Resources;
+﻿// Code written by Gabriel Mailhot, 11/09/2020.
+
+#region
+
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Resources;
 using System.Runtime.InteropServices;
+
+#endregion
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TalesEntities")]
+[assembly: AssemblyTitle("TalesBase")]
 [assembly: AssemblyDescription("LogRaam's Bannerlord Tales")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TalesEntities")]
+[assembly: AssemblyProduct("TalesBase")]
 [assembly: AssemblyCopyright("Copyright LogRaam©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

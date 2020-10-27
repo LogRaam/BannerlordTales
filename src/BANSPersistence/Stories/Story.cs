@@ -2,8 +2,8 @@
 
 #region
 
+using TalesBase.Stories;
 using TalesContract;
-using TalesEntities.Stories;
 using TalesPersistence.Context;
 
 #endregion
@@ -38,14 +38,13 @@ namespace TalesPersistence.Stories
         public bool IsQualifiedRightNow()
         {
             var rules = new StoryRules(this);
-            var audit = new StoryQualificationAudit
-            {
-                OneTimeStoryPassed = rules.IsOneTimeStoryNeverPlayed(),
-                RightTimePassed = rules.IsTheRightTime(),
-                DependenciesClearancePassed = rules.ItsDependenciesAreCleared(),
-                StoryTypePassed = rules.IsTheRightStoryType(Header.TypeOfStory),
-                RestrictionsPassed = rules.IsNotRestricted()
-            };
+            var audit = new StoryQualificationAudit();
+
+            audit.OneTimeStoryPassed = rules.IsOneTimeStoryNeverPlayed();
+            audit.RightTimePassed = rules.IsTheRightTime();
+            audit.DependenciesClearancePassed = rules.ItsDependenciesAreCleared();
+            audit.StoryTypePassed = rules.IsTheRightStoryType(Header.TypeOfStory);
+            audit.RestrictionsPassed = rules.IsNotRestricted();
 
             return audit.HaveBeenQualified();
         }

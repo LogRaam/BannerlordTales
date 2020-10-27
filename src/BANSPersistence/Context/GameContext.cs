@@ -4,10 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _45_TalesGameState;
+using TalesBase.TW;
 using TalesContract;
 using TalesDAL;
-using TalesEntities.TW;
 using TalesEnums;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
@@ -231,6 +232,15 @@ namespace TalesPersistence.Context
             return ChooseOneToPlay(qualifiedActs);
         }
 
+        public IAct RetrieveActToPlay(StoryType storyType)
+        {
+            var qualifiedActs = (List<IAct>)GetAllQualifiedActs().Where(n => n.ParentStory.Header.TypeOfStory == storyType);
+
+            if (qualifiedActs.Count == 0) return null;
+
+            return ChooseOneToPlay(qualifiedActs);
+        }
+
         public IAct RetrieveAlreadyPlayedActToPlay()
         {
             var qualifiedActs = GetAlreadyPlayedQualifiedActsAndSequences();
@@ -263,7 +273,9 @@ namespace TalesPersistence.Context
             if (qualifiedActs.Count == 0) return null;
 
             var index = new Random().Next(0, qualifiedActs.Count);
-            GameData.Instance.StoryContext.PlayedActs.Add(qualifiedActs[index]);
+
+
+            GameData.Instance.StoryContext.AddToPlayedActs(qualifiedActs[index]);
 
             return qualifiedActs[index];
         }
@@ -280,7 +292,7 @@ namespace TalesPersistence.Context
 
                 if (story.CanBePlayedOnceAndAlreadyPlayed()) continue;
 
-                result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
+                result.AddRange(GetQualifiedActs(story));
             }
 
             return result;
@@ -298,7 +310,7 @@ namespace TalesPersistence.Context
 
                 var story = new Story(s);
 
-                result.AddRange(GetQualifiedActs(story)); //BUG: got not qualified
+                result.AddRange(GetQualifiedActs(story));
             }
 
             return result;

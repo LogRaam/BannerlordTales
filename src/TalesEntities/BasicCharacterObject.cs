@@ -9,7 +9,7 @@ using TalesEnums;
 
 #endregion
 
-namespace TalesPersistence.Entities
+namespace TalesEntities
 {
     public class BasicCharacterObject : BaseBasicCharacterObject
     {

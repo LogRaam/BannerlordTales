@@ -1,15 +1,15 @@
 Story
 
 	Name:         Losing Battle
-	OneTimeStory: Yes
+	OneTimeStory: No
     DependOn:     None
     Time:         Anytime
-    StoryType:    Player is captive
+    StoryType:    Surrender
 
     Restriction: Player age > 18
     Restriction: Player gender is female
     Restriction: NPC gender is male
-    Restriction: NPC is Raider
+    Restriction: NPC is bandit
 
 
     Act

@@ -12,7 +12,7 @@ using IFaction = TalesContract.IFaction;
 
 #endregion
 
-namespace TalesEntities.TW
+namespace TalesBase.TW
 {
     public class BaseSettlement : ISettlement
     {

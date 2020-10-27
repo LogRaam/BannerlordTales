@@ -14,9 +14,9 @@
   </DependedModules>
   <SubModules>    
     <SubModule>
-      <Name value="TalesTaleWorlds" />
-      <DLLName value="TalesTaleWorlds.dll" />
-      <SubModuleClassType value="TalesTaleWorlds.IntegratedLoaderSubModule" />
+      <Name value="TalesRuntime" />
+      <DLLName value="TalesRuntime.dll" />
+      <SubModuleClassType value="TalesRuntime.IntegratedLoaderSubModule" />
       <Tags>
         <Tag key="DedicatedServerType" value="none" />
         <Tag key="IsNoRenderModeElement" value="false" />

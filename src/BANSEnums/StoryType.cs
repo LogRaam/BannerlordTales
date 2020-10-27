@@ -11,6 +11,7 @@ namespace TalesEnums
         PLAYER_ON_CAMPAIGN_MAP,
         PLAYER_IN_SETTLEMENT,
         WAITING,
+        TEST,
         NONE
     }
 }

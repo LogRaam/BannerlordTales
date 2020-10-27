@@ -6,7 +6,7 @@ using TalesContract;
 
 #endregion
 
-namespace TalesEntities.Stories
+namespace TalesBase.Stories
 {
     #region
 

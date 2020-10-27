@@ -6,9 +6,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TalesBase.Stories;
+using TalesBase.TW;
 using TalesContract;
-using TalesEntities.Stories;
-using TalesEntities.TW;
 using TalesEnums;
 
 #endregion
@@ -60,15 +60,6 @@ namespace TalesDAL
         }
 
         #region private
-
-        private static string FormatLineForOccupation(string line)
-        {
-            line = line.Insert(line.Contains("NPC")
-                ? line.IndexOf("NPC", StringComparison.Ordinal)
-                : line.IndexOf(":", StringComparison.Ordinal), " OCCUPATION ");
-
-            return line;
-        }
 
         private static string GetSubjectItem(string line)
         {
@@ -148,7 +139,6 @@ namespace TalesDAL
         private IEvaluation ExtractEvaluationFrom(string line)
         {
             line = line.ToUpper();
-            if (!line.Contains(" OCCUPATION ") && IsThereACultureWithinThis(line)) line = FormatLineForOccupation(line);
 
             var v = GetValueFrom(line);
             var item = GetSubjectItem(line.Replace("PLAYER", ""));
@@ -254,22 +244,21 @@ namespace TalesDAL
                 case "INTELLIGENCE": return Attributes.INTELLIGENCE;
             }
 
-            return null;
+            return Attributes.UNKNOWN;
         }
 
         private Characteristics? GetCharacteristicFrom(string line)
         {
             switch (line)
             {
-                case "AGE":        return Characteristics.AGE;
-                case "GENDER":     return Characteristics.GENDER;
-                case "HEALTH":     return Characteristics.HEALTH;
-                case "GOLD":       return Characteristics.GOLD;
-                case "CULTURE":    return Characteristics.CULTURE;
-                case "OCCUPATION": return Characteristics.OCCUPATION;
+                case "AGE":     return Characteristics.AGE;
+                case "GENDER":  return Characteristics.GENDER;
+                case "HEALTH":  return Characteristics.HEALTH;
+                case "GOLD":    return Characteristics.GOLD;
+                case "CULTURE": return Characteristics.CULTURE;
             }
 
-            return null;
+            return Characteristics.UNKNOWN;
         }
 
         private Operator GetOperatorFrom(string line)
@@ -295,7 +284,7 @@ namespace TalesDAL
                 case "VALOR":      return PersonalityTraits.VALOR;
             }
 
-            return null;
+            return PersonalityTraits.UNKNOWN;
         }
 
         private string GetRadomExpressionFrom(string line)
@@ -382,7 +371,7 @@ namespace TalesDAL
                 case "ENGINEERING": return Skills.ENGINEERING;
             }
 
-            return null;
+            return Skills.UNKNOWN;
         }
 
         private GameTime GetTimeFrom(string line)
@@ -408,52 +397,6 @@ namespace TalesDAL
             return line.Contains(" PREGNAN");
         }
 
-        private bool IsThereACultureWithinThis(string line)
-        {
-            if (line.Contains("TAVERNKEEPER")) return true;
-            if (line.Contains("MERCENARY")) return true;
-            if (line.Contains("LORD")) return true;
-            if (line.Contains("LADY")) return true;
-            if (line.Contains("GOODSTRADER")) return true;
-            if (line.Contains("ARENAMASTER")) return true;
-            if (line.Contains("COMPANION")) return true;
-            if (line.Contains("VILLAGER")) return true;
-            if (line.Contains("SOLDIER")) return true;
-            if (line.Contains("TOWNSFOLK")) return true;
-            if (line.Contains("GUILDMASTER")) return true;
-            if (line.Contains("MARSHALL")) return true;
-            if (line.Contains("TOURNAMENTFIXER")) return true;
-            if (line.Contains("RANSOMBROKER")) return true;
-            if (line.Contains("WEAPONSMITH")) return true;
-            if (line.Contains("ARMORER")) return true;
-            if (line.Contains("HORSETRADER")) return true;
-            if (line.Contains("TAVERNWENCH")) return true;
-            if (line.Contains("SHOPKEEPER")) return true;
-            if (line.Contains("TAVERNGAMEHOST")) return true;
-            if (line.Contains("BANDIT")) return true;
-            if (line.Contains("WANDERER")) return true;
-            if (line.Contains("ARTISAN")) return true;
-            if (line.Contains("MERCHANT")) return true;
-            if (line.Contains("PREACHER")) return true;
-            if (line.Contains("HEADMAN")) return true;
-            if (line.Contains("GANGLEADER")) return true;
-            if (line.Contains("RURALNOTABLE")) return true;
-            if (line.Contains("OUTLAW")) return true;
-            if (line.Contains("MINORFACTIONCHARACTER")) return true;
-            if (line.Contains("PRISONGUARD")) return true;
-            if (line.Contains("GUARD")) return true;
-            if (line.Contains("SHOPWORKER")) return true;
-            if (line.Contains("MUSICIAN")) return true;
-            if (line.Contains("GANGSTER")) return true;
-            if (line.Contains("BLACKSMITH")) return true;
-            if (line.Contains("JUDGE")) return true;
-            if (line.Contains("BANNERBEARER")) return true;
-            if (line.Contains("CARAVANGUARD")) return true;
-            if (line.Contains("SPECIAL")) return true;
-            if (line.Contains("NUMBEROFOCCUPATIONS")) return true;
-
-            return false;
-        }
 
         private bool IsThisAPercentageValue(string line)
         {

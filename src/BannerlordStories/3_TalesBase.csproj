@@ -7,8 +7,8 @@
     <ProjectGuid>{86A2DE02-1A56-469F-93FB-D2C467CD2D11}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TalesEntities</RootNamespace>
-    <AssemblyName>TalesEntities</AssemblyName>
+    <RootNamespace>TalesBase</RootNamespace>
+    <AssemblyName>TalesBase</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -95,24 +95,21 @@
     <Compile Include="Welcome.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
     <None Include="CaptivityEventsSimplified.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\45_TalesGameState\45_TalesGameState.csproj">
+    <ProjectReference Include="..\45_TalesGameState\5_TalesGameState.csproj">
       <Project>{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}</Project>
-      <Name>45_TalesGameState</Name>
+      <Name>5_TalesGameState</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BANSBoundaries\50_TalesContract.csproj">
+    <ProjectReference Include="..\BANSBoundaries\7_TalesContract.csproj">
       <Project>{42ac2dcf-34f0-4318-a9d6-3055747809c5}</Project>
-      <Name>50_TalesContract</Name>
+      <Name>7_TalesContract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BANSEnums\70_TalesEnums.csproj">
+    <ProjectReference Include="..\BANSEnums\8_TalesEnums.csproj">
       <Project>{67a0824b-c0b1-4e11-944c-04461c3c2f20}</Project>
-      <Name>70_TalesEnums</Name>
+      <Name>8_TalesEnums</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

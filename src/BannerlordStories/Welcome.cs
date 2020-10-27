@@ -1,6 +1,6 @@
 ﻿// Code written by Gabriel Mailhot, 11/09/2020.
 
-namespace TalesEntities
+namespace TalesBase
 {
     public class Welcome
     {

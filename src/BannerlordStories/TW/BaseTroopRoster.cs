@@ -7,7 +7,7 @@ using TalesContract;
 
 #endregion
 
-namespace TalesEntities.TW
+namespace TalesBase.TW
 {
     public class BaseTroopRoster : ITroopRoster
     {

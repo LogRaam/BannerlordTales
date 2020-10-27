@@ -3,9 +3,9 @@
 #region
 
 using System.IO;
-using TalesEntities;
+using TalesBase;
 using TalesPersistence.Context;
-using TalesTaleWorlds.Behavior;
+using TalesRuntime.Behavior;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -16,7 +16,7 @@ using Path = System.IO.Path;
 
 #endregion
 
-namespace TalesTaleWorlds
+namespace TalesRuntime
 {
     public class IntegratedLoaderSubModule : MBSubModuleBase
     {

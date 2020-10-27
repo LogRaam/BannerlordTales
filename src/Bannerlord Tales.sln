@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "37_TalesBaseEntities", "BannerlordStories\37_TalesBaseEntities.csproj", "{86A2DE02-1A56-469F-93FB-D2C467CD2D11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3_TalesBase", "BannerlordStories\3_TalesBase.csproj", "{86A2DE02-1A56-469F-93FB-D2C467CD2D11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0_TalesTaleWorlds", "BANSTaleWorlds\0_TalesTaleWorlds.csproj", "{1A78ACF1-8FAD-4EE8-AF01-D8EB367ACCD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0_TalesRuntime", "BANSTaleWorlds\0_TalesRuntime.csproj", "{1A78ACF1-8FAD-4EE8-AF01-D8EB367ACCD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{EA80DBAD-042E-4B4A-8768-0D918FF881C6}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		HowToCreateMenu.txt = HowToCreateMenu.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "50_TalesContract", "BANSBoundaries\50_TalesContract.csproj", "{42AC2DCF-34F0-4318-A9D6-3055747809C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "7_TalesContract", "BANSBoundaries\7_TalesContract.csproj", "{42AC2DCF-34F0-4318-A9D6-3055747809C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "30_TalesPersistence", "BANSPersistence\30_TalesPersistence.csproj", "{7E2651AA-2AD7-4252-AE8D-586EF0B2EC19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2_TalesPersistence", "BANSPersistence\2_TalesPersistence.csproj", "{7E2651AA-2AD7-4252-AE8D-586EF0B2EC19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "70_TalesEnums", "BANSEnums\70_TalesEnums.csproj", "{67A0824B-C0B1-4E11-944C-04461C3C2F20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "8_TalesEnums", "BANSEnums\8_TalesEnums.csproj", "{67A0824B-C0B1-4E11-944C-04461C3C2F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "40_TalesDAL", "BANSDAL\40_TalesDAL.csproj", "{C9D17544-C699-4993-B04F-D7DDD0EAE33E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4_TalesDAL", "BANSDAL\4_TalesDAL.csproj", "{C9D17544-C699-4993-B04F-D7DDD0EAE33E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalesDAL.Tests", "BANSDAL.Tests\TalesDAL.Tests.csproj", "{68D3BC90-E087-451B-8BA6-653FA84A90BD}"
 EndProject
@@ -37,14 +37,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stories", "Stories", "{496E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74EE86E5-FBC7-4484-B4BD-C053698D3D54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "47_TalesMath", "47_TalesMath\47_TalesMath.csproj", "{1805EAFE-B5E0-48FA-92CE-411D6CAF3A1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6_TalesMath", "47_TalesMath\6_TalesMath.csproj", "{1805EAFE-B5E0-48FA-92CE-411D6CAF3A1A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{1741D25C-35ED-403B-A2D5-CDCFBB6C8930}"
 	ProjectSection(SolutionItems) = preProject
 		Story.txt = Story.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "45_TalesGameState", "45_TalesGameState\45_TalesGameState.csproj", "{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5_TalesGameState", "45_TalesGameState\5_TalesGameState.csproj", "{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

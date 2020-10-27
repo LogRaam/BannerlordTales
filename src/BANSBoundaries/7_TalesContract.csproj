@@ -90,9 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BANSEnums\70_TalesEnums.csproj">
+    <ProjectReference Include="..\BANSEnums\8_TalesEnums.csproj">
       <Project>{67a0824b-c0b1-4e11-944c-04461c3c2f20}</Project>
-      <Name>70_TalesEnums</Name>
+      <Name>8_TalesEnums</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

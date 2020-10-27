@@ -5,9 +5,9 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using TalesBase.Stories;
+using TalesBase.TW;
 using TalesContract;
-using TalesEntities.Stories;
-using TalesEntities.TW;
 using TalesEnums;
 using TalesPersistence.Stories;
 
@@ -827,7 +827,7 @@ namespace TalesDAL.Tests
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.OCCUPATION, Value = "LORD", Subject = Actor.NPC
+                Operator = Operator.EQUALTO, PartyType = PartyType.LORD, Value = "LORD", Subject = Actor.NPC
             };
 
             // Act

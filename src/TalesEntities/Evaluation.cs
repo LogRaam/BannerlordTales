@@ -3,7 +3,6 @@
 #region
 
 using System;
-using _47_TalesMath;
 using TalesBase.Stories;
 using TalesContract;
 using TalesDAL;
@@ -15,7 +14,7 @@ using TaleWorlds.Core;
 
 #endregion
 
-namespace TalesPersistence.Entities
+namespace TalesEntities
 {
     public class Evaluation : BaseEvaluation
     {
@@ -55,18 +54,12 @@ namespace TalesPersistence.Entities
 
         public bool CanBePlayedInContext()
         {
-            if (!AttributeAccepted())
-                return false;
-            if (!CharacteristicAccepted())
-                return false;
-            if (!PartyTypeAccepted())
-                return false;
-            if (!PersonalityTraitAccepted())
-                return false;
-            if (!SkillAccepted())
-                return false;
-            if (!TimeAccepted())
-                return false;
+            if (!AttributeAccepted()) return false;
+            if (!CharacteristicAccepted()) return false;
+            if (!PartyTypeAccepted()) return false;
+            if (!PersonalityTraitAccepted()) return false;
+            if (!SkillAccepted()) return false;
+            if (!TimeAccepted()) return false;
 
             return true;
         }
@@ -148,13 +141,13 @@ namespace TalesPersistence.Entities
         {
             switch (Attribute)
             {
-                case Attributes.UNKNOWN:      return true;
-                case Attributes.VIGOR:        return GameMath.IsEvaluationConform(this, IdentifySubject().Vigor);
-                case Attributes.CONTROL:      return GameMath.IsEvaluationConform(this, IdentifySubject().Control);
-                case Attributes.ENDURANCE:    return GameMath.IsEvaluationConform(this, IdentifySubject().Endurance);
-                case Attributes.CUNNING:      return GameMath.IsEvaluationConform(this, IdentifySubject().Cunning);
-                case Attributes.SOCIAL:       return GameMath.IsEvaluationConform(this, IdentifySubject().Social);
-                case Attributes.INTELLIGENCE: return GameMath.IsEvaluationConform(this, IdentifySubject().Intelligence);
+                case Attributes.UNKNOWN:      throw new ApplicationException("Attribute unknown: " + Attribute);
+                case Attributes.VIGOR:        return EvalOperation(IdentifySubject().Vigor);
+                case Attributes.CONTROL:      return EvalOperation(IdentifySubject().Control);
+                case Attributes.ENDURANCE:    return EvalOperation(IdentifySubject().Endurance);
+                case Attributes.CUNNING:      return EvalOperation(IdentifySubject().Cunning);
+                case Attributes.SOCIAL:       return EvalOperation(IdentifySubject().Social);
+                case Attributes.INTELLIGENCE: return EvalOperation(IdentifySubject().Intelligence);
                 case null:                    throw new NullReferenceException("Attribute is null");
                 default:                      throw new ArgumentOutOfRangeException();
             }
@@ -164,15 +157,16 @@ namespace TalesPersistence.Entities
         {
             switch (Characteristic)
             {
-                case Characteristics.UNKNOWN: return true;
-                case Characteristics.AGE:     return GameMath.IsEvaluationConform(this, IdentifySubject().Age);
-                case Characteristics.GENDER:  return EvalGender(IdentifySubject());
-                case Characteristics.HEALTH:  return GameMath.IsEvaluationConform(this, IdentifySubject().HitPoints);
-                case Characteristics.GOLD:    return GameMath.IsEvaluationConform(this, IdentifySubject().Gold);
-                case Characteristics.RENOWN:  return GameMath.IsEvaluationConform(this, IdentifySubject().Clan.Renown);
-                case Characteristics.CULTURE: return Value.ToUpper() == IdentifySubject().Culture.CultureCode.ToString();
-                case null:                    throw new NullReferenceException("Characteristic is null");
-                default:                      throw new ArgumentOutOfRangeException();
+                case Characteristics.UNKNOWN:    throw new ApplicationException("Characteristic Unknown");
+                case Characteristics.AGE:        return EvalOperation((int)IdentifySubject().Age);
+                case Characteristics.GENDER:     return EvalGender(IdentifySubject());
+                case Characteristics.HEALTH:     return EvalOperation(IdentifySubject().HitPoints);
+                case Characteristics.GOLD:       return EvalOperation(IdentifySubject().Gold);
+                case Characteristics.RENOWN:     return EvalOperation((int)IdentifySubject().Clan.Renown);
+                case Characteristics.CULTURE:    return Value.ToUpper() == IdentifySubject().Culture.CultureCode.ToString();
+                case Characteristics.OCCUPATION: return EvalOccupation(IdentifySubject());
+                case null:                       throw new NullReferenceException("Characteristic is null");
+                default:                         throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -186,6 +180,50 @@ namespace TalesPersistence.Entities
 
             return t == "MALE";
         }
+
+        private bool EvalOccupation(IHero subject)
+        {
+            switch (Value.ToUpper())
+            {
+                case "ARTISAN":          return subject.IsArtisan;
+                case "CHILD":            return subject.IsChild;
+                case "COMMANDER":        return subject.IsCommander;
+                case "FACTIONLEADER":    return subject.IsFactionLeader;
+                case "FUGITIVE":         return subject.IsFugitive;
+                case "GANGLEADER":       return subject.IsGangLeader;
+                case "HEADMAN":          return subject.IsHeadman;
+                case "MERCENARY":        return subject.IsMercenary;
+                case "MERCHANT":         return subject.IsMerchant;
+                case "MINORFACTIONHERO": return subject.IsMinorFactionHero;
+                case "NOBLE":            return subject.IsNoble;
+                case "NOTABLE":          return subject.IsNotable;
+                case "OUTLAW":           return subject.IsOutlaw;
+                case "PARTYLEADER":      return subject.IsPartyLeader;
+                case "PLAYERCOMPANION":  return subject.IsPlayerCompanion;
+                case "PREACHER":         return subject.IsPreacher;
+                case "REBEL":            return subject.IsRebel;
+                case "RURALNOTABLE":     return subject.IsRuralNotable;
+                case "SPECIAL":          return subject.IsSpecial;
+                case "WANDERER":         return subject.IsWanderer;
+                default:                 throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private bool EvalOperation(int n)
+        {
+            var value = int.Parse(Value);
+
+            switch (Operator)
+            {
+                case Operator.UNKNOWN:     throw new ApplicationException("Operator unknown");
+                case Operator.GREATERTHAN: return n > value;
+                case Operator.LOWERTHAN:   return n < value;
+                case Operator.EQUALTO:     return n == value;
+                case Operator.NOTEQUALTO:  return n != value;
+                default:                   throw new ArgumentOutOfRangeException();
+            }
+        }
+
 
         private int GetModifierValue()
         {
@@ -213,13 +251,13 @@ namespace TalesPersistence.Entities
         {
             switch (PartyType)
             {
-                case PartyType.UNKNOWN:       return true;
-                case PartyType.DEFAULT:       return true;
-                case PartyType.LORD:          return IdentifySubject().PartyBelongedTo.IsLordParty;
-                case PartyType.BANDIT:        return IdentifySubject().PartyBelongedTo.IsBandit;
-                case PartyType.VILLAGER:      return IdentifySubject().PartyBelongedTo.IsVillager;
-                case PartyType.GARRISONPARTY: return IdentifySubject().PartyBelongedTo.IsGarrison;
-                case PartyType.CARAVAN:       return IdentifySubject().PartyBelongedTo.IsCaravan;
+                case PartyType.UNKNOWN:       throw new ApplicationException("PartyType Trait unknown: " + PartyType);
+                case PartyType.DEFAULT:       return EvalOperation(IdentifySubject().Mercy);
+                case PartyType.LORD:          return EvalOperation(IdentifySubject().Generosity);
+                case PartyType.BANDIT:        return EvalOperation(IdentifySubject().Honor);
+                case PartyType.VILLAGER:      return EvalOperation(IdentifySubject().Valor);
+                case PartyType.GARRISONPARTY: return EvalOperation(IdentifySubject().Valor);
+                case PartyType.CARAVAN:       return EvalOperation(IdentifySubject().Valor);
                 default:                      throw new ArgumentOutOfRangeException();
             }
         }
@@ -228,11 +266,11 @@ namespace TalesPersistence.Entities
         {
             switch (PersonalityTrait)
             {
-                case PersonalityTraits.UNKNOWN:    return true;
-                case PersonalityTraits.MERCY:      return GameMath.IsEvaluationConform(this, IdentifySubject().Mercy);
-                case PersonalityTraits.GENEROSITY: return GameMath.IsEvaluationConform(this, IdentifySubject().Generosity);
-                case PersonalityTraits.HONOR:      return GameMath.IsEvaluationConform(this, IdentifySubject().Honor);
-                case PersonalityTraits.VALOR:      return GameMath.IsEvaluationConform(this, IdentifySubject().Valor);
+                case PersonalityTraits.UNKNOWN:    throw new ApplicationException("Personality Trait unknown: " + PersonalityTrait);
+                case PersonalityTraits.MERCY:      return EvalOperation(IdentifySubject().Mercy);
+                case PersonalityTraits.GENEROSITY: return EvalOperation(IdentifySubject().Generosity);
+                case PersonalityTraits.HONOR:      return EvalOperation(IdentifySubject().Honor);
+                case PersonalityTraits.VALOR:      return EvalOperation(IdentifySubject().Valor);
                 default:                           throw new ArgumentOutOfRangeException();
             }
         }
@@ -253,25 +291,25 @@ namespace TalesPersistence.Entities
         {
             switch (Skill)
             {
-                case Skills.UNKNOWN:     return true;
-                case Skills.ONEHANDED:   return GameMath.IsEvaluationConform(this, IdentifySubject().OneHanded);
-                case Skills.TWOHANDED:   return GameMath.IsEvaluationConform(this, IdentifySubject().TwoHanded);
-                case Skills.POLEARM:     return GameMath.IsEvaluationConform(this, IdentifySubject().Polearm);
-                case Skills.BOW:         return GameMath.IsEvaluationConform(this, IdentifySubject().Bow);
-                case Skills.CROSSBOW:    return GameMath.IsEvaluationConform(this, IdentifySubject().Crossbow);
-                case Skills.THROWING:    return GameMath.IsEvaluationConform(this, IdentifySubject().Throwing);
-                case Skills.RIDING:      return GameMath.IsEvaluationConform(this, IdentifySubject().Riding);
-                case Skills.ATHLETICS:   return GameMath.IsEvaluationConform(this, IdentifySubject().Athletics);
-                case Skills.CRAFTING:    return GameMath.IsEvaluationConform(this, IdentifySubject().Crafting);
-                case Skills.SCOUTING:    return GameMath.IsEvaluationConform(this, IdentifySubject().Scouting);
-                case Skills.TACTICS:     return GameMath.IsEvaluationConform(this, IdentifySubject().Tactics);
-                case Skills.ROGUERY:     return GameMath.IsEvaluationConform(this, IdentifySubject().Roguery);
-                case Skills.CHARM:       return GameMath.IsEvaluationConform(this, IdentifySubject().Charm);
-                case Skills.LEADERSHIP:  return GameMath.IsEvaluationConform(this, IdentifySubject().Leadership);
-                case Skills.TRADE:       return GameMath.IsEvaluationConform(this, IdentifySubject().Trade);
-                case Skills.STEWARD:     return GameMath.IsEvaluationConform(this, IdentifySubject().Steward);
-                case Skills.MEDICINE:    return GameMath.IsEvaluationConform(this, IdentifySubject().Medecine);
-                case Skills.ENGINEERING: return GameMath.IsEvaluationConform(this, IdentifySubject().Engineering);
+                case Skills.UNKNOWN:     throw new ApplicationException("Personality Trait unknown: " + PersonalityTrait);
+                case Skills.ONEHANDED:   return EvalOperation(IdentifySubject().OneHanded);
+                case Skills.TWOHANDED:   return EvalOperation(IdentifySubject().TwoHanded);
+                case Skills.POLEARM:     return EvalOperation(IdentifySubject().Polearm);
+                case Skills.BOW:         return EvalOperation(IdentifySubject().Bow);
+                case Skills.CROSSBOW:    return EvalOperation(IdentifySubject().Crossbow);
+                case Skills.THROWING:    return EvalOperation(IdentifySubject().Throwing);
+                case Skills.RIDING:      return EvalOperation(IdentifySubject().Riding);
+                case Skills.ATHLETICS:   return EvalOperation(IdentifySubject().Athletics);
+                case Skills.CRAFTING:    return EvalOperation(IdentifySubject().Crafting);
+                case Skills.SCOUTING:    return EvalOperation(IdentifySubject().Scouting);
+                case Skills.TACTICS:     return EvalOperation(IdentifySubject().Tactics);
+                case Skills.ROGUERY:     return EvalOperation(IdentifySubject().Roguery);
+                case Skills.CHARM:       return EvalOperation(IdentifySubject().Charm);
+                case Skills.LEADERSHIP:  return EvalOperation(IdentifySubject().Leadership);
+                case Skills.TRADE:       return EvalOperation(IdentifySubject().Trade);
+                case Skills.STEWARD:     return EvalOperation(IdentifySubject().Steward);
+                case Skills.MEDICINE:    return EvalOperation(IdentifySubject().Medecine);
+                case Skills.ENGINEERING: return EvalOperation(IdentifySubject().Engineering);
                 default:                 throw new ArgumentOutOfRangeException();
             }
         }

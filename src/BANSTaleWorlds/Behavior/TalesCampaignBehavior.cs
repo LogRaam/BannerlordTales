@@ -3,13 +3,13 @@
 #region
 
 using TalesPersistence.Context;
-using TalesTaleWorlds.Menu;
+using TalesRuntime.Menu;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameMenus;
 
 #endregion
 
-namespace TalesTaleWorlds.Behavior
+namespace TalesRuntime.Behavior
 {
     internal class TalesCampaignBehavior : CampaignBehaviorBase
     {
@@ -19,13 +19,13 @@ namespace TalesTaleWorlds.Behavior
             CampaignEvents.DailyTickEvent.AddNonSerializedListener(this, DailyTickEventRaised);
             //CampaignEvents.OnChildConceivedEvent.AddNonSerializedListener(this, this.ChildConceivedEventRaised);
             //CampaignEvents.HeroKilledEvent.AddNonSerializedListener(this, this.HeroKilledEventRaised);
-            //CampaignEvents.PrisonerTaken.AddNonSerializedListener(this, this.PrisonerTakenEventRaised);
+            CampaignEvents.PrisonerTaken.AddNonSerializedListener(this, PrisonerTakenEventRaised);
             //CampaignEvents.PrisonerReleased.AddNonSerializedListener(this, this.PrisonerReleasedEventRaised);
             //CampaignEvents.CharacterBecameFugitive.AddNonSerializedListener(this, this.CharacterBecameFugitiveEventRaised);
             CampaignEvents.GameMenuOpened.AddNonSerializedListener(this, GameMenuOpenedEventRaised);
             CampaignEvents.AfterGameMenuOpenedEvent.AddNonSerializedListener(this, AfterGameMenuOpenedEventRaised);
             //CampaignEvents.BeforeGameMenuOpenedEvent.AddNonSerializedListener(this, BeforeGameMenuOpenedEventEventRaised);
-            //CampaignEvents.GameMenuOptionSelectedEvent.AddNonSerializedListener(this, this.GameMenuOptionSelectedEventRaised);
+            CampaignEvents.GameMenuOptionSelectedEvent.AddNonSerializedListener(this, GameMenuOptionSelectedEventRaised);
             //CampaignEvents.SettlementEntered.AddNonSerializedListener(this, this.SettlementEnteredRaised);
             //CampaignEvents.OnSettlementLeftEvent.AddNonSerializedListener(this, this.OnSettlementLeftEventRaised);
             //CampaignEvents.BattleStarted.AddNonSerializedListener(this, this.BattleStartedRaised);
@@ -44,7 +44,6 @@ namespace TalesTaleWorlds.Behavior
         /// <param name="menu">MenuCallbackArgs given by the game engine</param>
         private void AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu)
         {
-            //TODO: I must show SURRENDER story type.
             new MenuBroker().ShowWaitingMenu(menu);
         }
 
@@ -59,12 +58,23 @@ namespace TalesTaleWorlds.Behavior
             GameData.Instance.GameContext.LastGameMenuOpened = obj.MenuContext.GameMenu.StringId;
         }
 
+        private void GameMenuOptionSelectedEventRaised(GameMenuOption obj)
+        {
+        }
+
 
         private void HourlyTickEventRaised()
         {
             var mb = new MenuBroker();
             mb.ShowActMenu();
             mb.ExitToCaptiveWaitingMenu();
+        }
+
+        private void PrisonerTakenEventRaised(PartyBase party, Hero hero)
+        {
+            if (!hero.IsHumanPlayerCharacter) return;
+
+            new MenuBroker().ShowSurrenderMenu();
         }
 
         #endregion

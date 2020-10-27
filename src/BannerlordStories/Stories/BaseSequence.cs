@@ -8,7 +8,7 @@ using TalesEnums;
 
 #endregion
 
-namespace TalesEntities.Stories
+namespace TalesBase.Stories
 {
     public class BaseSequence : ISequence, IAct
     {

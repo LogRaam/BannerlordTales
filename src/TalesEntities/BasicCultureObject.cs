@@ -10,9 +10,9 @@ using TalesBase.TW;
 
 #endregion
 
-namespace TalesPersistence.Entities
+namespace TalesEntities
 {
-    public class Clan : BaseClan
+    internal class BasicCultureObject : BaseBasicCultureObject
     {
     }
 }

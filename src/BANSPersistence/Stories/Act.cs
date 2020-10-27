@@ -3,8 +3,8 @@
 #region
 
 using System;
+using TalesBase.Stories;
 using TalesContract;
-using TalesEntities.Stories;
 using TalesEnums;
 using TalesPersistence.Context;
 using TalesPersistence.Entities;

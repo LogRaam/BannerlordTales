@@ -59,25 +59,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BannerlordStories\37_TalesBaseEntities.csproj">
+    <ProjectReference Include="..\BannerlordStories\3_TalesBase.csproj">
       <Project>{86a2de02-1a56-469f-93fb-d2c467cd2d11}</Project>
-      <Name>37_TalesBaseEntities</Name>
+      <Name>3_TalesBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BANSBoundaries\50_TalesContract.csproj">
+    <ProjectReference Include="..\BANSBoundaries\7_TalesContract.csproj">
       <Project>{42ac2dcf-34f0-4318-a9d6-3055747809c5}</Project>
-      <Name>50_TalesContract</Name>
+      <Name>7_TalesContract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BANSDAL\40_TalesDAL.csproj">
+    <ProjectReference Include="..\BANSDAL\4_TalesDAL.csproj">
       <Project>{c9d17544-c699-4993-b04f-d7ddd0eae33e}</Project>
-      <Name>40_TalesDAL</Name>
+      <Name>4_TalesDAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BANSEnums\70_TalesEnums.csproj">
+    <ProjectReference Include="..\BANSEnums\8_TalesEnums.csproj">
       <Project>{67a0824b-c0b1-4e11-944c-04461c3c2f20}</Project>
-      <Name>70_TalesEnums</Name>
+      <Name>8_TalesEnums</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BANSPersistence\30_TalesPersistence.csproj">
+    <ProjectReference Include="..\BANSPersistence\2_TalesPersistence.csproj">
       <Project>{7E2651AA-2AD7-4252-AE8D-586EF0B2EC19}</Project>
-      <Name>30_TalesPersistence</Name>
+      <Name>2_TalesPersistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

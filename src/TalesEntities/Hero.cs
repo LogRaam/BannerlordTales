@@ -3,14 +3,10 @@
 #region
 
 using System;
-using _47_TalesMath;
-using TalesBase.TW;
-using TalesContract;
-using TalesEnums;
 
 #endregion
 
-namespace TalesPersistence.Entities
+namespace TalesEntities
 {
     public class Hero : BaseHero
     {
@@ -166,14 +162,15 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Characteristic)
             {
-                case Characteristics.UNKNOWN: return true;
-                case Characteristics.AGE:     return GameMath.IsEvaluationConform(consequence, Age);
-                case Characteristics.GENDER:  return IsGenderConform(consequence);
-                case Characteristics.HEALTH:  return GameMath.IsEvaluationConform(consequence, HitPoints);
-                case Characteristics.GOLD:    return GameMath.IsEvaluationConform(consequence, Gold);
-                case Characteristics.RENOWN:  return GameMath.IsEvaluationConform(consequence, Clan.Renown);
-                case Characteristics.CULTURE: return IsCultureConform(consequence);
-                default:                      throw new ArgumentOutOfRangeException();
+                case Characteristics.UNKNOWN:    return true;
+                case Characteristics.AGE:        return GameMath.IsEvaluationConform(consequence, Age);
+                case Characteristics.GENDER:     return IsGenderConform(consequence);
+                case Characteristics.HEALTH:     return GameMath.IsEvaluationConform(consequence, HitPoints);
+                case Characteristics.GOLD:       return GameMath.IsEvaluationConform(consequence, Gold);
+                case Characteristics.RENOWN:     return GameMath.IsEvaluationConform(consequence, Clan.Renown);
+                case Characteristics.CULTURE:    return IsCultureConform(consequence);
+                case Characteristics.OCCUPATION: return IsOccupationConform(consequence);
+                default:                         throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -189,11 +186,15 @@ namespace TalesPersistence.Entities
             return female == IsFemale;
         }
 
+        private bool IsOccupationConform(IEvaluation consequence)
+        {
+            return new BaseCharacterObject(this).Occupation.ToString() == consequence.Value.ToUpper();
+        }
+
+
         private bool IsPersonalityTraitConformFor(IEvaluation trait)
         {
-            var ev = new Evaluation(trait);
-
-            return ev.CanBePlayedInContext();
+            throw new NotImplementedException();
         }
 
         private bool IsSkillConformFor(IEvaluation skill)

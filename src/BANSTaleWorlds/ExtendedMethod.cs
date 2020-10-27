@@ -8,7 +8,7 @@ using TalesPersistence.Stories;
 
 #endregion
 
-namespace TalesTaleWorlds
+namespace TalesRuntime
 {
     public static class ExtendedMethod
     {

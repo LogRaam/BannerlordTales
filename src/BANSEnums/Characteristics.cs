@@ -2,15 +2,14 @@
 
 namespace TalesEnums
 {
-   public enum Characteristics
-   {
-      UNKNOWN,
-      AGE,
-      GENDER,
-      HEALTH,
-      GOLD,
-      RENOWN,
-      CULTURE,
-      OCCUPATION
-   }
+    public enum Characteristics
+    {
+        UNKNOWN,
+        AGE,
+        GENDER,
+        HEALTH,
+        GOLD,
+        RENOWN,
+        CULTURE
+    }
 }

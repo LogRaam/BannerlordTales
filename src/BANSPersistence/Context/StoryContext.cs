@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using _45_TalesGameState;
 using TalesContract;
 using TalesDAL;
@@ -67,7 +68,9 @@ namespace TalesPersistence.Context
 
         public void AddToPlayedActs(IAct act)
         {
-            if (act != null) GameData.Instance.StoryContext.PlayedActs.Add(act);
+            if (act == null) return;
+
+            if (GameData.Instance.StoryContext.PlayedActs.FirstOrDefault(n => n.Id == act.Id) == null) GameData.Instance.StoryContext.PlayedActs.Add(act);
         }
 
         public bool AllLinksExistFor(IAct act)

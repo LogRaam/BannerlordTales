@@ -12,7 +12,7 @@ using TaleWorlds.Localization;
 
 #endregion
 
-namespace TalesTaleWorlds.Menu
+namespace TalesRuntime.Menu
 {
     public class OptionCallBackDelegate
     {

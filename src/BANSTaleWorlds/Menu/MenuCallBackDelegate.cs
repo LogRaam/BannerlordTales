@@ -9,7 +9,7 @@ using TaleWorlds.CampaignSystem.GameMenus;
 
 #endregion
 
-namespace TalesTaleWorlds.Menu
+namespace TalesRuntime.Menu
 {
     public class MenuCallBackDelegate
     {
