@@ -3,6 +3,7 @@
 #region
 
 using System;
+using _47_TalesMath;
 
 #endregion
 
@@ -16,9 +17,15 @@ namespace TalesDAL
 
         public static bool EvalPercentage(int value)
         {
+            GameFunction.Log("EvalPercentage(int value) value => " + value);
+
             InitRandomNumber(Guid.NewGuid().GetHashCode());
 
-            return GenerateRandomNumber(100) < value;
+            var r = GenerateRandomNumber(100);
+
+            GameFunction.Log("... return r < value => " + r + " <  " + value);
+
+            return r < value;
         }
 
         public static bool EvalPercentageRange(int min, int max)

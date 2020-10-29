@@ -44,8 +44,7 @@ namespace TalesRuntime
 
         public override void OnNewGameCreated(Game game, object initializerObject) { }
 
-        protected override void OnApplicationTick(float dt) { }
-
+        //protected override void OnApplicationTick(float dt) { }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
@@ -105,8 +104,11 @@ namespace TalesRuntime
                 texture.PreloadTexture();
 
                 var texture2D = new TaleWorlds.TwoDimension.Texture(new EngineTexture(texture));
+                var key = Path.GetFileNameWithoutExtension(image.Name);
 
-                GameData.Instance.StoryContext.BackgroundImages.TextureList.Add(Path.GetFileNameWithoutExtension(image.Name), texture2D);
+                if (GameData.Instance.StoryContext.BackgroundImages.TextureList.ContainsKey(key)) return;
+
+                GameData.Instance.StoryContext.BackgroundImages.TextureList.Add(key, texture2D);
             }
         }
 

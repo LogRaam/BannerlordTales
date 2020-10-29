@@ -93,6 +93,10 @@
     <Compile Include="StoryBroker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\47_TalesMath\6_TalesMath.csproj">
+      <Project>{1805EAFE-B5E0-48FA-92CE-411D6CAF3A1A}</Project>
+      <Name>6_TalesMath</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BannerlordStories\3_TalesBase.csproj">
       <Project>{86a2de02-1a56-469f-93fb-d2c467cd2d11}</Project>
       <Name>3_TalesBase</Name>

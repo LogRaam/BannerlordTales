@@ -8,6 +8,7 @@ using System.Linq;
 using _45_TalesGameState;
 using TalesContract;
 using TalesDAL;
+using TalesEnums;
 using TaleWorlds.Library;
 
 #endregion
@@ -110,6 +111,30 @@ namespace TalesPersistence.Context
                         return sequence;
 
             return null;
+        }
+
+        public StoryType GetStoryTypeFor(string menuId)
+        {
+            foreach (var story in Stories)
+            {
+                foreach (var act in story.Acts)
+                {
+                    if (act.Id == menuId)
+                    {
+                        return story.Header.TypeOfStory;
+                    }
+                }
+
+                foreach (var sequence in story.Sequences)
+                {
+                    if (sequence.Id == menuId)
+                    {
+                        return story.Header.TypeOfStory;
+                    }
+                }
+            }
+
+            return StoryType.UNKNOWN;
         }
 
 

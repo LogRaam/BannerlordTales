@@ -82,6 +82,19 @@ Story
         Choice: Letting yourself be tied up while staring the man straight in the eye.            
             Goto: Whip
 
+    
+    Sequence
+    --------------------------------------
+        Name:  Resist Failed
+        Intro: You're struggling to keep the men from tying you down.  One of them hits you violently in the face and you almost pass out.  Dizzy, you can't resist.
+        Image: None
+
+        Choice: Continue...            
+            Consequence: Health R -10 -5
+            Goto: Whip
+            
+       
+
 
     Sequence
     --------------------------------------
@@ -249,5 +262,16 @@ Story
             Consequence: Health R -10 -5
             Consequence: Renown -30
             Consequence: risk of becoming pregnant
+
+
+    Sequence
+    --------------------------------------
+        Name:  Battle Flee 2
+        Intro: You wait for the right moment and throw a handful of sand in your assailant's face.  He gets the sand in his eyes and starts screaming in pain.  You take advantage of the moment to try to flee.
+        Image: None
+
+        Choice: Run away...
+            Goto: Flee Success 50%
+            Goto: Flee Failed 50%
 
 END

@@ -183,6 +183,7 @@ namespace BannerlordTales.Tests
             actualResult.Should().BeTrue();
         }
 
+
         [Test]
         public void IsQualifiedEventFor_QualifiedStory2_ReturnTrue()
         {
@@ -313,6 +314,130 @@ namespace BannerlordTales.Tests
         }
 
         [Test]
+        public void LosingBattle_Choice_FleeFailed_ParentAct_ShouldNotBeNull()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var fleeSeq = story.Sequences.Find(n => n.Name == "Flee Failed");
+            var choice = fleeSeq.Choices[0];
+
+            var parentActId = choice.ParentAct.Id;
+            var fleeSeqId = fleeSeq.Id;
+            var parentStoryId = choice.ParentAct.ParentStory.Id;
+            var choiceId = choice.Id;
+
+
+            // Assert
+            parentActId.Should().Be(fleeSeqId);
+            choiceId.Should().Be(parentActId + "_" + fleeSeq.Choices[0].Text);
+            parentStoryId.Should().Be(fleeSeq.ParentStory.Id);
+            choice.ParentAct.ParentStory.Header.Name.Should().NotBeNullOrEmpty();
+            choice.ParentAct.Name.Should().NotBeNullOrEmpty();
+            choice.Text.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void LosingBattle_Choice_FleeSuccess_ParentAct_ShouldNotBeNull()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var fleeSeq = story.Sequences.Find(n => n.Name == "Flee Success");
+            var choice = fleeSeq.Choices[0];
+
+            var parentActId = choice.ParentAct.Id;
+            var fleeSeqId = fleeSeq.Id;
+            var parentStoryId = choice.ParentAct.ParentStory.Id;
+            var choiceId = choice.Id;
+
+
+            // Assert
+            parentActId.Should().Be(fleeSeqId);
+            choiceId.Should().Be(parentActId + "_" + fleeSeq.Choices[0].Text);
+            parentStoryId.Should().Be(fleeSeq.ParentStory.Id);
+            choice.ParentAct.ParentStory.Header.Name.Should().NotBeNullOrEmpty();
+            choice.ParentAct.Name.Should().NotBeNullOrEmpty();
+            choice.Text.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void LosingBattle_Choice_Id_ShouldNotBeNull()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var fleeAct = story.Acts.Find(n => n.Name == "Laying on the ground");
+            var choice = fleeAct.Choices.Find(n => n.Text == "Try to come to your senses and get back on your feet.");
+
+            var parentActId = choice.ParentAct.Id;
+            var fleeSeqId = fleeAct.Id;
+            var parentStoryId = choice.ParentAct.ParentStory.Id;
+            var choiceId = choice.Id;
+
+
+            // Assert
+            parentActId.Should().Be(fleeSeqId);
+            choiceId.Should().Be(parentActId + "_" + fleeAct.Choices[0].Text.Replace(" ", ""));
+            parentStoryId.Should().Be(fleeAct.ParentStory.Id);
+            choice.ParentAct.ParentStory.Header.Name.Should().NotBeNullOrEmpty();
+            choice.ParentAct.Name.Should().NotBeNullOrEmpty();
+            choice.Text.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void LosingBattle_Choice_ParentAct_ShouldNotBeNull()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var fleeSeq = story.Sequences.Find(n => n.Name == "Flee");
+            var choice = fleeSeq.Choices[0];
+
+            var parentActId = choice.ParentAct.Id;
+            var fleeSeqId = fleeSeq.Id;
+            var parentStoryId = choice.ParentAct.ParentStory.Id;
+            var choiceId = choice.Id;
+
+
+            // Assert
+            parentActId.Should().Be(fleeSeqId);
+            choiceId.Should().Be(parentActId + "_" + fleeSeq.Choices[0].Text);
+            parentStoryId.Should().Be(fleeSeq.ParentStory.Id);
+            choice.ParentAct.ParentStory.Header.Name.Should().NotBeNullOrEmpty();
+            choice.ParentAct.Name.Should().NotBeNullOrEmpty();
+            choice.Text.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void LosingBattle_ChoiceConstruct_ParentAct_ShouldNotBeNull()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var choice = new Choice(story.Acts[0].Choices[0]);
+
+
+            // Assert
+            choice.Id.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
         public void TestStory_Act_ShouldPass()
         {
             // Arrange
@@ -328,6 +453,22 @@ namespace BannerlordTales.Tests
             story.Acts[1].ParentStory.Header.Name.Should().Be(story.Header.Name);
             sut.ParentStory.Header.Name.Should().Be(story.Header.Name);
             story.Header.Name.Should().NotBeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void TestStory_Escaping_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var seq = story.Sequences.Find(n => n.Name == "Flee Success");
+
+
+            // Assert
+            seq.Choices.Find(n => n.Text == "Continue...").Consequences[1].Escaping.Should().Be(true);
         }
 
 
@@ -386,6 +527,36 @@ namespace BannerlordTales.Tests
 
 
         [Test]
+        public void TestStory_LosingBattle1_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var act = story.Acts.First(n => n.Name == "Laying on the ground");
+
+            // Assert
+            act.Image.Should().Be("lg_battle_lost_closeup");
+        }
+
+        [Test]
+        public void TestStory_LosingBattle2_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var act = story.Acts.First(n => n.Name == "Laying on the ground");
+
+            // Assert
+            act.Id.Should().Be("LosingBattle_Layingontheground");
+            act.Choices[1].Id.Should().Be("LosingBattle_Layingontheground_Waitandseewhathappensnext...");
+        }
+
+
+        [Test]
         public void TestStory_Surrender1_ShouldPass()
         {
             // Arrange
@@ -396,8 +567,24 @@ namespace BannerlordTales.Tests
 
             // Assert
             story.Acts.Count.Should().Be(1);
-            story.Sequences.Count.Should().Be(19);
+            story.Sequences.Count.Should().Be(21);
             story.Header.TypeOfStory.Should().Be(StoryType.PLAYER_SURRENDER);
+        }
+
+        [Test]
+        public void TestStory_Surrender2_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+            var seq = story.Sequences.First(n => n.Name == "Flee");
+
+            // Assert
+            seq.Choices.Count.Should().Be(1);
+            seq.Choices[0].Triggers[0].ChanceToTrigger.Should().Be(75);
+            seq.Choices[0].Triggers[0].Link.Should().Be("Flee Success");
         }
 
         [Test]

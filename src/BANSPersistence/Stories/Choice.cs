@@ -17,6 +17,7 @@ namespace TalesPersistence.Stories
             Conditions = baseChoice.Conditions;
             Consequences = baseChoice.Consequences;
             Triggers = baseChoice.Triggers;
+            ParentAct = baseChoice.ParentAct;
         }
 
         public Choice()

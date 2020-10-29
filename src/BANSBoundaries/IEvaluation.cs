@@ -12,6 +12,7 @@ namespace TalesContract
     {
         public Attributes? Attribute { get; set; }
         public Characteristics? Characteristic { get; set; }
+        public bool Escaping { get; set; }
 
         public Operator Operator { get; set; }
         public PartyType PartyType { get; set; }

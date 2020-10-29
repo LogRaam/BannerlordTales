@@ -1,15 +1,14 @@
-﻿// Code written by Gabriel Mailhot, 24/10/2020.
+﻿// Code written by Gabriel Mailhot, 29/10/2020.
 
 #region
 
 using System.Diagnostics;
-using TalesPersistence.Context;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 #endregion
 
-namespace TalesPersistence
+namespace _47_TalesMath
 {
     #region
 
@@ -17,9 +16,11 @@ namespace TalesPersistence
 
     public class GameFunction
     {
+        public static bool IsDebug = true;
+
         public static void Log(string message)
         {
-            if (!GameData.Instance.IsDebug) return;
+            if (!IsDebug) return;
 
             Debug.WriteLine(message);
         }

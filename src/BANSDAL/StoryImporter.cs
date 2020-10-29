@@ -98,10 +98,10 @@ namespace TalesDAL
 
             while (!ActIsFullyExtracted(story[i]))
             {
+                if (story[i].ReferTo("INTRO: ")) act.Intro = ExtractText(story, ref i);
                 if (story[i].ReferTo("NAME: ")) act.Name = SetValueFrom(story[i]);
                 if (story[i].ReferTo("IMAGE: ")) act.Image = SetValueFrom(story[i]);
                 if (story[i].ReferTo("LOCATION: ")) act.Location = SetLocationFrom(story[i]);
-                if (story[i].ReferTo("INTRO: ")) act.Intro = ExtractText(story, ref i);
                 if (story[i].ReferTo("CHOICE:"))
                 {
                     var c = ExtractChoice(story, ref i);
@@ -158,7 +158,8 @@ namespace TalesDAL
                 PregnancyRisk = IsAtRiskOfBecomingPregnant(line),
                 Subject = line.Contains("NPC")
                     ? Actor.NPC
-                    : Actor.PLAYER
+                    : Actor.PLAYER,
+                Escaping = IsEscapingFromCaptor(line)
             };
 
             if (result.RandomEnd > 0) result.Value = result.RandomEnd.ToString();
@@ -173,10 +174,10 @@ namespace TalesDAL
 
             while (!ActIsFullyExtracted(story[i]))
             {
+                if (story[i].ReferTo("INTRO: ")) seq.Intro = ExtractText(story, ref i);
                 if (story[i].ReferTo("NAME: ")) seq.Name = SetValueFrom(story[i]);
                 if (story[i].ReferTo("IMAGE: ")) seq.Image = SetValueFrom(story[i]);
                 if (story[i].ReferTo("LOCATION: ")) seq.Location = SetLocationFrom(story[i]);
-                if (story[i].ReferTo("INTRO: ")) seq.Intro = ExtractText(story, ref i);
                 if (story[i].ReferTo("CHOICE:"))
                 {
                     var s = ExtractChoice(story, ref i);
@@ -397,6 +398,11 @@ namespace TalesDAL
             return line.Contains(" PREGNAN");
         }
 
+        private bool IsEscapingFromCaptor(string line)
+        {
+            return line.Contains("ESCAP");
+        }
+
 
         private bool IsThisAPercentageValue(string line)
         {
@@ -468,14 +474,11 @@ namespace TalesDAL
         {
             if (!line.Contains("%")) return SetUniqueTriggerFrom(line);
 
-            var result = new BaseTrigger();
-            var s = line.Split(':').RemoveEmptyItems();
+            var result = new BaseTrigger
+            {
+                Link = line.ExtractLinkWithoutPercentage(), ChanceToTrigger = line.ExtractPercentageChancesFromLink()
+            };
 
-            var t1 = s[1].Split(' ').RemoveEmptyItems()[0].Trim();
-            result.Link = t1;
-
-            var t2 = s[1].Split(' ').RemoveEmptyItems().Last().Replace("%", string.Empty);
-            result.ChanceToTrigger = Convert.ToInt32(t2);
 
             return result;
         }
@@ -484,7 +487,7 @@ namespace TalesDAL
         {
             var result = new BaseTrigger();
             var s = line.Split(':').RemoveEmptyItems();
-            result.Link = s[1].Trim();
+            result.Link = s[1].Trim().Replace(".", "");
             result.ChanceToTrigger = 100;
 
             return result;
@@ -507,6 +510,8 @@ namespace TalesDAL
 
         private bool TextFullyExtracted(string line)
         {
+            if (line.ReferTo("NAME:")) return true;
+            if (line.ReferTo("IMAGE:")) return true;
             if (line.ReferTo("CONDITION:")) return true;
             if (line.ReferTo("CONSEQUENCE:")) return true;
             if (line.ReferTo("ID:")) return true;

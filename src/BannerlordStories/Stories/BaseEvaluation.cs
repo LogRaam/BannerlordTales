@@ -17,6 +17,7 @@ namespace TalesBase.Stories
     {
         public Attributes? Attribute { get; set; } = Attributes.UNKNOWN;
         public Characteristics? Characteristic { get; set; } = Characteristics.UNKNOWN;
+        public bool Escaping { get; set; }
         public Operator Operator { get; set; } = Operator.UNKNOWN;
         public PartyType PartyType { get; set; } = PartyType.UNKNOWN;
         public PersonalityTraits? PersonalityTrait { get; set; } = PersonalityTraits.UNKNOWN;

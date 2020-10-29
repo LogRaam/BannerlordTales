@@ -39,6 +39,7 @@ namespace TalesPersistence.Entities
 
             Value = condition.Value;
             ValueIsPercentage = condition.ValueIsPercentage;
+            Escaping = condition.Escaping;
         }
 
         public Evaluation() { }
@@ -46,11 +47,14 @@ namespace TalesPersistence.Entities
 
         public void ApplyConsequenceInGame()
         {
+            GameFunction.Log("ApplyConsequenceInGame()");
+            //BUG:Renown doesnt seems to work
             ApplyPregnancyRiskConsequence();
             ApplyAttributeConsequence();
             ApplyCharacteristicConsequence();
             ApplyPersonalityTraitConsequence();
             ApplySkillConsequence();
+            ApplyEscapeConsequence();
         }
 
         public bool CanBePlayedInContext()
@@ -76,11 +80,10 @@ namespace TalesPersistence.Entities
         private void ApplyAttributeConsequence()
         {
             if (Attribute == null) return;
+            if (Attribute is Attributes.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
-
-            if (Attribute is Attributes.UNKNOWN) throw new ApplicationException("consequence.Attribute unknown");
 
             if (Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
             if (Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
@@ -93,20 +96,55 @@ namespace TalesPersistence.Entities
         private void ApplyCharacteristicConsequence()
         {
             if (Characteristic == null) return;
+            if (Characteristic == Characteristics.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
-
-            if (Characteristic == Characteristics.UNKNOWN) throw new ApplicationException("consequence.Characteristic unknown");
 
             if (Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
             if (Characteristic == Characteristics.GOLD) hero.Gold += value;
             if (Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
         }
 
+        private void ApplyEscapeConsequence()
+        {
+            GameFunction.Log("ApplyEscapeConsequence() consequence Value => " + Value + ", Escaping => " + Escaping);
+
+            if (!Escaping)
+            {
+                GameFunction.Log(".. not escaping => return");
+
+                return;
+            }
+
+
+            var p = IdentifySubject().ToHero();
+
+            GameFunction.Log("... hero is " + p.Name);
+
+            if (!p.IsPrisoner)
+            {
+                GameFunction.Log("... hero is not a prisoner => return");
+
+                return;
+            }
+
+            if (p.IsHumanPlayerCharacter)
+            {
+                GameFunction.Log("... call => EndCaptivity()");
+                PlayerCaptivity.EndCaptivity();
+            }
+            else
+            {
+                GameFunction.Log("... call => SetPrisonerFreeAction.Apply(p, player)");
+                SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Player).ToHero());
+            }
+        }
+
         private void ApplyPersonalityTraitConsequence()
         {
             if (PersonalityTrait == null) return;
+            if (PersonalityTrait == PersonalityTraits.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
@@ -137,6 +175,7 @@ namespace TalesPersistence.Entities
         private void ApplySkillConsequence()
         {
             if (Skill == null) return;
+            if (Skill == Skills.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
@@ -189,9 +228,9 @@ namespace TalesPersistence.Entities
 
         private int GetModifierValue()
         {
-            return !string.IsNullOrEmpty(Value)
-                ? int.Parse(Value)
-                : TalesRandom.GenerateRandomNumber(RandomStart, RandomEnd);
+            if (Value.Contains("R ")) return TalesRandom.GenerateRandomNumber(RandomStart, RandomEnd);
+
+            return int.Parse(Value);
         }
 
         private Hero IdentifySubject()
@@ -279,13 +318,9 @@ namespace TalesPersistence.Entities
 
         private bool TimeAccepted()
         {
-            switch (Time)
-            {
-                case GameTime.ANYTIME:
-                case GameTime.NONE:
-                case GameTime.UNKNOWN:
-                    return true;
-            }
+            if (Time == GameTime.ANYTIME) return true;
+            if (Time == GameTime.NONE) return true;
+            if (Time == GameTime.UNKNOWN) return true;
 
             return Time == GameData.Instance.GameContext.GameTime;
         }

@@ -2,7 +2,9 @@
 
 #region
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
@@ -10,6 +12,29 @@ namespace TalesDAL
 {
     public static class ExtendedMethod
     {
+        public static string ExtractLinkWithoutPercentage(this string line)
+        {
+            var s = line.Split(':').RemoveEmptyItems();
+            var t1 = s[1].Split(' ').RemoveEmptyItems();
+
+            var p = "";
+            for (var i = 0; i < t1.Length - 1; i++)
+            {
+                p = p + t1[i] + " ";
+            }
+
+            return p.Trim().Replace(".", "");
+        }
+
+
+        public static int ExtractPercentageChancesFromLink(this string line)
+        {
+            var s = line.Split(':').RemoveEmptyItems();
+            var t2 = s[1].Split(' ').RemoveEmptyItems().Last().Replace("%", string.Empty);
+
+            return Convert.ToInt32(t2);
+        }
+
         public static bool ReferTo(this string line, string value)
         {
             var result = line.ToUpper().TrimStart().StartsWith(value);

@@ -2,6 +2,8 @@
 
 #region
 
+using _47_TalesMath;
+using TalesEnums;
 using TalesPersistence.Context;
 using TalesRuntime.Menu;
 using TaleWorlds.CampaignSystem;
@@ -44,29 +46,75 @@ namespace TalesRuntime.Behavior
         /// <param name="menu">MenuCallbackArgs given by the game engine</param>
         private void AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu)
         {
-            new MenuBroker().ShowWaitingMenu(menu);
+            GameFunction.Log("AfterGameMenuOpenedEventRaised(MenuCallbackArgs menu) menu => " + menu.MenuContext.GameMenu.StringId);
+
+            var mb = new MenuBroker();
+
+            if (GameData.Instance.StoryContext.GetStoryTypeFor(menu.MenuContext.GameMenu.StringId) == StoryType.PLAYER_SURRENDER)
+            {
+                GameFunction.Log("... call => ShowSurrenderMenu()");
+
+                mb.ShowSurrenderMenu();
+
+                return;
+            }
+
+            GameFunction.Log("... call => menu.MenuContext.Destroy()");
+            menu.MenuContext.Destroy();
+
+            GameFunction.Log("... call => ShowWaitingMenu(menu) menu => " + menu.MenuContext.StringId);
+            mb.ShowWaitingMenu(menu);
         }
 
 
         private void DailyTickEventRaised()
         {
+            GameFunction.Log("DailyTickEventRaised()");
+
             GameData.Instance.GameContext.ResetEventChanceBonus();
         }
 
         private void GameMenuOpenedEventRaised(MenuCallbackArgs obj)
         {
+            GameFunction.Log("GameMenuOpenedEventRaised(MenuCallbackArgs obj) new menu => " + obj.MenuContext.GameMenu.StringId);
+
             GameData.Instance.GameContext.LastGameMenuOpened = obj.MenuContext.GameMenu.StringId;
         }
 
         private void GameMenuOptionSelectedEventRaised(GameMenuOption obj)
         {
+            GameFunction.Log("GameMenuOptionSelectedEventRaised(GameMenuOption obj) obj => " + obj.Text);
+
+            if (obj.OptionLeaveType == GameMenuOption.LeaveType.Surrender)
+            {
+                obj.OnConsequence = null;
+            }
         }
 
 
         private void HourlyTickEventRaised()
         {
+            GameFunction.Log("HourlyTickEventRaised()...");
+
             var mb = new MenuBroker();
-            mb.ShowActMenu();
+
+            if (PlayerCaptivity.CaptivityStartTime.ElapsedHoursUntilNow < 1)
+                if (mb.ShowSurrenderMenu())
+                {
+                    GameFunction.Log("... ShowSurrenderMenu returned true => return");
+
+                    return;
+                }
+
+
+            if (mb.ShowActMenu())
+            {
+                GameFunction.Log("HourlyTickEventRaised() ShowActMenu returned true => return");
+
+                return;
+            }
+
+            GameFunction.Log("... call => ExitToCaptiveWaitingMenu()");
             mb.ExitToCaptiveWaitingMenu();
         }
 
@@ -74,7 +122,9 @@ namespace TalesRuntime.Behavior
         {
             if (!hero.IsHumanPlayerCharacter) return;
 
-            new MenuBroker().ShowSurrenderMenu();
+            GameFunction.Log("PrisonerTakenEventRaised(PartyBase party, Hero hero) hero => Player");
+
+            //new MenuBroker().ShowSurrenderMenu();
         }
 
         #endregion

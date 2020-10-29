@@ -14,14 +14,16 @@ namespace TalesContract
 
     public interface IChoice
     {
-        List<IEvaluation> Conditions { get; }
+        public List<IEvaluation> Conditions { get; set; }
 
-        List<IEvaluation> Consequences { get; }
+        public List<IEvaluation> Consequences { get; set; }
 
         public string Id { get; }
 
-        string Text { get; set; }
+        public IAct ParentAct { get; set; }
 
-        List<ITrigger> Triggers { get; }
+        public string Text { get; set; }
+
+        public List<ITrigger> Triggers { get; set; }
     }
 }

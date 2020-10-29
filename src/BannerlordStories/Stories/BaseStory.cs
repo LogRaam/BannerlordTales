@@ -19,7 +19,7 @@ namespace TalesBase.Stories
 
         public IStoryHeader Header { get; set; } = new StoryHeader();
 
-        public string Id => Header.Name;
+        public string Id => Header.Name.Replace(" ", "");
 
 
         public List<IEvaluation> Restrictions { get; set; } = new List<IEvaluation>();

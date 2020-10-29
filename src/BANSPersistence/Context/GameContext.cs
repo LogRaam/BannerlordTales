@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _45_TalesGameState;
+using _47_TalesMath;
 using TalesBase.TW;
 using TalesContract;
 using TalesDAL;
@@ -153,7 +154,7 @@ namespace TalesPersistence.Context
         }
 
 
-        public string LastGameMenuOpened { get; set; }
+        public string LastGameMenuOpened { get; set; } = "Unknown";
 
         public IHero Player
         {
@@ -225,7 +226,7 @@ namespace TalesPersistence.Context
 
         public IAct RetrieveActToPlay()
         {
-            var qualifiedActs = GetAllQualifiedActs();
+            var qualifiedActs = GetAllPrisonerQualifiedActs();
 
             if (qualifiedActs.Count == 0) return null;
 
@@ -234,11 +235,11 @@ namespace TalesPersistence.Context
 
         public IAct RetrieveActToPlay(StoryType storyType)
         {
-            var qualifiedActs = (List<IAct>)GetAllQualifiedActs().Where(n => n.ParentStory.Header.TypeOfStory == storyType);
+            var qualifiedActs = GetAllPrisonerQualifiedActs().Where(n => n.ParentStory.Header.TypeOfStory == storyType).ToList();
 
-            if (qualifiedActs.Count == 0) return null;
-
-            return ChooseOneToPlay(qualifiedActs);
+            return qualifiedActs.Count > 0
+                ? ChooseOneToPlay(qualifiedActs)
+                : null;
         }
 
         public IAct RetrieveAlreadyPlayedActToPlay()
@@ -250,9 +251,19 @@ namespace TalesPersistence.Context
             return ChooseOneToPlay(qualifiedActs);
         }
 
-        public void UnPauseGame()
+        public PartyBase RetrieveLastMeetingParty()
         {
-            if (CampaignState.CurrentGameStarted()) new GameFunction().UnPauseGame();
+            var p = Campaign.Current.Parties.Where(n => n.IsVisible && n.Side == BattleSideEnum.Attacker).ToList();
+            if (!p.Any()) p = Campaign.Current.Parties.Where(n => n.IsVisible && n.Side == BattleSideEnum.Defender).ToList();
+
+            return p.Any()
+                ? p.ToList()[0]
+                : null;
+        }
+
+        public void StartPlayerCaptivity()
+        {
+            PlayerCaptivity.StartCaptivity(RetrieveLastMeetingParty());
         }
 
         #region private
@@ -280,12 +291,14 @@ namespace TalesPersistence.Context
             return qualifiedActs[index];
         }
 
-        private List<IAct> GetAllQualifiedActs()
+        private List<IAct> GetAllPrisonerQualifiedActs()
         {
             var result = new List<IAct>();
             foreach (var s in GameData.Instance.StoryContext.Stories)
             {
                 if (s.Header.TypeOfStory == StoryType.WAITING) continue;
+
+                //if (s.Header.TypeOfStory == StoryType.PLAYER_SURRENDER) continue; //TODO: Activate this one after testing
                 if (s.Header.Name.ToUpper() == "TEST") continue;
 
                 var story = new Story(s);
@@ -324,7 +337,7 @@ namespace TalesPersistence.Context
             {
                 var act = new Act(a);
 
-                if (act.AlreadyPlayed()) continue;
+                //if (act.AlreadyPlayed()) continue; //TODO: reactivate this one after testing
 
                 if (act.IsQualifiedRightNow()) result.Add(act);
             }
