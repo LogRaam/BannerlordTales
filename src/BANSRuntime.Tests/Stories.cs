@@ -47,7 +47,35 @@ namespace BannerlordTales.Tests
             return g;
         }
 
-        public Story KissTheBannerStory()
+        public void LoadStoriesFromDisk()
+        {
+            var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
+
+            GameData.Instance = new GameData
+            {
+                StoryContext = new StoryContext
+                {
+                    PlayedStories = new List<IStory>(),
+                    Stories = new List<IStory>(),
+                    StoryImagesFolder = new DirectoryInfo(p + "\\StoryImages"),
+                    ModuleFolder = new DirectoryInfo(p),
+                    CustomStoriesFolder = new DirectoryInfo(p + "\\CustomStories")
+                }
+            };
+
+            GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk();
+        }
+
+        public void SetupKissTheBanner()
+        {
+            var sut = KissTheBannerStory();
+            GameData.Instance = KissTheBannerGameData();
+            GameData.Instance.StoryContext.Stories.Add(sut);
+        }
+
+        #region private
+
+        private Story KissTheBannerStory()
         {
             var s = new Story
             {
@@ -134,32 +162,6 @@ namespace BannerlordTales.Tests
             return s;
         }
 
-        public void LoadStoriesFromDisk()
-        {
-            var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
-
-            GameData.Instance = new GameData
-            {
-                StoryContext = new StoryContext
-                {
-                    PlayedStories = new List<IStory>(),
-                    Stories = new List<IStory>(),
-                    StoryImagesFolder = new DirectoryInfo(p + "\\StoryImages"),
-                    ModuleFolder = new DirectoryInfo(p),
-                    CustomStoriesFolder = new DirectoryInfo(p + "\\CustomStories")
-                }
-            };
-
-            GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk();
-        }
-        //TODO: Should import the story instead of creating it with code.
-
-
-        public void SetupKissTheBanner()
-        {
-            var sut = KissTheBannerStory();
-            GameData.Instance = KissTheBannerGameData();
-            GameData.Instance.StoryContext.Stories.Add(sut);
-        }
+        #endregion
     }
 }

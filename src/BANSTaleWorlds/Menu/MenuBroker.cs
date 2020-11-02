@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _47_TalesMath;
 using TalesBase.Stories;
 using TalesContract;
@@ -26,19 +27,14 @@ namespace TalesRuntime.Menu
 
     public class MenuBroker
     {
-        public void ExitToCaptiveWaitingMenu()
+        public void ExitToLastAndUnpause()
         {
-            GameFunction.Log("ExitToCaptiveWaitingMenu()...");
-
-            //if (Campaign.Current.CurrentMenuContext != null && Campaign.Current.CurrentMenuContext.GameMenu.IsWaitMenu)
             if (!GameData.Instance.GameContext.Player.IsPrisoner) return;
 
             SetBackgroundImage("LogCaptivePrisoner");
 
-            GameFunction.Log("... call => GameMenu.ExitToLast()");
             GameMenu.ExitToLast();
 
-            GameFunction.Log("... call => UnPauseGame()");
             new GameFunction().UnPauseGame();
         }
 
@@ -46,95 +42,69 @@ namespace TalesRuntime.Menu
         {
             var ev = PickEventFromStories();
 
-            GameFunction.Log("GetWaitingMenu() return => " + ev.Id);
-
             return ev;
         }
 
         public void GotoMenuFor(string triggerLink)
         {
-            GameFunction.Log("GotoMenuFor(string triggerLink) => triggerLink = " + triggerLink);
-
-
             var act = GameData.Instance.StoryContext.FindSequence(triggerLink) ?? GameData.Instance.StoryContext.FindAct(triggerLink);
 
             if (act == null) throw new NullReferenceException("ERROR: Cannot find IAct: " + triggerLink);
 
-            ShowMenuFor(act);
+            PlayAct(act);
+        }
+
+        public void PlayAct(IAct act)
+        {
+            GameMenu.ExitToLast();
+            GameMenu.ActivateGameMenu(act.Id);
+            RegisterPlayedAct(act);
         }
 
 
         public void SetBackgroundImage(string imageName)
         {
-            GameFunction.Log("SetBackgroundImage(string imageName) => imageName = " + imageName);
-
             if (imageName == "None") return;
 
+            GameData.Instance.GameContext.OriginalBackgroundSpriteSheets = UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets;
+
             for (var i = 0; i < UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets.Count; i++)
-            {
-                UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i] = GameData.Instance.StoryContext.BackgroundImages.TextureList[imageName];
-            }
+                if (UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i].Width == 445)
+                    UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i] = GameData.Instance.StoryContext.BackgroundImages.TextureList[imageName];
         }
 
-        public bool ShowActMenu()
+        public void ShowActMenu()
         {
-            GameFunction.Log("ShowActMenu()...");
+            var stories = GameData.Instance.GameContext.GetNewStories().Where(n => n.Header.Name != "Test"
+                                                                                   && n.Header.TypeOfStory != StoryType.WAITING
+                                                                                   && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
+                                                                                   && n.Header.TypeOfStory != StoryType.TEST
+                                                                                   && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
 
-            if (GameData.Instance.GameContext.Player.IsPrisoner)
-            {
-                GameFunction.Log("... Player is not prisoner, return => false");
-
-                return false;
-            }
-
-            if (!GameData.Instance.GameContext.ReadyToShowNewEvent())
-            {
-                GameFunction.Log("... ReadyToShowNewEvent return => false");
-
-                return false;
-            }
-
-            var act = GameData.Instance.GameContext.RetrieveActToPlay() ?? GameData.Instance.GameContext.RetrieveAlreadyPlayedActToPlay();
+            var act = GameData.Instance.GameContext.ChooseQualifiedActFrom(stories);
 
             if (act == null)
             {
-                GameFunction.Log("... act is null return => false");
-
-                return false;
+                stories = GameData.Instance.GameContext.GetAlreadyPlayedStories().Where(n => n.Header.Name != "Test"
+                                                                                             && n.Header.TypeOfStory != StoryType.WAITING
+                                                                                             && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
+                                                                                             && n.Header.TypeOfStory != StoryType.TEST
+                                                                                             && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
+                act = GameData.Instance.GameContext.ChooseQualifiedActFrom(stories);
             }
 
-            GameFunction.Log("... call => ShowMenuFor(act), act = " + act.Id);
-            ShowMenuFor(act);
+            if (act == null) return;
 
-            GameFunction.Log("... return => true");
-
-            return true;
+            PlayAct(act);
         }
 
-        public bool ShowSurrenderMenu()
+        public void ShowSurrenderMenu()
         {
-            GameFunction.Log("ShowSurrenderMenu()");
-
             var act = GameData.Instance.GameContext.RetrieveActToPlay(StoryType.PLAYER_SURRENDER);
 
-            if (act == null) return false;
+            if (act == null) return;
 
-            GameFunction.Log("... call => ShowMenuFor(act) act => " + act.Id);
-
-            ShowMenuFor(act); //GameMenu.ActivateGameMenu(act.Id);
-
-            return true;
-        }
-
-        public void ShowWaitingMenu(MenuCallbackArgs menuCallback)
-        {
-            GameFunction.Log("ShowWaitingMenu(MenuCallbackArgs menuCallback) menuCallback => " + menuCallback.MenuContext.GameMenu.StringId);
-
-            if (menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_wilderness_escape"
-                && menuCallback.MenuContext.GameMenu?.StringId != "menu_captivity_end_propose_ransom_wilderness") return;
-
-            GameFunction.Log("... call => ShowCustomWaitingMenu(menuCallback)");
-            ShowCustomWaitingMenu(menuCallback);
+            PlayAct(act);
         }
 
 
@@ -181,8 +151,6 @@ namespace TalesRuntime.Menu
 
         private IAct PickEventFromStories()
         {
-            GameFunction.Log("PickEventFromStories() ...");
-
             var stories = RetrieveWaitingStories();
 
             if (stories.Count == 0) return null;
@@ -195,8 +163,6 @@ namespace TalesRuntime.Menu
 
             var selectedAct = new Act(acts[TalesRandom.GenerateRandomNumber(acts.Count)]);
 
-            GameFunction.Log("... selectedAct => " + selectedAct.Id);
-
             return selectedAct.IsQualifiedRightNow()
                 ? selectedAct
                 : null;
@@ -204,8 +170,6 @@ namespace TalesRuntime.Menu
 
         private void RegisterPlayedAct(IAct act)
         {
-            GameFunction.Log("RegisterPlayedAct(IAct act) act => " + act.Id);
-
             if (act.GetType() == typeof(BaseSequence)) return;
 
             GameData.Instance.StoryContext.AddToPlayedActs(act);
@@ -219,49 +183,7 @@ namespace TalesRuntime.Menu
                 if (story.Header.TypeOfStory == StoryType.WAITING)
                     result.Add(story);
 
-            GameFunction.Log("RetrieveWaitingStories() return count => " + result.Count);
-
             return result;
-        }
-
-        private void ShowCustomWaitingMenu(MenuCallbackArgs menuCallback)
-        {
-            GameFunction.Log("ShowCustomWaitingMenu(MenuCallbackArgs menuCallback) menuCallback => " + menuCallback.MenuContext.GameMenu.StringId);
-
-            ShowMenuFor(GetWaitingMenu());
-        }
-
-        private void ShowMenuFor(IAct act)
-        {
-            GameFunction.Log("ShowMenuFor(IAct act) act => " + act.Id);
-
-
-            GameFunction.Log("... call => ExitToLast()");
-            GameMenu.ExitToLast(); //NOTE: Should use this to enable options with Surrender menu
-
-            //if (!string.IsNullOrEmpty(act.Image) || act.Image.ToUpper() == "NONE") SetBackgroundImage(act.Image);
-
-            if (act.ParentStory.Header.TypeOfStory == StoryType.WAITING)
-            {
-                GameFunction.Log("... call => ActivateGameMenu(act.Id) id => " + act.Id);
-                GameMenu.ActivateGameMenu(act.Id);
-            }
-
-            if (act.ParentStory.Header.TypeOfStory == StoryType.PLAYER_SURRENDER)
-            {
-                GameFunction.Log("... call => ActivateGameMenu(act.Id) id => " + act.Id);
-                GameMenu.ActivateGameMenu(act.Id);
-            }
-            else
-            {
-                GameFunction.Log("... call => SwitchToMenu(act.Id) id => " + act.Id);
-                GameMenu.SwitchToMenu(act.Id);
-            }
-
-            //if (!string.IsNullOrEmpty(act.Image) || act.Image.ToUpper() != "NONE") SetBackgroundImage(act.Image);
-
-            GameFunction.Log("... call => RegisterPlayedAct(act) act => " + act.Id);
-            RegisterPlayedAct(act);
         }
 
         #endregion

@@ -19,8 +19,6 @@ namespace TalesDAL
         {
             GameFunction.Log("EvalPercentage(int value) value => " + value);
 
-            InitRandomNumber(Guid.NewGuid().GetHashCode());
-
             var r = GenerateRandomNumber(100);
 
             GameFunction.Log("... return r < value => " + r + " <  " + value);
@@ -35,6 +33,8 @@ namespace TalesDAL
 
         public static int GenerateRandomNumber(int max)
         {
+            InitRandomNumber(Guid.NewGuid().GetHashCode());
+
             var n = max;
             if (n < 0) n = -n;
 

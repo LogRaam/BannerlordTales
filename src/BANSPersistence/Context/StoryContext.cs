@@ -145,6 +145,22 @@ namespace TalesPersistence.Context
                 : new StoryDal().LoadStoriesFromFolder(CustomStoriesFolder);
         }
 
+        public bool MenuExist(string stringId)
+        {
+            foreach (var s in Stories)
+            {
+                foreach (var act in s.Acts)
+                    if (act.Id == stringId)
+                        return true;
+
+                foreach (var sequence in s.Sequences)
+                    if (sequence.Id == stringId)
+                        return true;
+            }
+
+            return false;
+        }
+
         #region private
 
         private bool TriggerActRefExist(ITrigger trigger, IStory S)
@@ -158,10 +174,10 @@ namespace TalesPersistence.Context
 
         private bool TriggerRefExist(ITrigger trigger)
         {
-            foreach (var S in Stories)
+            foreach (var s in Stories)
             {
-                if (TriggerActRefExist(trigger, S)) return true;
-                if (TriggerSequenceRefExist(trigger, S)) return true;
+                if (TriggerActRefExist(trigger, s)) return true;
+                if (TriggerSequenceRefExist(trigger, s)) return true;
             }
 
             return false;

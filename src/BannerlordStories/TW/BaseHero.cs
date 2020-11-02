@@ -144,7 +144,7 @@ namespace TalesBase.TW
             if (hero == null) return;
 
             _id = hero.Id;
-            _name = hero.Name.ToString();
+            _name = hero.Name?.ToString();
             _firstName = hero.FirstName?.ToString();
             _isHumanPlayerCharacter = hero.IsHumanPlayerCharacter;
         }
@@ -158,7 +158,7 @@ namespace TalesBase.TW
             if (character == null) return;
 
             _id = character.Id;
-            _name = character.Name.ToString();
+            _name = character.Name?.ToString();
             _isHumanPlayerCharacter = character.IsPlayerCharacter;
         }
 
@@ -512,7 +512,9 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _firstName = Origin.FirstName.ToString();
+                if (CampaignState.CurrentGameStarted())
+                    if (Origin.FirstName != null)
+                        _firstName = Origin.FirstName.ToString();
 
                 return _firstName;
             }
@@ -1170,7 +1172,9 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _name = Origin.Name.ToString();
+                if (CampaignState.CurrentGameStarted())
+                    if (Origin.Name != null)
+                        _name = Origin.Name.ToString();
 
                 return _name;
             }

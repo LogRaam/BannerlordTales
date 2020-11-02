@@ -14,6 +14,8 @@ using TalesEnums;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.TwoDimension;
 using Location = TalesEnums.Location;
 
 #endregion
@@ -156,6 +158,8 @@ namespace TalesPersistence.Context
 
         public string LastGameMenuOpened { get; set; } = "Unknown";
 
+        public List<Texture> OriginalBackgroundSpriteSheets { get; set; }
+
         public IHero Player
         {
             get
@@ -178,6 +182,76 @@ namespace TalesPersistence.Context
             }
 
             set => _playerIsCaptor = value;
+        }
+
+        public Act ChooseQualifiedActFrom(List<Story> stories)
+        {
+            var acts = new List<Act>();
+            foreach (var s in stories)
+            {
+                if (!s.IsQualifiedRightNow()) continue;
+
+                foreach (var a in s.Acts)
+                {
+                    var act = new Act(a);
+
+                    if (!act.IsQualifiedRightNow()) continue;
+
+                    acts.Add(act);
+                }
+            }
+
+            return acts[TalesRandom.GenerateRandomNumber(acts.Count)];
+        }
+
+
+        public List<IAct> GetAllQualifiedActs(List<IStory> stories)
+        {
+            var result = new List<IAct>();
+            foreach (var s in stories)
+            {
+                if (s.Header.Name.ToUpper() == "TEST") continue;
+
+                var story = new Story(s);
+
+                result.AddRange(GetQualifiedActs(story));
+            }
+
+            return result;
+        }
+
+        public List<Story> GetAlreadyPlayedStories()
+        {
+            var result = new List<Story>();
+
+            foreach (var s in GameData.Instance.StoryContext.Stories)
+            {
+                var story = new Story(s);
+
+                if (story.CanBePlayedOnceAndAlreadyPlayed()) continue;
+                if (!story.AlreadyPlayed()) continue;
+
+                if (story.IsQualifiedRightNow()) result.Add(story);
+            }
+
+            return result;
+        }
+
+        public List<Story> GetNewStories()
+        {
+            var result = new List<Story>();
+
+            foreach (var s in GameData.Instance.StoryContext.Stories)
+            {
+                var story = new Story(s);
+
+                if (story.CanBePlayedOnceAndAlreadyPlayed()) continue;
+                if (story.AlreadyPlayed()) continue;
+
+                if (story.IsQualifiedRightNow()) result.Add(story);
+            }
+
+            return result;
         }
 
 
@@ -204,7 +278,6 @@ namespace TalesPersistence.Context
             if (CampaignState.CurrentGameStarted()) new GameFunction().PauseGame();
         }
 
-
         public bool ReadyToShowNewEvent()
         {
             var f = EventChanceBonus + HourOfDay;
@@ -219,19 +292,17 @@ namespace TalesPersistence.Context
             return result;
         }
 
+        public void RegenBackgroundImages()
+        {
+            for (var i = 0; i < GameData.Instance.GameContext.OriginalBackgroundSpriteSheets.Count; i++)
+                UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i] = GameData.Instance.GameContext.OriginalBackgroundSpriteSheets[i];
+        }
+
         public void ResetEventChanceBonus()
         {
             EventChanceBonus = 0;
         }
 
-        public IAct RetrieveActToPlay()
-        {
-            var qualifiedActs = GetAllPrisonerQualifiedActs();
-
-            if (qualifiedActs.Count == 0) return null;
-
-            return ChooseOneToPlay(qualifiedActs);
-        }
 
         public IAct RetrieveActToPlay(StoryType storyType)
         {
@@ -244,7 +315,7 @@ namespace TalesPersistence.Context
 
         public IAct RetrieveAlreadyPlayedActToPlay()
         {
-            var qualifiedActs = GetAlreadyPlayedQualifiedActsAndSequences();
+            var qualifiedActs = GetAlreadyPlayedQualifiedActs();
 
             if (qualifiedActs.Count == 0) return null;
 
@@ -291,42 +362,28 @@ namespace TalesPersistence.Context
             return qualifiedActs[index];
         }
 
-        private List<IAct> GetAllPrisonerQualifiedActs()
+        private bool ExcludeTESTStoryTypes(IStory s)
         {
-            var result = new List<IAct>();
-            foreach (var s in GameData.Instance.StoryContext.Stories)
-            {
-                if (s.Header.TypeOfStory == StoryType.WAITING) continue;
+            //if (s.Header.TypeOfStory == StoryType.WAITING) return true;
+            //if (s.Header.TypeOfStory == StoryType.PLAYER_SURRENDER) return true;
+            if (s.Header.Name.ToUpper() == "TEST") return true;
+            //if (s.Header.CanBePlayedOnlyOnce) return true;
 
-                //if (s.Header.TypeOfStory == StoryType.PLAYER_SURRENDER) continue; //TODO: Activate this one after testing
-                if (s.Header.Name.ToUpper() == "TEST") continue;
-
-                var story = new Story(s);
-
-                if (story.CanBePlayedOnceAndAlreadyPlayed()) continue;
-
-                result.AddRange(GetQualifiedActs(story));
-            }
-
-            return result;
+            return false;
         }
 
-
-        private List<IAct> GetAlreadyPlayedQualifiedActsAndSequences()
+        private List<IAct> GetAllPrisonerQualifiedActs()
         {
-            var result = new List<IAct>();
-            foreach (var s in GameData.Instance.StoryContext.PlayedStories)
-            {
-                if (s.Header.TypeOfStory == StoryType.WAITING) continue;
-                if (s.Header.Name.ToUpper() == "TEST") continue;
-                if (s.Header.CanBePlayedOnlyOnce) continue;
+            GameFunction.Log("GetAllPrisonerQualifiedActs()");
 
-                var story = new Story(s);
+            return GetAllQualifiedActs(GameData.Instance.StoryContext.Stories);
+        }
 
-                result.AddRange(GetQualifiedActs(story));
-            }
+        private List<IAct> GetAlreadyPlayedQualifiedActs()
+        {
+            GameFunction.Log("GetAlreadyPlayedQualifiedActs()");
 
-            return result;
+            return GetAllQualifiedActs(GameData.Instance.StoryContext.PlayedStories);
         }
 
 
@@ -337,21 +394,9 @@ namespace TalesPersistence.Context
             {
                 var act = new Act(a);
 
-                //if (act.AlreadyPlayed()) continue; //TODO: reactivate this one after testing
+                if (act.AlreadyPlayed()) continue;
 
                 if (act.IsQualifiedRightNow()) result.Add(act);
-            }
-
-            return result;
-        }
-
-        private List<IAct> GetQualifiedSequences(IStory story)
-        {
-            var result = new List<IAct>();
-            foreach (var s in story.Sequences)
-            {
-                var sequence = new Sequence(s);
-                if (sequence.IsQualifiedRightNow()) result.Add(sequence);
             }
 
             return result;

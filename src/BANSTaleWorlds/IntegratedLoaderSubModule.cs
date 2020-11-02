@@ -32,7 +32,10 @@ namespace TalesRuntime
 
         public override void OnCampaignStart(Game game, object starterObject) { }
 
-        public override void OnGameEnd(Game game) { }
+        public override void OnGameEnd(Game game)
+        {
+            // GameData.Instance.GameContext.RegenBackgroundImages();
+        }
 
         public override void OnGameInitializationFinished(Game game) { }
 

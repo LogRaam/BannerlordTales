@@ -24,15 +24,18 @@ namespace TalesPersistence.Stories
         {
         }
 
-        public bool CanBePlayedOnceAndAlreadyPlayed()
+        public bool AlreadyPlayed()
         {
-            if (!Header.CanBePlayedOnlyOnce) return false;
-
             foreach (var story in GameData.Instance.StoryContext.PlayedStories)
                 if (story.Id == Id)
                     return true;
 
             return false;
+        }
+
+        public bool CanBePlayedOnceAndAlreadyPlayed()
+        {
+            return Header.CanBePlayedOnlyOnce && AlreadyPlayed();
         }
 
         public bool IsQualifiedRightNow()
