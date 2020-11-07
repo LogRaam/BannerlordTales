@@ -5,7 +5,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using TalesBase.Stories;
 using TalesBase.TW;
 using TalesContract;
@@ -218,20 +217,6 @@ namespace TalesDAL
             return result;
         }
 
-        private string ExtractThanValue(string line)
-        {
-            var result = Regex.Split(line.ToUpper(), "THAN").Last();
-
-            return result;
-        }
-
-        private string ExtractToValue(string line)
-        {
-            var result = Regex.Split(line.ToUpper(), "TO").Last();
-
-            return result;
-        }
-
 
         private Attributes? GetAttributeFrom(string line)
         {
@@ -288,13 +273,6 @@ namespace TalesDAL
             return PersonalityTraits.UNKNOWN;
         }
 
-        private string GetRadomExpressionFrom(string line)
-        {
-            var result = line.Remove(0, line.LastIndexOf(" R ", StringComparison.Ordinal));
-
-            return result;
-        }
-
         private int GetRandomEndFrom(string line)
         {
             if (line.Contains("BETWEEN ")) return GetRandomEndVerboseFrom(line);
@@ -311,6 +289,13 @@ namespace TalesDAL
             var result = line.Split(' ').RemoveEmptyItems().Last().Reformat();
 
             return Convert.ToInt32(result);
+        }
+
+        private string GetRandomExpressionFrom(string line)
+        {
+            var result = line.Remove(0, line.LastIndexOf(" R ", StringComparison.Ordinal));
+
+            return result;
         }
 
         private int GetRandomStartFrom(string line)
@@ -389,7 +374,7 @@ namespace TalesDAL
         private string GetValueFrom(string line)
         {
             return line.Contains(" R ")
-                ? GetRadomExpressionFrom(line)
+                ? GetRandomExpressionFrom(line)
                 : GetSimpleValueFrom(line);
         }
 

@@ -198,7 +198,9 @@ namespace TalesPersistence.Entities
 
         private bool IsSkillConformFor(IEvaluation skill)
         {
-            throw new NotImplementedException();
+            var ev = new Evaluation(skill);
+
+            return ev.CanBePlayedInContext();
         }
 
         #endregion

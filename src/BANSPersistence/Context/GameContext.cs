@@ -14,7 +14,6 @@ using TalesEnums;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
-using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.TwoDimension;
 using Location = TalesEnums.Location;
 
@@ -80,16 +79,6 @@ namespace TalesPersistence.Context
             set => _hourOfDay = value;
         }
 
-        public int HoursInDay
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _hoursInDay = CampaignTime.HoursInDay;
-
-                return _hoursInDay;
-            }
-            set => _hoursInDay = value;
-        }
 
         public bool? IsCurrentlyInCastle { get; set; }
         public bool? IsCurrentlyInDungeon { get; set; }
@@ -204,22 +193,6 @@ namespace TalesPersistence.Context
             return acts[TalesRandom.GenerateRandomNumber(acts.Count)];
         }
 
-
-        public List<IAct> GetAllQualifiedActs(List<IStory> stories)
-        {
-            var result = new List<IAct>();
-            foreach (var s in stories)
-            {
-                if (s.Header.Name.ToUpper() == "TEST") continue;
-
-                var story = new Story(s);
-
-                result.AddRange(GetQualifiedActs(story));
-            }
-
-            return result;
-        }
-
         public List<Story> GetAlreadyPlayedStories()
         {
             var result = new List<Story>();
@@ -273,10 +246,6 @@ namespace TalesPersistence.Context
             }
         }
 
-        public void PauseGame()
-        {
-            if (CampaignState.CurrentGameStarted()) new GameFunction().PauseGame();
-        }
 
         public bool ReadyToShowNewEvent()
         {
@@ -292,11 +261,6 @@ namespace TalesPersistence.Context
             return result;
         }
 
-        public void RegenBackgroundImages()
-        {
-            for (var i = 0; i < GameData.Instance.GameContext.OriginalBackgroundSpriteSheets.Count; i++)
-                UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i] = GameData.Instance.GameContext.OriginalBackgroundSpriteSheets[i];
-        }
 
         public void ResetEventChanceBonus()
         {
@@ -313,42 +277,7 @@ namespace TalesPersistence.Context
                 : null;
         }
 
-        public IAct RetrieveAlreadyPlayedActToPlay()
-        {
-            var qualifiedActs = GetAlreadyPlayedQualifiedActs();
-
-            if (qualifiedActs.Count == 0) return null;
-
-            return ChooseOneToPlay(qualifiedActs);
-        }
-
-        public PartyBase RetrieveLastMeetingParty()
-        {
-            var p = Campaign.Current.Parties.Where(n => n.IsVisible && n.Side == BattleSideEnum.Attacker).ToList();
-            if (!p.Any()) p = Campaign.Current.Parties.Where(n => n.IsVisible && n.Side == BattleSideEnum.Defender).ToList();
-
-            return p.Any()
-                ? p.ToList()[0]
-                : null;
-        }
-
-        public void StartPlayerCaptivity()
-        {
-            PlayerCaptivity.StartCaptivity(RetrieveLastMeetingParty());
-        }
-
         #region private
-
-        private static bool StoryAlreadyPlayed(IStory story)
-        {
-            if (!story.Header.CanBePlayedOnlyOnce) return false;
-
-            foreach (var playedStory in GameData.Instance.StoryContext.PlayedStories)
-                if (playedStory.Id == story.Id)
-                    return true;
-
-            return false;
-        }
 
         private IAct ChooseOneToPlay(List<IAct> qualifiedActs)
         {
@@ -362,15 +291,6 @@ namespace TalesPersistence.Context
             return qualifiedActs[index];
         }
 
-        private bool ExcludeTESTStoryTypes(IStory s)
-        {
-            //if (s.Header.TypeOfStory == StoryType.WAITING) return true;
-            //if (s.Header.TypeOfStory == StoryType.PLAYER_SURRENDER) return true;
-            if (s.Header.Name.ToUpper() == "TEST") return true;
-            //if (s.Header.CanBePlayedOnlyOnce) return true;
-
-            return false;
-        }
 
         private List<IAct> GetAllPrisonerQualifiedActs()
         {
@@ -379,11 +299,20 @@ namespace TalesPersistence.Context
             return GetAllQualifiedActs(GameData.Instance.StoryContext.Stories);
         }
 
-        private List<IAct> GetAlreadyPlayedQualifiedActs()
-        {
-            GameFunction.Log("GetAlreadyPlayedQualifiedActs()");
 
-            return GetAllQualifiedActs(GameData.Instance.StoryContext.PlayedStories);
+        private List<IAct> GetAllQualifiedActs(List<IStory> stories)
+        {
+            var result = new List<IAct>();
+            foreach (var s in stories)
+            {
+                if (s.Header.Name.ToUpper() == "TEST") continue;
+
+                var story = new Story(s);
+
+                result.AddRange(GetQualifiedActs(story));
+            }
+
+            return result;
         }
 
 

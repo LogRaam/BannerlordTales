@@ -4,14 +4,13 @@ namespace TalesPersistence.Context
 {
     public class GameData
     {
-        private static GameData instance;
+        private static GameData _instance;
 
-        public bool IsDebug = true;
 
         public static GameData Instance
         {
-            get => instance ?? (instance = new GameData());
-            set => instance = value;
+            get => _instance ?? (_instance = new GameData());
+            set => _instance = value;
         }
 
         public GameContext GameContext { get; set; } = new GameContext();

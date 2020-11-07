@@ -47,7 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoryDal.cs" />
     <Compile Include="StoryImporter.cs" />
-    <Compile Include="StoryLoader.cs" />
     <Compile Include="TalesRandom.cs" />
   </ItemGroup>
   <ItemGroup>

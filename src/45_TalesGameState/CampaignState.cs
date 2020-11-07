@@ -2,10 +2,6 @@
 
 #region
 
-#endregion
-
-#region
-
 using TaleWorlds.CampaignSystem;
 
 #endregion

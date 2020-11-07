@@ -20,9 +20,7 @@ namespace TalesRuntime
 {
     public class IntegratedLoaderSubModule : MBSubModuleBase
     {
-        public override void BeginGameStart(Game game)
-        {
-        }
+        //public override void BeginGameStart(Game game) { }
 
         public override bool DoLoading(Game game)
         {
@@ -30,22 +28,19 @@ namespace TalesRuntime
             return base.DoLoading(game);
         }
 
-        public override void OnCampaignStart(Game game, object starterObject) { }
+        //public override void OnCampaignStart(Game game, object starterObject) { }
 
-        public override void OnGameEnd(Game game)
-        {
-            // GameData.Instance.GameContext.RegenBackgroundImages();
-        }
+        //public override void OnGameEnd(Game game) { }
 
-        public override void OnGameInitializationFinished(Game game) { }
+        //public override void OnGameInitializationFinished(Game game) { }
 
-        public override void OnGameLoaded(Game game, object initializerObject) { }
+        //public override void OnGameLoaded(Game game, object initializerObject) { }
 
-        public override void OnMissionBehaviourInitialize(Mission mission) { }
+        //public override void OnMissionBehaviourInitialize(Mission mission) { }
 
-        public override void OnMultiplayerGameStart(Game game, object starterObject) { }
+        //public override void OnMultiplayerGameStart(Game game, object starterObject) { }
 
-        public override void OnNewGameCreated(Game game, object initializerObject) { }
+        //public override void OnNewGameCreated(Game game, object initializerObject) { }
 
         //protected override void OnApplicationTick(float dt) { }
 
@@ -72,8 +67,6 @@ namespace TalesRuntime
 
             GameData.Instance.StoryContext.ModuleFolder = new DirectoryInfo(Path.GetDirectoryName(ModuleInfo.GetPath("LogRaamBannerlordTales")) ?? string.Empty);
         }
-
-        protected override void OnSubModuleUnloaded() { }
 
         #region private
 
@@ -116,5 +109,7 @@ namespace TalesRuntime
         }
 
         #endregion
+
+        //protected override void OnSubModuleUnloaded() { }
     }
 }

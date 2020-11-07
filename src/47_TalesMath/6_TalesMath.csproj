@@ -54,7 +54,6 @@
     <Compile Include="GameMath.cs" />
     <Compile Include="GameRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RuleValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BANSBoundaries\7_TalesContract.csproj">
