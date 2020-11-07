@@ -1,0 +1,716 @@
+Story
+    
+    Name:         Trading Freedom
+	OneTimeStory: Yes
+    DependOn:     None
+    Time:         Night
+    StoryType:    Player is captive
+
+    Restriction: Player age > 18
+    Restriction: Player gender is female
+    Restriction: NPC gender is male
+    
+    Act
+    --------------------------------------
+        Location:   Map
+        Name:       An Unexpected Meeting
+        Text:       You've been sleeping for a long time.  All of a sudden you wake up with a start.  A man is holding your mouth with his hand, waving at you not to make a sound.  He says, "Shhh!  I don't want to hurt you.  Don't shout and listen to me.
+        Image:      LogCaptiveShut2
+        
+        Choice: Stay still and wait to see what happens...
+            Goto: Stay Quiet And Wait            
+
+        Choice: Take his hand away. "Don't touch me dog!"
+            Goto: Fight Back Failed 50%
+            Goto: Fight Back Success 50%
+
+
+    Sequence
+    --------------------------------------
+        Name:   Fight Back Failed
+
+        Text:   You fight back and receive a violent blow to the head.  You are dizzy and just before you pass out, you can see the silhouette of the man taking off his pants.
+        Image:  None
+
+        Choice: Pass out...
+            Consequence: Chance of pregnancy
+            Consequence: health R -25 -50
+
+
+    Sequence
+    --------------------------------------
+        Name:   Stay Quiet And Wait   
+
+        Text:   I have a proposition for you.  Will you listen to me in silence?  You nod.  Fine! The man removes his hand.  "I've been looking at you for quite a while now and I think you're very pretty.  Are you a Noble?  Yes of course you are a Noble.  I can help you escape.  In exchange, I want to have the opportunity to touch you tonight".  The man is anxiously waiting for you to give him an answer.
+        Image:  LogCaptiveShut2
+
+        Choice: Agree to his request		
+		    Goto: Accept Proposition		
+    
+	    Choice: Ask him to untie you first
+      		Goto: Untie Feet Success 25%
+		    Goto: Untie Feet Fail 25%
+		    Goto: Refuse Fail 50%
+    
+        Choice: Refuse his request 
+        	Goto: Refuse Success 50%
+		    Goto: Refuse Request Failed 50%
+		
+
+    Sequence
+    --------------------------------------
+
+        Name: Accept Proposition   
+
+        Text: The man looks around to check that no one is there.  Then he starts staring at your chest.  His breathing becomes shaky as he begins to touch your breasts.  "Oh yes, you are beautiful, so beautiful.  I like you!"
+        Image: LogConsensualBreastGrope
+
+        Choice: Let him continue without saying anything        
+       	    Goto: Continue Accept Proposition		
+	
+        Choice: Ask him to untie you so he can touch you between your legs. 
+        	Goto: Untie Feet Success 50%
+		    Goto: Untie Feet Fail 50%
+        
+        Choice:  Push it back with your legs. "Stop it now, I've had enough".
+    		Goto: Refuse Push Success 50%
+	    	Goto: Refuse Push Fail 50%
+
+
+    Sequence 
+    --------------------------------------
+
+        Name: Refuse Success  
+
+        Text: The man looks down.  "I understand.  You don't know me.  You're a Noble and I'm a villain."  He reaches out his hand.  "Here, this is for you.  It belonged to my bride."  He gives you a small wooden pendant representing a galloping horse.  The man gets up and leaves the place.
+        Image: LogCaptiveShut2
+    
+        Choice: Continue...
+
+
+    Sequence
+    --------------------------------------
+
+        Name: Refuse Fail   
+
+        Text: "And why should I set you free?  What's in it for me?"
+        Image: TradingFreedomRefuseFail
+
+        Choice: "I promise you, you can fuck me." 	
+		    Goto: Trading Sex Success 50%
+		    Goto: Trading Sex Failed 50%
+	
+        Choice: "I'll reveal to you where I've hidden my gold." 
+		    Goto: Trading Gold Success   50%
+		    Goto: Trading Gold Failed   50%
+    
+        Choice: "I'll grant you a painless death."
+		    Goto: Trading Death Success   50%
+		    Goto: Trading Death Failed   50%
+    
+
+    Sequence
+    --------------------------------------
+
+        Name: Continue Accept Proposition   
+
+        Text: He lies down on you with care.  You feel his hand take his sex and place it between your legs.  He penetrates you slowly and looks you straight in the eyes.  He clenches his teeth and starts to move back and forth with his hips.  You feel him inside you.  Before you know it, it's tensing up and coming as the heat fills your belly.
+        Image: LogCaptiveMakeLove
+
+        Choice: Close your eyes
+      	    Consequence: risk of pregnancy
+			Goto: GiveKey 		
+    
+
+    Sequence
+    --------------------------------------
+
+        Name: Untie Feet Success   
+
+        Text: "How about you untie me?  There is much more to do with me between my legs".  The man has a big smile on his face.  He nods and unfastened your ties.
+        Image: LogCaptiveSetFree
+
+        Choice: Spread your legs and let him do it.
+            Goto: Continue Accept                                                                                                                                                                         Sex 		
+        
+        Choice: Try to escape
+            Goto: Untie Flee Success   50%
+            Goto: Untie Flee Fail   50%
+        
+
+    Sequence
+    --------------------------------------
+
+        Name: Untie Feet Fail   
+
+        Text: "Oh no pretty Noble Lady, I won't do that.  I'm not an idiot.  I know you want to run away."  He stops groping your breasts, gets up and pulls his pants down.  
+
+        Choice: What's next...
+            Goto: Untie Feet Fail Final 
+		
+
+    Sequence 
+    --------------------------------------
+
+        Name: Refuse Push Success   
+
+        Text: The man falls to the ground.  "Blaxton is that you?  Everything allright?  "The noise woke up a few of his camp mates.  The man, called Blaxton, looks at you.  He seems hesitant.
+        Image: LogMiscManDeception
+
+        Choice: What's next
+			Goto: Push Happy   50%
+		    Goto: Push Tragic   50%		
+
+
+    Sequence
+    --------------------------------------
+
+        Name: Refuse Push Fail   
+
+        Text: The man falls to the ground and immediately gets up again.  Without saying a word, he rushes towards you and grabs you by the hair.  "Listen to me, bitch.  If you resist or make a noise, I'll kill you.  He pulls a dagger from his belt and places the blade over your mouth.
+        Image: LogCaptiveShutMouthKnife
+
+        Choice: Do not move.  Just do what he says.
+        	Goto: Dont Move 		
+    
+	    Choice: Try to push him away again.
+      		Goto: Fight Success   50%
+	    	Goto: Fight Fail   50%
+    
+
+    Sequence
+    --------------------------------------
+
+        Name: Give Key   
+
+        Text: After a few long seconds of silence, you feel his semen dripping between your legs.  He gets up and puts his clothes back on, taking care not to be noticed.  He takes a key out of his pocket; "Here you go, as promised.  Before dawn there will be a change of guard, you can try to run away at that moment".
+        Image: LogMiscKey
+
+        Choice: Take the key, untie yourself and flee immediately.
+    		Goto: Try To Flee Success 	75%
+	    	Goto: Try To Flee Failed 	25%
+
+
+        Choice: Take the key, detach yourself but wait for the right moment to run away. 
+		    Goto: Try To Flee Success 	25%
+		    Goto: Try To Flee Failed 	75%
+    
+        Choice: Leave the key where it is, and sleep.
+			Goto: Abandon 		
+    
+    
+    Sequence
+    --------------------------------------
+
+        Name: Abandon   
+
+        Text: You turn around on the floor and try to sleep for the few hours that are left tonight.
+        Image: LogCaptiveNudeSleeping
+
+        Choice: Try to sleep
+ 	        Consequence: health R 5 10
+		
+
+    Sequence
+    --------------------------------------
+
+        Name: Try To Flee Success   
+
+        Text: You get up unnoticed and manage to leave the camp without being seen.  You go into the night hoping that they won't realize you're gone until dawn.
+        Image: LogBattleFlee3
+
+        Choice: Run away
+		    Consequence: escape
+
+
+    Sequence
+    --------------------------------------
+
+        Name: Try To Flee Failed   
+
+        Text: You get up quietly and try to flee the camp.  "Alarm!  The prisoner is trying to escape!"  The man who just fucked you had no intention of letting you go.  He is shouting at arms to wake the others.  "Hurry up you bastards, she's running away!"
+        Image: LogMiscAlarm
+
+        Choice: Run for your life!
+			Goto: Detected Flee Success 	30%
+		    Goto: Detected Flee Failed 	70%
+		
+        Choice: Surrender
+		    Goto: Surrender 
+		
+
+    Sequence
+    --------------------------------------
+
+        Name: Detected Flee Success   
+
+        Text: You start running as fast as you can.  You manage to outrun your pursuers.  They won't find you this time.
+        Image: LogBattleFlee2
+
+        Choice: Run as far as you can  
+            Consequence: escape
+		
+
+    Sequence
+    --------------------------------------
+
+        Name: Detected Flee Failed   
+
+        Text: You head towards the forest hoping to escape from the camp.  Unfortunately, the men manage to block your way.  Soon you find yourself surrounded by a group of men who do not hear to laugh.  You turn around to flee in another direction but a violent blow knocks you to the ground".
+        Image: LogBattleBruise
+        
+        Choice: try to come to your senses
+            Consequence: health R -20 -30
+            Goto: Detected Flee Final 
+
+
+    Sequence
+    --------------------------------------
+
+        Name: Surrender   
+
+        Text: The men take you back to camp and ensure that you are securely tied up.  "You did well to surrender.  You see what I mean?  As long as you are kind and obedient no harm will come to you.  At dawn, you leave with the group.  The man you've slept with looks at you with an satisfied smile on his face".
+        Image: LogCaptivePrisonner
+
+        Choice: Continue  
+		
+
+	Sequence
+    --------------------------------------
+
+        Name: Fight Back Success   
+
+        Text: The man takes a step back, visibly surprised by your fighting spirit. "Listen, calm down, I want to suggest something". He looks around to make sure no one is listening to the conversation.  "You must be a Noble.  Let me make you a son.  Thanks to you he will be able to live a better life than the miserable life I have.  If you accept, I will set you free and help you run away.  What do you say?"
+        Image: LogYoungBoy
+
+        Choice: Accept his offer
+        	Goto: Son Heritage 		
+    
+		Choice: Refuse his offer 
+            Goto: Refuse Offer Fail   50%
+		    Goto: Refuse Success   50%
+    
+
+    Sequence 
+    --------------------------------------
+
+        Name: Push Happy   
+
+        Text: "It's nothing guys, I must have tripped.  I was checking if the prisoner was okay".  The man gets up, takes off the dirt on his pants and goes back to bed.  All this leaves a strange impression on you; why did he want to know if you were a Noble?
+        Image: LogCaptivePostNight
+    
+        Choice: Try to sleep   
+		
+
+    Sequence 
+    --------------------------------------
+
+        Name: Push Tragic   
+
+        Text: Blaxton turns to his companions.  "The prisoner is trying to coax me.  It seems she wants to leave us.  Come on guys, let's teach her a lesson".  Other men approach you with a mischievous smile.  Then there are two who take your arms and force you to your knees.  "If you're going to leave, better to make the most of it.  Hold her tight, guys, while I show her who's in charge here".
+        Image: LogAbuseNeckCrying
+
+        Choice: What's next
+			Goto: Push Tragic Final 
+    
+
+    Sequence 
+    --------------------------------------
+
+        Name: Push Tragic Final   
+
+        Text: He pulls down his pants and pulls out his cock. He rubs it on your face until it gets hard. Then he grabs your hair and pushes it down your throat.  He goes back and forth until he comes in your mouth.  Then the men go back to bed laughing at you.C
+        Image: LogAbuseBlowjobGangForced
+
+        Choice: Try to sleep
+   			Consequence: Health R -5 -10    
+
+
+    Sequence 
+    --------------------------------------
+
+        Name: Dont Move   
+
+        Text: "Good.  Very good.  You are nice.  A Noble like you knows how to behave.  Now do as I say.  Turn around slowly and show me your ass."
+        Image: LogCaptiveShutMouthKnife
+
+        Choice: Does what he says without saying a word 
+        	Goto: Dont Move Next 		
+    
+        Choice: Attempt to disarm him.
+    		Goto: Fight Success   50%
+	    	Goto: Disarm Fail   50%
+    
+
+    Seqence
+    --------------------------------------
+
+        Name: Fight Success   
+
+        Text: With a quick gesture you step away from the knife and give him a violent headbutt to the face.  Stunned, the man drops his knife and falls to the ground.  You quickly grab the knife.  He gets up and jumps on you.  Then you stab him.  Dazed, he stands still for a moment, his mouth open, and then falls to the ground.  You can't stay here any longer.  If the other men in the camp realize that you have killed one of them, they will surely avenge him.  You look for the body of your attacker and find a key.  You free yourself from your chains and run away.
+        Image: LogBattleDeadMan
+
+        Choice: Run!
+	        Consequence: Renown R 1 3
+	        Consequence: Escape
+		
+    Sequence 
+    --------------------------------------
+
+        Name: Fight Fail   
+
+        Text: You try to push him away again, but this time he sees you coming.  He pushes your legs back and plunges his dagger into your belly.  The pain is intense, it takes your breath away.
+        Image: LogCaptiveStab
+
+        Choice: Collapse in pain
+	    	Consequence: Health R -50 -90  
+		    Goto: Abused 
+  
+    Sequence 
+    --------------------------------------
+
+        Name: Abused   
+
+        Text: You are struggling to maintain consciousness.  He pulls down his pants and turns you face down.  He penetrates you with great blows while pressing on your neck to keep you still.  "Here, take this!  You'll be carrying my son, bitch of Noble!".  Suddenly he stops and you feel his sex kicking inside your belly as he cums.
+        Image: LogAbuseForcedGround
+
+        Choice: Pass out
+	    	Consequence: Health R -30 -75
+		    Consequence: risk of pregnancy
+
+
+    Sequence 
+    --------------------------------------
+
+        Name: TradingFreedomDontMoveNext   
+
+        Text: You get down on all fours and turn around to show him your ass. He starts touching it.  "How beautiful you are.  You're my queen."  Then he penetrates you and fucks you until he comes inside you.  Then he gets up and leaves.  You feel your hot sperm dripping between your buttocks.  A prisoner who is tied up next to you looks at you silently.
+        Image: LogAbuseBehindAssCloseup
+
+        Choice: stay quiet
+		
+
+    Sequence 
+    --------------------------------------
+
+        Name: Disarm Fail   
+
+        Text: Although your hands are tied, you throw yourself on his dagger and try to disarm him.  He is stronger than you and throws you to the ground.  "Why are you doing this to me?  I'm being nice to you. I deserve better."  He pulls down his pants, grabs his dick and shoves it inside of you.  "Oh, yeah, you're hot.  Now shut the fuck up while I mate with you." Another prisoner who's scared looks at you crying while your attacker rapes you.
+        Image: LogAbuseRapedFloor
+
+        Choice: Endure the pain
+	        Consequence: risk of pregnancy
+
+    Sequence
+    --------------------------------------
+
+        Name: Continue Accept Sex  
+
+        Text: You spread your legs and let him touch you.  He takes you in his arms and gently drops you on the ground.  Then he makes love to you.  Your bodies harmonize for a few minutes until he hugs you very tightly while he enjoys you. 
+        Image: LogAbusePenetrated
+
+        Choice: What's next
+            Consequence: risk of pregnancy
+			Goto: Give Key 		
+    
+
+    Sequence
+    --------------------------------------
+
+        Name: Untie Flee Success   
+
+        Text: "You spread your legs gently.  The man is hypnotized by your beauty.  He kneels down to caress you.  That's when you hit him in the face and knock him out.  You quickly search him and take a dagger, some coins, and run straight into the forest." 
+        Image: LogCaptiveNudeFlee
+
+        Choice: Run away
+			Consequence: Gold R 100 250
+	        Consequence: escape
+
+    Sequence
+    --------------------------------------
+
+        Name: Untie Flee Fail
+
+        Text: As soon as you are free, you go running towards the forest.  The Man starts running behind you.  As soon as you manage to escape from the camp, he grabs you by the arm.  You try to fight, but he is stronger than you.  It clutches your neck and hair and penetrates you with a sudden thrust.  He swings his hips until he cum inside of you.  Exhausted, you don't have the energy to fight anymore.  He brings you back to camp at the tip of his dagger. 
+        Image: LogAbuseBehindBlondThroatBrunette
+
+        Choice: Rest
+  	        Consequence: risk of pregnancy
+		
+    Sequence
+    --------------------------------------
+    
+        Name:  Trading Sex Success 
+
+        Text: "Very well".  The man looks at you from head to toe with great interest. He checks to see if anyone has seen you and then bends over and releases your bonds.
+        Image: None
+
+        Choice: You punch him in the face and try to run away.
+        	Goto: 	Trading Sex Flee Success 
+	
+        Choice: You get down on all fours and wait to see what happens next.
+	    	Goto: 	Trading Sex Having Sex 
+	    	Consequence: risk of pregnant
+
+
+    Sequence
+    --------------------------------------
+    
+        Name:  Trading Sex Failed 
+
+        Text: The Man looks at you from head to toe.  "No, I don't believe you.  You don't want to carry my child.  What you want is to run away as soon as I set you free."  He gets up, puts his clothes back on and tells you in a serious tone: "Stay where you are.  You'll end up regretting that you didn't accept my offer when the others will fuck you to death."  Then he leaves.
+        Image: None
+
+        Choice: Say nothing                    
+	
+    
+    Sequence
+    --------------------------------------
+    
+        Name:  Trading Gold Success 
+
+        Text: The man nods and unties you.
+        Image: None
+
+        Choice: Hit him and run away.
+            Goto: Trading Sex Flee Success 
+        
+        Choice: Explain to him where he will find 1000 pieces, and run away.
+            Goto: Trading Gold Reveal Secret 
+	
+
+    Sequence
+    --------------------------------------
+    
+        Name:  Trading Gold Failed
+
+        Text: The man frowns.  "The only riches I want is the fertility of your womb".  He doesn't even bother to set you free.  He turns you over, pulls up your dress and fucks you aggressively until he cum within you. 
+        Image: None
+
+        Choice: Endures in silence.
+            Consequence: chance of pregnancy
+            Consequence: health R -5 -10
+
+
+    Sequence
+    --------------------------------------
+
+        Name:  Trading Death Success 
+
+        Text: The man looks at you with a smile.  "A real Warrior!  Just as I hoped!"  He leans over to you and undoes your ties...
+        Image: None
+
+        Choice: Hit him in the face and you run away.
+        	Goto: Trading Death Fleeing Success  50%
+	        Goto: Trading Death Fleeing Failed  50%
+	
+        Choice: Make love to him
+        	Goto: Trading Death Have Sex 
+	
+
+    Sequence
+    --------------------------------------
+
+        Name:  Proposing Death Failed 
+
+        Text: "Oh, look at her, a real warrior".  The man takes a few steps back.  "Too bad, I was in good faith.  I could have helped you escape.  But you chose your side.  I leave you to your fate, hoping my brothers in arms won't make you suffer too much.  He turns around and leaves for his camp bed.
+        Image: None
+
+        Choice: Try to sleep..
+	
+	
+    Sequence 
+    --------------------------------------
+
+        Name: Son Heritage   
+
+        Text: You accept.  The man's face lights up with happiness.  He approaches you gently.   Nervously, he takes your face in his hands and kiss you.  He slips gently over you and you make love.  You can feel his desire deep inside you.  Dawn is about to rise.  The man discreetly gets up and gives you a key.  "There is a change of guard at sunrise.  I'll create a diversion, you can escape through the back of the camp.  Use the key to free yourself.  Good luck, my love."  Then he leaves.  At sunrise, you undo your ties and head to the back of the camp.  As expected, there is no one there.  You flee into the woods.
+        Image: LogConsensualLove
+
+        Choice: Continue...   		
+			Consequence:Escape
+
+
+    Sequence
+    --------------------------------------
+
+    Name:  Refuse Offer Failed 
+
+    Text: You stare into his eyes.  With a tight jaw, you ask him to free you first and we'll see what happens next.  With a more or less surprised expression, the man takes a defiant look...
+    Image: None
+
+    Choice: Continue...                     
+	    Goto: Refuse Fail 
+
+    Sequence
+    --------------------------------------
+
+    Name:  Trading Sex Flee Success 
+
+    Text:  You lunge at him and hit him hard in the face.  He falls to the ground, unconscious.  You take his gown and silently walk towards the forest.  You manage to escape for this time.
+    Image: None
+
+    Choice: Run away
+	    Consequence: Roguery +1
+	    Consequence: escape
+	
+
+    Sequence
+    --------------------------------------
+    
+        Name:  Trading Sex Having Sex 
+
+        Text: You hear the man taking off his pants.  Then he stands behind you.  He penetrates you with his sex and goes in with big strokes.  After only a few seconds he quietly cum inside you. He stays pressed against your ass for long seconds, catching his breath.   Then he withdraws and gets up on his feet.  You can feel his semen flowing between your thighs.  "Come on, get up and follow me now."  He throws clothes at you.
+        Image: None
+
+        Choice: You get up, take the clothes and follow him.
+        	Goto: 	After Sex Fleeing Success  50%
+	        Goto: 	After Sex Fleeing Trap  50%
+	
+        Choice: You think it's a trap.  You refuse to leave
+        	Goto: 	After Sex Still Prisoner 
+
+
+    Sequence
+    --------------------------------------
+    
+        Name:  After Sex Fleeing Success
+
+        Text: You get up and follow him.  He leads you quietly towards the forest.  At the edge of the camp, he takes your arm and pulls you against him.  Then he kisses you tenderly.  Come on," he says.  Go!  I'm sure he will be a great Lord".  You turn around and run away into the forest.
+        Image: None
+
+        Choice: Run away
+        	Consequence: Roguery +1
+	        Consequence: escape
+
+
+    Sequence
+    --------------------------------------
+    
+        Name:  After Sex Fleeing Trap
+
+        Text: You get up and follow him.  He leads you discreetly through the camp.  When you reach a small tent, he signals you to be quiet and shows you the entrance to the tent.  You look through the opening. At that moment the man pushes you violently inside the tent...
+        Image: None
+
+        Choice: What's next..
+        	Goto: Trapped In A Tent 
+
+
+    Sequence
+    --------------------------------------
+    
+        Name:  After Sex Still Prisoner 
+
+        Text: "Oh I see..." The man takes your hands and kisses them gently.  He binds you again, taking care not to hurt you.  Then he puts his hand against your belly.  "He will have your eyes for sure".  He gets up and goes to the other side of the camp.
+        Image: None
+
+        Choice: Try to sleep..
+
+
+    Sequence
+    --------------------------------------
+
+        Name:  Trapped In A Tent
+
+        Text: Inside the tent stands 3 other men.  "Get the whore!"  The men are throwing themselves at you.  They immobilize you.  "Come on, show me your filthy face, my pretty one!"  One of the men sticks his dick down your throat.  "Come on, beautiful, don't resist.  That's good!  You'll be so proud when we've all fucked you, you little bitch!"
+        Image: None
+
+        Choice: Suffers rape.
+	        Consequence: chance of pregnancy
+	        Consequence: health R -40 -70
+
+
+Sequence
+--------------------------------------
+    
+    Name:  Trading Death Fleeing Success
+
+    Text: You throw yourself at him and hit him hard in the face.  He falls to the ground stunned.  You draw his dagger and thrust it straight down into his throat and through his neck.  Blood spurts out as he falls violently to the ground.  You quickly make your way to the forest and run away.
+    Image: None
+
+    Choice: Flee
+	    Consequence: Roguery +1
+	    Consequence: Athletics +1
+	    Consequence: escape
+
+
+Sequence
+--------------------------------------
+    
+    Name:  Trading Death Fleeing Failed
+
+    Text: You throw a punch to his face, but the man dodges it.  Then he throws a kick in your face. The blow is so powerful that you lose consciousness.  Maybe the only chance you have is not to be aware of what he does to you afterwards.
+    Image: None
+
+    Choice: Pass out..
+	    Consequence: chance of pregnancy
+	    Consequence: health R -20 -35
+
+
+Sequence
+--------------------------------------
+    
+    Name:  Trading Death Have Sex 
+
+    Text: You throw yourself on him and make him fall to the ground.  Surprised, the man doesn't know what to do.  You take off his shirt and press his sex between your hips.  You press your pelvis against him with vigor until he comes inside you.  Then you get up, signal him not to move, grab some clothes and head for the forest.
+    Image: None
+
+    Choice: Escape
+        Consequence: renown R 1 3
+	    Consequence: Roguery +1
+	
+
+Sequence
+--------------------------------------
+    
+    Name:  Trading Gold Reveal Secret 
+
+    Text: You explain to the man where he can find some of your gold that is hidden somewhere in the territory.  Then you turn around and run for freedom.  As you leave the camp, you see the man who stood motionless as he watched you leave the captivity. 
+    Image: None
+
+    Choice: Flee
+	    Consequence: Trade +1
+	    Consequence: Gold -1000
+	    Consequence: escape
+
+
+    Sequence
+    --------------------------------------
+
+        Name: Detected Flee Final   
+
+        Text: One of the men approaches you while laughing.  He takes out his dick and starts peeing on you.  When he's finished, he orders the other men to put your chains back on.
+        Image: 
+    
+        Choice: waits for the pain to go away
+ 		    Consequence: health R -20 -30
+		    Consequence: Renown R -1 -3
+		
+
+    Sequence    
+    --------------------------------------
+
+        Name: Untie Feet Fail Final   
+
+        Text: "Here, take this in your mouth, so you don't say anything stupid."  Another prisoner looks at you silently while he pleases himself with your mouth. 
+        Image: LogCaptiveFellatio
+
+        Choice: Swallow
+            Consequence: Renown -1
+
+
+    Sequence
+    --------------------------------------
+
+        Name: Refuse Request Failed   
+
+        Text: "Attend, tu n'a pas bien compris.  Soit tu acceptes, soit je te laisse pas le choix!"
+        Image: LogCaptiveShut2
+
+        Choice: Agree to his request		
+		    Goto: Accept Proposition 		
+    
+        Choice: Insist and refuse his request 
+            Goto: Fight Back Fail 
+
+END
