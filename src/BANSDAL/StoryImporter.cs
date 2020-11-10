@@ -60,17 +60,6 @@ namespace TalesDAL
 
         #region private
 
-        private static string GetSubjectItem(string line)
-        {
-            var s = line.Split(' ').RemoveEmptyItems().ToList();
-            s.RemoveEmptyItems();
-            var item = s[1].Reformat();
-
-            if (item == "NPC") item = s[2].Reformat();
-
-            return item;
-        }
-
         private bool ActIsFullyExtracted(string line)
         {
             if (line.ReferTo("ACT")) return true;
@@ -360,6 +349,22 @@ namespace TalesDAL
             return Skills.UNKNOWN;
         }
 
+        private string GetSubjectItem(string line)
+        {
+            if (line.ToUpper().Contains("ESCAP")) return "ESCAPE";
+
+            var s = line.Split(' ').RemoveEmptyItems().ToList();
+            s.RemoveEmptyItems();
+
+            //GameFunction.Log("GetSubjectItem(): " + line);
+
+            var item = s[1].Reformat();
+
+            if (item == "NPC") item = s[2].Reformat();
+
+            return item;
+        }
+
         private GameTime GetTimeFrom(string line)
         {
             if (line.EndsWith("DAYTIME")) return GameTime.DAYTIME;
@@ -373,6 +378,8 @@ namespace TalesDAL
 
         private string GetValueFrom(string line)
         {
+            if (!line.Contains(" ")) return "";
+
             return line.Contains(" R ")
                 ? GetRandomExpressionFrom(line)
                 : GetSimpleValueFrom(line);
@@ -482,8 +489,12 @@ namespace TalesDAL
         {
             if (line.Contains("= R")) return string.Empty;
 
-            var result = line.Split(':').RemoveEmptyItems()[1].Trim();
-            result = result.Replace("%", string.Empty);
+            //GameFunction.Log(line);
+            var s = line.Split(':').RemoveEmptyItems();
+
+            if (s.Length < 2) return "";
+
+            var result = s[1].Trim().Replace("%", string.Empty);
 
             return result;
         }

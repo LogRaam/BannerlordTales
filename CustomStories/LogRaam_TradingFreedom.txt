@@ -30,7 +30,7 @@ Story
         Name:   Fight Back Failed
 
         Text:   You fight back and receive a violent blow to the head.  You are dizzy and just before you pass out, you can see the silhouette of the man taking off his pants.
-        Image:  None
+        Image:  
 
         Choice: Pass out...
             Consequence: Chance of pregnancy

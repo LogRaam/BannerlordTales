@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stories", "Stories", "{496E
 	ProjectSection(SolutionItems) = preProject
 		..\CustomStories\DefaultStories.txt = ..\CustomStories\DefaultStories.txt
 		..\CustomStories\LogRaam_LosingBattle.txt = ..\CustomStories\LogRaam_LosingBattle.txt
+		..\CustomStories\LogRaam_TradingFreedom.txt = ..\CustomStories\LogRaam_TradingFreedom.txt
 		..\CustomStories\LogRaam_WaitingMenus.txt = ..\CustomStories\LogRaam_WaitingMenus.txt
 		..\CustomStories\TestStory.txt = ..\CustomStories\TestStory.txt
 	EndProjectSection

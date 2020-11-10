@@ -716,6 +716,49 @@ namespace TalesDAL.Tests
 
 
         [Test]
+        public void ImportStoryWithConsequenceEscapeWithoutSpace_ShouldPass()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "Story, ",
+                "Act",
+                "Sequence",
+                "Choice: Continue..",
+                "Consequence:Escape",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Sequences[0].Choices[0].Consequences[0].Escaping.Should().BeTrue();
+            actualResult.Sequences[0].Choices[0].Consequences[0].Value.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void ImportStoryWithNullImageReference_ShouldPass()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "Story, ", "Act", "Image: ", " END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Image.Should().BeNullOrEmpty();
+        }
+
+
+        [Test]
         public void StoryImporter_Test1_ShouldHaveActAndSequence()
         {
             // Arrange
