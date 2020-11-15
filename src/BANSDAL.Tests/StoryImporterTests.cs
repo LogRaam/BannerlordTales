@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using TalesBase.Stories;
+using TalesBase.Stories.Evaluation;
 using TalesBase.TW;
 using TalesContract;
 using TalesEnums;
@@ -22,6 +23,260 @@ namespace TalesDAL.Tests
     [TestFixture]
     public class StoryImporterTests
     {
+        [Test]
+        public void ActConsequence_GiveArmorTatteredRags_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give armor tattered_rags",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Armor.Should().Be("tattered_rags");
+        }
+
+        [Test]
+        public void ActConsequence_GiveArmorUnspecified_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give armor culture Sturgia, material leather, appearance < 2",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
+            test.Equipments.Material.Should().Be(ArmorMaterialTypes.LEATHER);
+            test.Equipments.Appearance.Should().Be(2);
+            test.Numbers.Operator.Should().Be(Operator.LOWERTHAN);
+        }
+
+        [Test]
+        public void ActConsequence_GiveArmorUnspecified2_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give armor culture Sturgia, appearance > 2, material leather",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
+            test.Equipments.Material.Should().Be(ArmorMaterialTypes.LEATHER);
+            test.Equipments.Appearance.Should().Be(2);
+            test.Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+        }
+
+
+        [Test]
+        public void ActConsequence_GiveArmorUnspecified3_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give armor appearance > 2",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Appearance.Should().Be(2);
+            test.Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+        }
+
+        [Test]
+        public void ActConsequence_GiveArmorUnspecifiedWithoutOperator_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give armor culture Sturgia, material leather, appearance 2",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
+            test.Equipments.Material.Should().Be(ArmorMaterialTypes.LEATHER);
+            test.Equipments.Appearance.Should().Be(2);
+            test.Numbers.Operator.Should().Be(Operator.EQUALTO);
+        }
+
+        [Test]
+        public void ActConsequence_GiveWeaponCultureSturgiaTypeDagger_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give weapon culture Sturgia, type dagger",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
+            test.Equipments.Weapon.Should().Be("dagger");
+        }
+
+        [Test]
+        public void ActConsequence_GiveWeaponSeax_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Choice: this is a choice.",
+                "Consequence: give weapon seax",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            var test = actualResult.Acts[0].Choices[0].Consequences[0];
+            test.Outcome.ShouldEquip.Should().BeTrue();
+            test.Equipments.Weapon.Should().Be("SEAX");
+        }
+
+        [Test]
+        public void ActConsequence_RemoveClothes_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Name: aStoryName",
+                "Act",
+                "Name: aName",
+                "Choice: this is a choice.",
+                "Consequence: strip player",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.ShouldUndress.Should().BeTrue();
+        }
+
+
+        [Test]
+        public void ActConsequence_RemoveClothes2_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Name: aStoryName",
+                "Act",
+                "Name: aName",
+                "Choice: this is a choice.",
+                "Consequence: remove clothes",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.ShouldUndress.Should().BeTrue();
+        }
+
+        [Test]
+        public void ActConsequence_RemoveClothes3_ShouldWorks()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Name: aStoryName",
+                "Act",
+                "Name: aName",
+                "Choice: this is a choice.",
+                "Consequence: undress",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.ShouldUndress.Should().BeTrue();
+        }
+
+
         [Test]
         public void GivenFileDoNotHaveStoryTag_WhenImport_ThenReturnValueShouldBeNull()
         {
@@ -70,7 +325,16 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Operator = Operator.EQUALTO, Characteristic = Characteristics.HEALTH, Value = "100", ValueIsPercentage = true
+                                        Persona = new Persona
+                                        {
+                                            Characteristic = Characteristics.HEALTH
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "100",
+                                            ValueIsPercentage = true
+                                        }
                                     }
                                 }
                             }
@@ -84,10 +348,10 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expecText);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Characteristic.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Characteristic);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Characteristic.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Characteristic);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage);
         }
 
 
@@ -115,6 +379,7 @@ namespace TalesDAL.Tests
             // Assert
             actualResult.Acts[0].Choices[0].Id.Should().Be(expectedResult);
         }
+
 
         [Test]
         public void GivenStoryActIntroMultilineEnd_WhenImport_ThenIHaveAnIntroThatIncludeAllLines()
@@ -148,7 +413,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "ACT", "Name:   FirstAct", "END"
+                "STORY",
+                "ACT",
+                "Name:   FirstAct",
+                "END"
             };
             var expectedResult = "FirstAct";
 
@@ -225,7 +493,16 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.GREATERTHAN, Characteristic = Characteristics.HEALTH, Value = "20", ValueIsPercentage = true
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.HEALTH
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.GREATERTHAN,
+                    Value = "20",
+                    ValueIsPercentage = true
+                }
             };
 
             // Act
@@ -233,10 +510,10 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(textResult);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -256,7 +533,16 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.GREATERTHAN, Characteristic = Characteristics.HEALTH, Value = "20", ValueIsPercentage = true
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.HEALTH
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.GREATERTHAN,
+                    Value = "20",
+                    ValueIsPercentage = true
+                }
             };
 
             // Act
@@ -264,10 +550,10 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(textResult);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -287,7 +573,16 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.GREATERTHAN, Characteristic = Characteristics.HEALTH, Value = "20", ValueIsPercentage = true
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.HEALTH
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.GREATERTHAN,
+                    Value = "20",
+                    ValueIsPercentage = true
+                }
             };
 
             // Act
@@ -295,10 +590,10 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(textResult);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -318,7 +613,16 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.LOWERTHAN, Characteristic = Characteristics.HEALTH, Value = "20", ValueIsPercentage = true
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.HEALTH
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.LOWERTHAN,
+                    Value = "20",
+                    ValueIsPercentage = true
+                }
             };
 
             // Act
@@ -326,10 +630,10 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(textResult);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -349,7 +653,16 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.HEALTH, RandomStart = -10, RandomEnd = -20
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.HEALTH
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    RandomStart = -10,
+                    RandomEnd = -20
+                }
             };
 
             // Act
@@ -357,11 +670,11 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(textResult);
-            actualResult.Acts[0].Choices[0].Consequences[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Acts[0].Choices[0].Consequences[0].ValueIsPercentage.Should().Be(expectedResult.ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Consequences[0].RandomStart.Should().Be(expectedResult.RandomStart);
-            actualResult.Acts[0].Choices[0].Consequences[0].RandomEnd.Should().Be(expectedResult.RandomEnd);
-            actualResult.Acts[0].Choices[0].Consequences[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.RandomStart.Should().Be(expectedResult.Numbers.RandomStart);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.RandomEnd.Should().Be(expectedResult.Numbers.RandomEnd);
+            actualResult.Acts[0].Choices[0].Consequences[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -381,7 +694,16 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.HEALTH, RandomStart = -10, RandomEnd = -20
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.HEALTH
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    RandomStart = -10,
+                    RandomEnd = -20
+                }
             };
 
             // Act
@@ -389,11 +711,11 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(textResult);
-            actualResult.Acts[0].Choices[0].Consequences[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Acts[0].Choices[0].Consequences[0].ValueIsPercentage.Should().Be(expectedResult.ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Consequences[0].RandomStart.Should().Be(expectedResult.RandomStart);
-            actualResult.Acts[0].Choices[0].Consequences[0].RandomEnd.Should().Be(expectedResult.RandomEnd);
-            actualResult.Acts[0].Choices[0].Consequences[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.RandomStart.Should().Be(expectedResult.Numbers.RandomStart);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.RandomEnd.Should().Be(expectedResult.Numbers.RandomEnd);
+            actualResult.Acts[0].Choices[0].Consequences[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -404,7 +726,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "ACT", "Choice: This is another text.", "END"
+                "STORY",
+                "ACT",
+                "Choice: This is another text.",
+                "END"
             };
             var expectedResult = "This is another text.";
 
@@ -432,7 +757,8 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseTrigger
             {
-                Link = "GoToNextAct", ChanceToTrigger = 50
+                Link = "GoToNextAct",
+                ChanceToTrigger = 50
             };
 
             // Act
@@ -461,7 +787,8 @@ namespace TalesDAL.Tests
             var textResult = "This is another text.";
             var expectedResult = new BaseTrigger
             {
-                Link = "GoToAnotherAct", ChanceToTrigger = 100
+                Link = "GoToAnotherAct",
+                ChanceToTrigger = 100
             };
 
             // Act
@@ -481,7 +808,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "DependOn: ActID", "END"
+                "STORY",
+                "DependOn: ActID",
+                "END"
             };
 
             var expectedResult = "ActID";
@@ -501,7 +830,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "ACT", "END"
+                "STORY",
+                "ACT",
+                "END"
             };
             var expectedResult = typeof(BaseStory);
 
@@ -520,7 +851,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "ACT", "Image:   ImageName", "END"
+                "STORY",
+                "ACT",
+                "Image:   ImageName",
+                "END"
             };
             var expectedResult = "ImageName";
 
@@ -539,7 +873,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "ACT", "Intro:  This is a text for the event.", "END"
+                "STORY",
+                "ACT",
+                "Intro:  This is a text for the event.",
+                "END"
             };
             var expectedResult = "This is a text for the event.";
 
@@ -558,7 +895,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Act", "Location: Map", "END"
+                "STORY",
+                "Act",
+                "Location: Map",
+                "END"
             };
             var expectedResult = Location.MAP;
 
@@ -577,7 +917,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "OneTimeStory: False", "END"
+                "STORY",
+                "OneTimeStory: False",
+                "END"
             };
 
             // Act
@@ -595,7 +937,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "OneTimeStory: No", "END"
+                "STORY",
+                "OneTimeStory: No",
+                "END"
             };
 
             // Act
@@ -613,7 +957,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "OneTimeStory: True", "END"
+                "STORY",
+                "OneTimeStory: True",
+                "END"
             };
 
             // Act
@@ -631,7 +977,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "OneTimeStory: Yes", "END"
+                "STORY",
+                "OneTimeStory: Yes",
+                "END"
             };
 
             // Act
@@ -649,20 +997,30 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction:  age > 18", "END"
+                "STORY",
+                "Restriction:  age > 18",
+                "END"
             };
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.GREATERTHAN, Characteristic = Characteristics.AGE, Value = "18"
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.AGE
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.GREATERTHAN,
+                    Value = "18"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -673,20 +1031,30 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction:  gender = female", "END"
+                "STORY",
+                "Restriction:  gender = female",
+                "END"
             };
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.GENDER, Value = "FEMALE"
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.GENDER
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    Value = "FEMALE"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
         }
 
         [Test]
@@ -697,21 +1065,31 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction:  Valor < 30", "END"
+                "STORY",
+                "Restriction:  Valor < 30",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.LOWERTHAN, PersonalityTrait = PersonalityTraits.VALOR, Value = "30"
+                Persona = new Persona
+                {
+                    PersonalityTrait = PersonalityTraits.VALOR
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.LOWERTHAN,
+                    Value = "30"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].PersonalityTrait.Should().Be(expectedResult.PersonalityTrait);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(expectedResult.Persona.PersonalityTrait);
         }
 
 
@@ -735,8 +1113,8 @@ namespace TalesDAL.Tests
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Sequences[0].Choices[0].Consequences[0].Escaping.Should().BeTrue();
-            actualResult.Sequences[0].Choices[0].Consequences[0].Value.Should().BeNullOrEmpty();
+            actualResult.Sequences[0].Choices[0].Consequences[0].Outcome.Escaping.Should().BeTrue();
+            actualResult.Sequences[0].Choices[0].Consequences[0].Numbers.Value.Should().BeNullOrEmpty();
         }
 
         [Test]
@@ -747,7 +1125,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "Story, ", "Act", "Image: ", " END"
+                "Story, ",
+                "Act",
+                "Image: ",
+                " END"
             };
 
             // Act
@@ -755,6 +1136,148 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Image.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public void StoryImporter_Generosity_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Restriction: generosity > 5",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.GENEROSITY);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be("5");
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.PLAYER);
+        }
+
+
+        [Test]
+        public void StoryImporter_Honor_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Restriction: honor > 5",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.HONOR);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be("5");
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.PLAYER);
+        }
+
+
+        [Test]
+        public void StoryImporter_Mercy_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Restriction: mercy > 5",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.MERCY);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be("5");
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.PLAYER);
+        }
+
+        [Test]
+        public void StoryImporter_RemoveClothes_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Name: Remove clothes",
+                "Choice: Continue....",
+                "Consequence: Remove clothes",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.ShouldUndress.Should().BeTrue();
+        }
+
+
+        [Test]
+        public void StoryImporter_ReturnClothes_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Name: Return clothes",
+                "Choice: Continue....",
+                "Consequence: Return clothes",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.ShouldEquip.Should().BeTrue();
+        }
+
+
+        [Test]
+        public void StoryImporter_Strip_ShouldWork()
+        {
+            // Arrange
+            var sut = new StoryImporter();
+
+            var param = new List<string>
+            {
+                "STORY",
+                "Act",
+                "Name: Strip",
+                "Choice: Continue....",
+                "Consequence: Strip player",
+                "END"
+            };
+
+            // Act
+            var actualResult = sut.ImportFrom(param.ToArray());
+
+            // Assert
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.ShouldUndress.Should().BeTrue();
         }
 
 
@@ -790,7 +1313,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Name: Test", "END"
+                "STORY",
+                "Name: Test",
+                "END"
             };
 
             var expectedResult = "Test";
@@ -811,22 +1336,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction: npc gender is male", "END"
+                "STORY",
+                "Restriction: npc gender is male",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.GENDER, Value = "MALE", Subject = Actor.NPC
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.GENDER,
+                    Subject = Actor.NPC
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    Value = "MALE"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
 
 
@@ -838,22 +1374,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "restriction: npc culture is nord", "END"
+                "STORY",
+                "restriction: npc culture is nord",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.CULTURE, Value = "NORD", Subject = Actor.NPC
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.CULTURE,
+                    Subject = Actor.NPC
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    Value = "NORD"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
 
 
@@ -865,22 +1412,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "restriction: npc is lord", "END"
+                "STORY",
+                "restriction: npc is lord",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, PartyType = PartyType.LORD, Value = "LORD", Subject = Actor.NPC
+                Persona = new Persona
+                {
+                    Subject = Actor.NPC
+                },
+                PartyType = PartyType.LORD,
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    Value = "LORD"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
 
         [Test]
@@ -906,7 +1464,10 @@ namespace TalesDAL.Tests
                 {
                     new Act
                     {
-                        Name = "My Act 1", Image = "None", Location = Location.MAP, Intro = "This is an intro for act 1."
+                        Name = "My Act 1",
+                        Image = "None",
+                        Location = Location.MAP,
+                        Intro = "This is an intro for act 1."
                     }
                 }
             };
@@ -930,7 +1491,10 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Act", "Choice: Act 1 choice 1.", "END"
+                "STORY",
+                "Act",
+                "Choice: Act 1 choice 1.",
+                "END"
             };
 
             var expectedResult = new BaseStory
@@ -987,7 +1551,15 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Attribute = Attributes.VIGOR, Operator = Operator.GREATERTHAN, Value = "1"
+                                        Persona = new Persona
+                                        {
+                                            Attribute = Attributes.VIGOR
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.GREATERTHAN,
+                                            Value = "1"
+                                        }
                                     }
                                 }
                             }
@@ -1001,9 +1573,9 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
-            actualResult.Acts[0].Choices[0].Conditions[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
         }
 
         [Test]
@@ -1036,7 +1608,15 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Attribute = Attributes.ENDURANCE, Operator = Operator.EQUALTO, Value = "3"
+                                        Persona = new Persona
+                                        {
+                                            Attribute = Attributes.ENDURANCE
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "3"
+                                        }
                                     }
                                 }
                             }
@@ -1050,9 +1630,9 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
-            actualResult.Acts[0].Choices[0].Conditions[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
         }
 
 
@@ -1086,7 +1666,15 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Attribute = Attributes.CONTROL, Operator = Operator.LOWERTHAN, Value = "2"
+                                        Persona = new Persona
+                                        {
+                                            Attribute = Attributes.CONTROL
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.LOWERTHAN,
+                                            Value = "2"
+                                        }
                                     }
                                 }
                             }
@@ -1100,9 +1688,9 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
-            actualResult.Acts[0].Choices[0].Conditions[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
         }
 
         [Test]
@@ -1137,15 +1725,40 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Attribute = Attributes.CUNNING, Operator = Operator.GREATERTHAN, Value = "4"
+                                        Persona = new Persona
+                                        {
+                                            Attribute = Attributes.CUNNING
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.GREATERTHAN,
+                                            Value = "4"
+                                        }
                                     },
                                     new BaseEvaluation
                                     {
-                                        Attribute = Attributes.SOCIAL, Operator = Operator.LOWERTHAN, Value = "5"
+                                        Persona = new Persona
+                                        {
+                                            Attribute = Attributes.SOCIAL
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.LOWERTHAN,
+                                            Value = "5"
+                                        }
                                     },
                                     new BaseEvaluation
                                     {
-                                        Attribute = Attributes.INTELLIGENCE, Operator = Operator.EQUALTO, Value = "6", ValueIsPercentage = false
+                                        Persona = new Persona
+                                        {
+                                            Attribute = Attributes.INTELLIGENCE
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "6",
+                                            ValueIsPercentage = false
+                                        }
                                     }
                                 }
                             }
@@ -1160,18 +1773,18 @@ namespace TalesDAL.Tests
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
 
-            actualResult.Acts[0].Choices[0].Conditions[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
 
-            actualResult.Acts[0].Choices[0].Conditions[1].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[1].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[1].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[1].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[1].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[1].Value);
+            actualResult.Acts[0].Choices[0].Conditions[1].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[1].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[1].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[1].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[1].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[1].Numbers.Value);
 
-            actualResult.Acts[0].Choices[0].Conditions[2].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[2].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[2].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[2].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[2].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[2].Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[2].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[2].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[2].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[2].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[2].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[2].Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage);
         }
 
 
@@ -1205,7 +1818,16 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Characteristic = Characteristics.HEALTH, Operator = Operator.GREATERTHAN, Value = "20", ValueIsPercentage = true
+                                        Persona = new Persona
+                                        {
+                                            Characteristic = Characteristics.HEALTH
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.GREATERTHAN,
+                                            Value = "20",
+                                            ValueIsPercentage = true
+                                        }
                                     }
                                 }
                             }
@@ -1219,10 +1841,10 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
-            actualResult.Acts[0].Choices[0].Conditions[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage);
         }
 
 
@@ -1267,7 +1889,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "OneTimeStory: no", "END"
+                "STORY",
+                "OneTimeStory: no",
+                "END"
             };
 
             // Act
@@ -1311,35 +1935,60 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Characteristic = Characteristics.HEALTH,
-                                        Operator = Operator.GREATERTHAN,
-                                        Value = "20",
-                                        ValueIsPercentage = true,
-                                        Subject = Actor.PLAYER
+                                        Persona = new Persona
+                                        {
+                                            Characteristic = Characteristics.HEALTH,
+                                            Subject = Actor.PLAYER
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.GREATERTHAN,
+                                            Value = "20",
+                                            ValueIsPercentage = true
+                                        }
                                     }
                                 },
                                 Consequences = new List<IEvaluation>
                                 {
                                     new BaseEvaluation
                                     {
-                                        Operator = Operator.EQUALTO,
-                                        Value = "-1",
-                                        ValueIsPercentage = false,
-                                        Characteristic = Characteristics.RENOWN,
-                                        Subject = Actor.PLAYER
+                                        Persona = new Persona
+                                        {
+                                            Characteristic = Characteristics.RENOWN,
+                                            Subject = Actor.PLAYER
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "-1",
+                                            ValueIsPercentage = false
+                                        }
                                     },
                                     new BaseEvaluation
                                     {
-                                        Operator = Operator.EQUALTO,
-                                        RandomStart = -1,
-                                        RandomEnd = -10,
-                                        ValueIsPercentage = false,
-                                        Characteristic = Characteristics.HEALTH,
-                                        Subject = Actor.PLAYER
+                                        Persona = new Persona
+                                        {
+                                            Characteristic = Characteristics.HEALTH,
+                                            Subject = Actor.PLAYER
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            RandomStart = -1,
+                                            RandomEnd = -10,
+                                            ValueIsPercentage = false
+                                        }
                                     },
                                     new BaseEvaluation
                                     {
-                                        PregnancyRisk = true, Subject = Actor.PLAYER
+                                        Persona = new Persona
+                                        {
+                                            Subject = Actor.PLAYER
+                                        },
+                                        Outcome = new Outcome
+                                        {
+                                            PregnancyRisk = true
+                                        }
                                     }
                                 }
                             }
@@ -1353,27 +2002,27 @@ namespace TalesDAL.Tests
 
             // Assert
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
-            actualResult.Acts[0].Choices[0].Conditions[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Attribute);
-            actualResult.Acts[0].Choices[0].Conditions[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Operator);
-            actualResult.Acts[0].Choices[0].Conditions[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Value);
-            actualResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Conditions[0].Subject.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Subject);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.Value);
+            actualResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Conditions[0].Persona.Subject.Should().Be(expectedResult.Acts[0].Choices[0].Conditions[0].Persona.Subject);
 
-            actualResult.Acts[0].Choices[0].Consequences[0].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Attribute);
-            actualResult.Acts[0].Choices[0].Consequences[0].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Operator);
-            actualResult.Acts[0].Choices[0].Consequences[0].Value.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Value);
-            actualResult.Acts[0].Choices[0].Consequences[0].ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Consequences[0].Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Subject);
+            actualResult.Acts[0].Choices[0].Consequences[0].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.Value.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Numbers.Value);
+            actualResult.Acts[0].Choices[0].Consequences[0].Numbers.ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Consequences[0].Persona.Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Persona.Subject);
 
-            actualResult.Acts[0].Choices[0].Consequences[1].Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Attribute);
-            actualResult.Acts[0].Choices[0].Consequences[1].Operator.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Operator);
-            actualResult.Acts[0].Choices[0].Consequences[1].RandomStart.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].RandomStart);
-            actualResult.Acts[0].Choices[0].Consequences[1].RandomEnd.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].RandomEnd);
-            actualResult.Acts[0].Choices[0].Consequences[1].ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].ValueIsPercentage);
-            actualResult.Acts[0].Choices[0].Consequences[1].Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Subject);
+            actualResult.Acts[0].Choices[0].Consequences[1].Persona.Attribute.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Persona.Attribute);
+            actualResult.Acts[0].Choices[0].Consequences[1].Numbers.Operator.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Numbers.Operator);
+            actualResult.Acts[0].Choices[0].Consequences[1].Numbers.RandomStart.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Numbers.RandomStart);
+            actualResult.Acts[0].Choices[0].Consequences[1].Numbers.RandomEnd.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Numbers.RandomEnd);
+            actualResult.Acts[0].Choices[0].Consequences[1].Numbers.ValueIsPercentage.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Numbers.ValueIsPercentage);
+            actualResult.Acts[0].Choices[0].Consequences[1].Persona.Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[1].Persona.Subject);
 
-            actualResult.Acts[0].Choices[0].Consequences[2].PregnancyRisk.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[2].PregnancyRisk);
-            actualResult.Acts[0].Choices[0].Consequences[2].Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[2].Subject);
+            actualResult.Acts[0].Choices[0].Consequences[2].Outcome.PregnancyRisk.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[2].Outcome.PregnancyRisk);
+            actualResult.Acts[0].Choices[0].Consequences[2].Persona.Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[2].Persona.Subject);
         }
 
 
@@ -1407,7 +2056,14 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        PregnancyRisk = true, Subject = Actor.NPC
+                                        Persona = new Persona
+                                        {
+                                            Subject = Actor.NPC
+                                        },
+                                        Outcome = new Outcome
+                                        {
+                                            PregnancyRisk = true
+                                        }
                                     }
                                 }
                             }
@@ -1420,8 +2076,8 @@ namespace TalesDAL.Tests
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Acts[0].Choices[0].Consequences[0].PregnancyRisk.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].PregnancyRisk);
-            actualResult.Acts[0].Choices[0].Consequences[0].Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Subject);
+            actualResult.Acts[0].Choices[0].Consequences[0].Outcome.PregnancyRisk.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Outcome.PregnancyRisk);
+            actualResult.Acts[0].Choices[0].Consequences[0].Persona.Subject.Should().Be(expectedResult.Acts[0].Choices[0].Consequences[0].Persona.Subject);
         }
 
         [Test]
@@ -1473,7 +2129,16 @@ namespace TalesDAL.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Subject = Actor.PLAYER, Characteristic = Characteristics.HEALTH, Operator = Operator.EQUALTO, Value = "-10"
+                                        Persona = new Persona
+                                        {
+                                            Subject = Actor.PLAYER,
+                                            Characteristic = Characteristics.HEALTH
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "-10"
+                                        }
                                     }
                                 }
                             }
@@ -1490,10 +2155,10 @@ namespace TalesDAL.Tests
             actualResult.Acts[0].Choices[0].Text.Should().Be(expectedResult.Acts[0].Choices[0].Text);
             actualResult.Sequences[0].Name.Should().Be(expectedResult.Sequences[0].Name);
             actualResult.Sequences[0].Choices[0].Text.Should().Be(expectedResult.Sequences[0].Choices[0].Text);
-            actualResult.Sequences[0].Choices[0].Consequences[0].Subject.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Subject);
-            actualResult.Sequences[0].Choices[0].Consequences[0].Characteristic.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Characteristic);
-            actualResult.Sequences[0].Choices[0].Consequences[0].Operator.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Operator);
-            actualResult.Sequences[0].Choices[0].Consequences[0].Value.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Value);
+            actualResult.Sequences[0].Choices[0].Consequences[0].Persona.Subject.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Persona.Subject);
+            actualResult.Sequences[0].Choices[0].Consequences[0].Persona.Characteristic.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Persona.Characteristic);
+            actualResult.Sequences[0].Choices[0].Consequences[0].Numbers.Operator.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Numbers.Operator);
+            actualResult.Sequences[0].Choices[0].Consequences[0].Numbers.Value.Should().Be(expectedResult.Sequences[0].Choices[0].Consequences[0].Numbers.Value);
         }
 
 
@@ -1614,7 +2279,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "StoryType: surrender", "END"
+                "STORY",
+                "StoryType: surrender",
+                "END"
             };
 
             var expectedResult = StoryType.PLAYER_SURRENDER;
@@ -1635,7 +2302,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "DependOn: None", "END"
+                "STORY",
+                "DependOn: None",
+                "END"
             };
 
             var expectedResult = "None";
@@ -1655,7 +2324,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Time: Night", "END"
+                "STORY",
+                "Time: Night",
+                "END"
             };
 
             var expectedResult = GameTime.NIGHTTIME;
@@ -1676,7 +2347,9 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "StoryType: is captive", "END"
+                "STORY",
+                "StoryType: is captive",
+                "END"
             };
 
             var expectedResult = StoryType.PLAYER_IS_CAPTIVE;
@@ -1696,22 +2369,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction: age > 18", "END"
+                "STORY",
+                "Restriction: age > 18",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.GREATERTHAN, Characteristic = Characteristics.AGE, Value = "18", Subject = Actor.PLAYER
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.AGE,
+                    Subject = Actor.PLAYER
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.GREATERTHAN,
+                    Value = "18"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
 
 
@@ -1723,22 +2407,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction: gender is female", "END"
+                "STORY",
+                "Restriction: gender is female",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.GENDER, Value = "FEMALE", Subject = Actor.PLAYER
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.GENDER,
+                    Subject = Actor.PLAYER
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    Value = "FEMALE"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
 
         [Test]
@@ -1749,22 +2444,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "restriction: culture is empire", "END"
+                "STORY",
+                "restriction: culture is empire",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.EQUALTO, Characteristic = Characteristics.CULTURE, Value = "EMPIRE", Subject = Actor.PLAYER
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.CULTURE,
+                    Subject = Actor.PLAYER
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.EQUALTO,
+                    Value = "EMPIRE"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
 
 
@@ -1776,22 +2482,33 @@ namespace TalesDAL.Tests
 
             var param = new List<string>
             {
-                "STORY", "Restriction: npc age > 18", "END"
+                "STORY",
+                "Restriction: npc age > 18",
+                "END"
             };
 
             var expectedResult = new BaseEvaluation
             {
-                Operator = Operator.GREATERTHAN, Characteristic = Characteristics.AGE, Value = "18", Subject = Actor.NPC
+                Persona = new Persona
+                {
+                    Characteristic = Characteristics.AGE,
+                    Subject = Actor.NPC
+                },
+                Numbers = new Numbers
+                {
+                    Operator = Operator.GREATERTHAN,
+                    Value = "18"
+                }
             };
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Characteristic.Should().Be(expectedResult.Characteristic);
-            actualResult.Restrictions[0].Operator.Should().Be(expectedResult.Operator);
-            actualResult.Restrictions[0].Value.Should().Be(expectedResult.Value);
-            actualResult.Restrictions[0].Subject.Should().Be(expectedResult.Subject);
+            actualResult.Restrictions[0].Persona.Characteristic.Should().Be(expectedResult.Persona.Characteristic);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(expectedResult.Numbers.Operator);
+            actualResult.Restrictions[0].Numbers.Value.Should().Be(expectedResult.Numbers.Value);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(expectedResult.Persona.Subject);
         }
     }
 }

@@ -1,0 +1,136 @@
+Story
+
+    Name: Test Equipment Story
+	OneTimeStory: No
+    DependOn: None
+    Time: Anytime
+    StoryType: Test
+
+
+    Restriction: Player age > 18
+    Restriction: Player gender = female
+
+    Act
+        Name:       Strip
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: Strip player
+
+
+    Act
+        Name:       Remove clothes
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: remove clothes
+
+
+     Act
+        Name:       Undress
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: undress
+
+
+     Act
+        Name:       Remove equipment
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: remove equipment
+
+
+    Act
+        Name:       Return equipment
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: return equipment
+
+
+    Act
+        Name:       Return clothes
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: Return clothes
+
+
+    Act
+        Name:       Undress and give clothes
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: undress and give clothes
+
+
+    Act
+        Name:       Give weapon
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: give weapon seax
+
+
+    Act
+        Name:       Give weapon Sturgia
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: give weapon culture Sturgia, type dagger
+        
+
+
+    Act
+        Name:       Give armor
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: give armor tattered_rags
+
+
+    Act
+        Name:       Give armor Sturgia
+        Image:      None
+        Location:   Map
+        Intro:      Your captor remove your clothes
+
+        Choice: Continue....
+        
+            Consequence: give armor culture Sturgia, material leather, appearance < 2
+
+
+
+END

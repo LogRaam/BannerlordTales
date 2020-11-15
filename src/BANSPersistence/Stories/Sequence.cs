@@ -37,7 +37,7 @@ namespace TalesPersistence.Stories
             {
                 foreach (var condition in choice.Conditions)
                 {
-                    switch (condition.Subject)
+                    switch (condition.Persona.Subject)
                     {
                         case Actor.PLAYER:
                             return new Hero(GameData.Instance.GameContext.Player).IsConsequenceConformFor(condition);
@@ -62,7 +62,9 @@ namespace TalesPersistence.Stories
         {
             var audit = new ActQualificationAudit
             {
-                RightLocationPassed = GameData.Instance.GameContext.IsActLocationValidInContext(this), LinkedSequencesVerified = GameData.Instance.StoryContext.AllLinksExistFor((IAct)this), ConditionsPassed = AllConditionsConformToEvent()
+                RightLocationPassed = GameData.Instance.GameContext.IsActLocationValidInContext(this),
+                LinkedSequencesVerified = GameData.Instance.StoryContext.AllLinksExistFor((IAct)this),
+                ConditionsPassed = AllConditionsConformToEvent()
             };
 
 

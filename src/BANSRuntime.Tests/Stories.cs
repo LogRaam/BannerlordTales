@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 using TalesBase.Stories;
+using TalesBase.Stories.Evaluation;
 using TalesBase.TW;
 using TalesContract;
 using TalesEnums;
@@ -29,7 +30,9 @@ namespace BannerlordTales.Tests
                     IsNight = false,
                     Player = new BaseHero
                     {
-                        Age = 18, IsFemale = true, IsHumanPlayerCharacter = true
+                        Age = 18,
+                        IsFemale = true,
+                        IsHumanPlayerCharacter = true
                     },
                     PlayerIsCaptor = true,
                     IsDay = true
@@ -81,21 +84,51 @@ namespace BannerlordTales.Tests
             {
                 Header = new StoryHeader
                 {
-                    CanBePlayedOnlyOnce = true, DependOn = "None", Time = GameTime.DAYTIME, TypeOfStory = StoryType.PLAYER_IS_CAPTOR
+                    CanBePlayedOnlyOnce = true,
+                    DependOn = "None",
+                    Time = GameTime.DAYTIME,
+                    TypeOfStory = StoryType.PLAYER_IS_CAPTOR
                 },
                 Restrictions = new List<IEvaluation>
                 {
                     new BaseEvaluation
                     {
-                        Subject = Actor.PLAYER, Characteristic = Characteristics.AGE, Operator = Operator.GREATERTHAN, Value = "18"
+                        Persona = new Persona
+                        {
+                            Subject = Actor.PLAYER,
+                            Characteristic = Characteristics.AGE
+                        },
+                        Numbers = new Numbers
+                        {
+                            Operator = Operator.GREATERTHAN,
+                            Value = "18"
+                        }
                     },
                     new BaseEvaluation
                     {
-                        Subject = Actor.PLAYER, Characteristic = Characteristics.GENDER, Operator = Operator.EQUALTO, Value = "female"
+                        Persona = new Persona
+                        {
+                            Subject = Actor.PLAYER,
+                            Characteristic = Characteristics.GENDER
+                        },
+                        Numbers = new Numbers
+                        {
+                            Operator = Operator.EQUALTO,
+                            Value = "female"
+                        }
                     },
                     new BaseEvaluation
                     {
-                        Subject = Actor.NPC, PartyType = PartyType.LORD, Operator = Operator.EQUALTO, Value = "Noble"
+                        Persona = new Persona
+                        {
+                            Subject = Actor.NPC
+                        },
+                        PartyType = PartyType.LORD,
+                        Numbers = new Numbers
+                        {
+                            Operator = Operator.EQUALTO,
+                            Value = "Noble"
+                        }
                     }
                 },
                 Acts = new List<IAct>
@@ -115,7 +148,16 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Subject = Actor.PLAYER, Characteristic = Characteristics.RENOWN, Operator = Operator.EQUALTO, Value = "-1"
+                                        Persona = new Persona
+                                        {
+                                            Subject = Actor.PLAYER,
+                                            Characteristic = Characteristics.RENOWN
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "-1"
+                                        }
                                     }
                                 }
                             },
@@ -126,7 +168,8 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseTrigger
                                     {
-                                        ChanceToTrigger = 100, Link = "Refuse to kiss the banner"
+                                        ChanceToTrigger = 100,
+                                        Link = "Refuse to kiss the banner"
                                     }
                                 }
                             }
@@ -150,7 +193,16 @@ namespace BannerlordTales.Tests
                                 {
                                     new BaseEvaluation
                                     {
-                                        Subject = Actor.PLAYER, Characteristic = Characteristics.HEALTH, Operator = Operator.EQUALTO, Value = "-10"
+                                        Persona = new Persona
+                                        {
+                                            Subject = Actor.PLAYER,
+                                            Characteristic = Characteristics.HEALTH
+                                        },
+                                        Numbers = new Numbers
+                                        {
+                                            Operator = Operator.EQUALTO,
+                                            Value = "-10"
+                                        }
                                     }
                                 }
                             }

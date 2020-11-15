@@ -4,6 +4,7 @@
 
 using System.IO;
 using TalesBase;
+using TalesDAL;
 using TalesPersistence.Context;
 using TalesRuntime.Behavior;
 using TaleWorlds.CampaignSystem;
@@ -24,7 +25,7 @@ namespace TalesRuntime
 
         public override bool DoLoading(Game game)
         {
-            // TODO: Clear listeners for prisoner escape behaviors
+            // TODO:May be used to load saved data
             return base.DoLoading(game);
         }
 
@@ -77,6 +78,11 @@ namespace TalesRuntime
             new StoryBroker().AddStoriesToGame(campaignStarter);
         }
 
+        private static void LoadBodyArmorsIntoRuntime()
+        {
+            GameData.Instance.GameContext.BodyArmors = new BodyArmorImporter().ImportBodyArmorsFrom(GameData.Instance.GameContext.BodyArmorsFile);
+        }
+
         private static void LoadCustomStoriesIntoRuntime()
         {
             GameData.Instance.StoryContext.CustomStoriesFolder = new DirectoryInfo(GameData.Instance.StoryContext.ModuleFolder.FullName + "\\CustomStories");
@@ -88,12 +94,11 @@ namespace TalesRuntime
         {
             LoadCustomStoriesIntoRuntime();
             LoadTexturesIntoRuntime();
+            LoadBodyArmorsIntoRuntime();
         }
 
         private static void LoadTexturesIntoRuntime()
         {
-            GameData.Instance.StoryContext.StoryImagesFolder = new DirectoryInfo(GameData.Instance.StoryContext.ModuleFolder.FullName + "\\StoryImages");
-
             foreach (var image in GameData.Instance.StoryContext.StoryImagesFolder.GetFiles("*.png"))
             {
                 var texture = Texture.LoadTextureFromPath(image.Name, image.DirectoryName);

@@ -14,13 +14,13 @@ namespace _47_TalesMath
     {
         public static bool IsEvaluationConform(IEvaluation consequence, float attributeValue)
         {
-            switch (consequence.Operator)
+            switch (consequence.Numbers.Operator)
             {
                 case Operator.UNKNOWN:     break;
-                case Operator.GREATERTHAN: return attributeValue > float.Parse(consequence.Value);
-                case Operator.LOWERTHAN:   return attributeValue < float.Parse(consequence.Value);
-                case Operator.EQUALTO:     return Math.Abs(attributeValue - float.Parse(consequence.Value)) < 0.000000001;
-                case Operator.NOTEQUALTO:  return Math.Abs(attributeValue - float.Parse(consequence.Value)) > 0.000000001;
+                case Operator.GREATERTHAN: return attributeValue > float.Parse(consequence.Numbers.Value);
+                case Operator.LOWERTHAN:   return attributeValue < float.Parse(consequence.Numbers.Value);
+                case Operator.EQUALTO:     return Math.Abs(attributeValue - float.Parse(consequence.Numbers.Value)) < 0.000000001;
+                case Operator.NOTEQUALTO:  return Math.Abs(attributeValue - float.Parse(consequence.Numbers.Value)) > 0.000000001;
                 default:                   throw new ArgumentOutOfRangeException();
             }
 
@@ -30,13 +30,13 @@ namespace _47_TalesMath
 
         public static bool IsEvaluationConform(IEvaluation consequence, int attributeValue)
         {
-            switch (consequence.Operator)
+            switch (consequence.Numbers.Operator)
             {
                 case Operator.UNKNOWN:     break;
-                case Operator.GREATERTHAN: return attributeValue > int.Parse(consequence.Value);
-                case Operator.LOWERTHAN:   return attributeValue < int.Parse(consequence.Value);
-                case Operator.EQUALTO:     return attributeValue == int.Parse(consequence.Value);
-                case Operator.NOTEQUALTO:  return attributeValue != int.Parse(consequence.Value);
+                case Operator.GREATERTHAN: return attributeValue > int.Parse(consequence.Numbers.Value);
+                case Operator.LOWERTHAN:   return attributeValue < int.Parse(consequence.Numbers.Value);
+                case Operator.EQUALTO:     return attributeValue == int.Parse(consequence.Numbers.Value);
+                case Operator.NOTEQUALTO:  return attributeValue != int.Parse(consequence.Numbers.Value);
                 default:                   throw new ArgumentOutOfRangeException();
             }
 

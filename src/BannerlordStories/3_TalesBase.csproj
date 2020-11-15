@@ -65,12 +65,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Items\BaseBodyArmor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stories\ActQualificationAudit.cs" />
     <Compile Include="Stories\BaseAct.cs" />
     <Compile Include="Stories\BaseStory.cs" />
     <Compile Include="Stories\BaseChoice.cs" />
-    <Compile Include="Stories\BaseEvaluation.cs" />
+    <Compile Include="Stories\Evaluation\BaseEvaluation.cs" />
+    <Compile Include="Stories\Evaluation\Equipments.cs" />
+    <Compile Include="Stories\Evaluation\Numbers.cs" />
+    <Compile Include="Stories\Evaluation\Outcome.cs" />
+    <Compile Include="Stories\Evaluation\Persona.cs" />
     <Compile Include="Stories\StoryQualificationAudit.cs" />
     <Compile Include="Stories\BaseSequence.cs" />
     <Compile Include="Stories\StoryHeader.cs" />

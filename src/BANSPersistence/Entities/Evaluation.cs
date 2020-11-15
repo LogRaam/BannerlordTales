@@ -4,7 +4,7 @@
 
 using System;
 using _47_TalesMath;
-using TalesBase.Stories;
+using TalesBase.Stories.Evaluation;
 using TalesContract;
 using TalesDAL;
 using TalesEnums;
@@ -21,25 +21,11 @@ namespace TalesPersistence.Entities
     {
         public Evaluation(IEvaluation condition)
         {
-            Subject = condition.Subject;
-
-            Attribute = condition.Attribute;
-            Characteristic = condition.Characteristic;
+            Persona = condition.Persona;
+            Numbers = condition.Numbers;
+            Outcome = condition.Outcome;
+            Equipments = condition.Equipments;
             PartyType = condition.PartyType;
-            PersonalityTrait = condition.PersonalityTrait;
-            Skill = condition.Skill;
-            Time = condition.Time;
-
-            PregnancyRisk = condition.PregnancyRisk;
-
-            Operator = condition.Operator;
-
-            RandomStart = condition.RandomStart;
-            RandomEnd = condition.RandomEnd;
-
-            Value = condition.Value;
-            ValueIsPercentage = condition.ValueIsPercentage;
-            Escaping = condition.Escaping;
         }
 
         public Evaluation() { }
@@ -79,38 +65,38 @@ namespace TalesPersistence.Entities
 
         private void ApplyAttributeConsequence()
         {
-            if (Attribute == null) return;
-            if (Attribute is Attributes.UNKNOWN) return;
+            if (Persona.Attribute == null) return;
+            if (Persona.Attribute is Attributes.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
 
-            if (Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
-            if (Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
-            if (Attribute is Attributes.ENDURANCE) SetAttribute(hero, CharacterAttributesEnum.Endurance, value);
-            if (Attribute is Attributes.CUNNING) SetAttribute(hero, CharacterAttributesEnum.Cunning, value);
-            if (Attribute is Attributes.SOCIAL) SetAttribute(hero, CharacterAttributesEnum.Social, value);
-            if (Attribute is Attributes.INTELLIGENCE) SetAttribute(hero, CharacterAttributesEnum.Intelligence, value);
+            if (Persona.Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
+            if (Persona.Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
+            if (Persona.Attribute is Attributes.ENDURANCE) SetAttribute(hero, CharacterAttributesEnum.Endurance, value);
+            if (Persona.Attribute is Attributes.CUNNING) SetAttribute(hero, CharacterAttributesEnum.Cunning, value);
+            if (Persona.Attribute is Attributes.SOCIAL) SetAttribute(hero, CharacterAttributesEnum.Social, value);
+            if (Persona.Attribute is Attributes.INTELLIGENCE) SetAttribute(hero, CharacterAttributesEnum.Intelligence, value);
         }
 
         private void ApplyCharacteristicConsequence()
         {
-            if (Characteristic == null) return;
-            if (Characteristic == Characteristics.UNKNOWN) return;
+            if (Persona.Characteristic == null) return;
+            if (Persona.Characteristic == Characteristics.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
 
-            if (Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
-            if (Characteristic == Characteristics.GOLD) hero.Gold += value;
-            if (Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
+            if (Persona.Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
+            if (Persona.Characteristic == Characteristics.GOLD) hero.Gold += value;
+            if (Persona.Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
         }
 
         private void ApplyEscapeConsequence()
         {
-            GameFunction.Log("ApplyEscapeConsequence() consequence Value => " + Value + ", Escaping => " + Escaping);
+            GameFunction.Log("ApplyEscapeConsequence() consequence Value => " + Numbers.Value + ", Escaping => " + Outcome.Escaping);
 
-            if (!Escaping)
+            if (!Outcome.Escaping)
             {
                 GameFunction.Log(".. not escaping => return");
 
@@ -143,49 +129,49 @@ namespace TalesPersistence.Entities
 
         private void ApplyPersonalityTraitConsequence()
         {
-            if (PersonalityTrait == null) return;
-            if (PersonalityTrait == PersonalityTraits.UNKNOWN) return;
+            if (Persona.PersonalityTrait == null) return;
+            if (Persona.PersonalityTrait == PersonalityTraits.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
 
-            if (PersonalityTrait == PersonalityTraits.MERCY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
-            if (PersonalityTrait == PersonalityTraits.GENEROSITY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
-            if (PersonalityTrait == PersonalityTraits.HONOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "HONOR"), hero.GetHeroTraits().Honor + value);
-            if (PersonalityTrait == PersonalityTraits.VALOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "VALOR"), hero.GetHeroTraits().Valor + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.MERCY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.GENEROSITY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.HONOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "HONOR"), hero.GetHeroTraits().Honor + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.VALOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "VALOR"), hero.GetHeroTraits().Valor + value);
         }
 
 
         private void ApplyPregnancyRiskConsequence()
         {
-            if (!PregnancyRisk) return;
+            if (!Outcome.PregnancyRisk) return;
 
-            if (ValueIsPercentage)
+            if (Numbers.ValueIsPercentage)
             {
-                if (TalesRandom.EvalPercentage(int.Parse(Value))) MakePregnant();
+                if (TalesRandom.EvalPercentage(int.Parse(Numbers.Value))) MakePregnant();
 
                 return;
             }
 
-            if (string.IsNullOrEmpty(Value) && RandomEnd > 0)
-                if (TalesRandom.EvalPercentageRange(RandomStart, RandomEnd))
+            if (string.IsNullOrEmpty(Numbers.Value) && Numbers.RandomEnd > 0)
+                if (TalesRandom.EvalPercentageRange(Numbers.RandomStart, Numbers.RandomEnd))
                     MakePregnant();
         }
 
         private void ApplySkillConsequence()
         {
-            if (Skill == null) return;
-            if (Skill == Skills.UNKNOWN) return;
+            if (Persona.Skill == null) return;
+            if (Persona.Skill == Skills.UNKNOWN) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToHero();
 
-            SetSkill(hero, Skill.ToString(), value);
+            SetSkill(hero, Persona.Skill.ToString(), value);
         }
 
         private bool AttributeAccepted()
         {
-            switch (Attribute)
+            switch (Persona.Attribute)
             {
                 case Attributes.UNKNOWN:      return true;
                 case Attributes.VIGOR:        return GameMath.IsEvaluationConform(this, IdentifySubject().Vigor);
@@ -201,7 +187,7 @@ namespace TalesPersistence.Entities
 
         private bool CharacteristicAccepted()
         {
-            switch (Characteristic)
+            switch (Persona.Characteristic)
             {
                 case Characteristics.UNKNOWN: return true;
                 case Characteristics.AGE:     return GameMath.IsEvaluationConform(this, IdentifySubject().Age);
@@ -209,7 +195,7 @@ namespace TalesPersistence.Entities
                 case Characteristics.HEALTH:  return GameMath.IsEvaluationConform(this, IdentifySubject().HitPoints);
                 case Characteristics.GOLD:    return GameMath.IsEvaluationConform(this, IdentifySubject().Gold);
                 case Characteristics.RENOWN:  return GameMath.IsEvaluationConform(this, IdentifySubject().Clan.Renown);
-                case Characteristics.CULTURE: return Value.ToUpper() == IdentifySubject().Culture.CultureCode.ToString();
+                case Characteristics.CULTURE: return Numbers.Value.ToUpper() == IdentifySubject().Culture.CultureCode.ToString();
                 case null:                    throw new NullReferenceException("Characteristic is null");
                 default:                      throw new ArgumentOutOfRangeException();
             }
@@ -218,7 +204,7 @@ namespace TalesPersistence.Entities
 
         private bool EvalGender(IHero subject)
         {
-            var t = Value.ToUpper();
+            var t = Numbers.Value.ToUpper();
 
             if (t == "ANY") return true;
             if (subject.IsFemale) return t == "FEMALE";
@@ -228,14 +214,14 @@ namespace TalesPersistence.Entities
 
         private int GetModifierValue()
         {
-            if (Value.Contains("R ")) return TalesRandom.GenerateRandomNumber(RandomStart, RandomEnd);
+            if (Numbers.Value.Contains("R ")) return TalesRandom.GenerateRandomNumber(Numbers.RandomStart, Numbers.RandomEnd);
 
-            return int.Parse(Value);
+            return int.Parse(Numbers.Value);
         }
 
         private Hero IdentifySubject()
         {
-            return Subject == Actor.NPC
+            return Persona.Subject == Actor.NPC
                 ? new Hero(GameData.Instance.GameContext.Captor)
                 : new Hero(GameData.Instance.GameContext.Player);
         }
@@ -265,7 +251,7 @@ namespace TalesPersistence.Entities
 
         private bool PersonalityTraitAccepted()
         {
-            switch (PersonalityTrait)
+            switch (Persona.PersonalityTrait)
             {
                 case PersonalityTraits.UNKNOWN:    return true;
                 case PersonalityTraits.MERCY:      return GameMath.IsEvaluationConform(this, IdentifySubject().Mercy);
@@ -290,7 +276,7 @@ namespace TalesPersistence.Entities
 
         private bool SkillAccepted()
         {
-            switch (Skill)
+            switch (Persona.Skill)
             {
                 case Skills.UNKNOWN:     return true;
                 case Skills.ONEHANDED:   return GameMath.IsEvaluationConform(this, IdentifySubject().OneHanded);

@@ -4,9 +4,12 @@
 
 using System;
 using _47_TalesMath;
+using Helpers;
 using TalesBase.TW;
 using TalesContract;
 using TalesEnums;
+using TaleWorlds.Core;
+using TaleWorlds.ObjectSystem;
 
 #endregion
 
@@ -124,15 +127,33 @@ namespace TalesPersistence.Entities
         {
         }
 
+        public void GiveBodyArmor(string bodyArmorId)
+        {
+            var armor = MBObjectManager.Instance.GetObject<ItemObject>(bodyArmorId);
+            var equipment = new Equipment();
+            equipment.AddEquipmentToSlotWithoutAgent(EquipmentIndex.Body, new EquipmentElement(armor));
+
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToHero(), equipment);
+        }
+
+        public void GiveWeapon(string weaponId)
+        {
+            var weapon = MBObjectManager.Instance.GetObject<ItemObject>(weaponId);
+            var equipment = new Equipment();
+            equipment.AddEquipmentToSlotWithoutAgent(EquipmentIndex.Weapon1, new EquipmentElement(weapon));
+
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToHero(), equipment);
+        }
+
         public bool IsConsequenceConformFor(IEvaluation consequence)
         {
-            if (consequence.PersonalityTrait != null) return IsPersonalityTraitConformFor(consequence);
+            if (consequence.Persona.PersonalityTrait != null) return IsPersonalityTraitConformFor(consequence);
 
-            if (consequence.Attribute != null) return IsAttributeConformFor(consequence);
+            if (consequence.Persona.Attribute != null) return IsAttributeConformFor(consequence);
 
-            if (consequence.Skill != null) return IsSkillConformFor(consequence);
+            if (consequence.Persona.Skill != null) return IsSkillConformFor(consequence);
 
-            if (consequence.Characteristic != null) return IsCharacteristicConformFor(consequence);
+            if (consequence.Persona.Characteristic != null) return IsCharacteristicConformFor(consequence);
 
             return true;
         }
@@ -142,11 +163,17 @@ namespace TalesPersistence.Entities
             return TaleWorlds.CampaignSystem.Hero.FindFirst(n => n.Name.ToString() == Name && n.IsHumanPlayerCharacter == IsHumanPlayerCharacter && n.IsFemale == IsFemale);
         }
 
+        public void Undress()
+        {
+            //TODO: keep equipment somewhere in case we want to return it to player.
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToHero(), new Equipment());
+        }
+
         #region private
 
         private bool IsAttributeConformFor(IEvaluation consequence)
         {
-            switch (consequence.Attribute)
+            switch (consequence.Persona.Attribute)
             {
                 case Attributes.VIGOR:        return GameMath.IsEvaluationConform(consequence, Vigor);
                 case Attributes.CONTROL:      return GameMath.IsEvaluationConform(consequence, Control);
@@ -164,7 +191,7 @@ namespace TalesPersistence.Entities
 
         private bool IsCharacteristicConformFor(IEvaluation consequence)
         {
-            switch (consequence.Characteristic)
+            switch (consequence.Persona.Characteristic)
             {
                 case Characteristics.UNKNOWN: return true;
                 case Characteristics.AGE:     return GameMath.IsEvaluationConform(consequence, Age);
@@ -179,12 +206,12 @@ namespace TalesPersistence.Entities
 
         private bool IsCultureConform(IEvaluation consequence)
         {
-            return Culture.Name.ToUpper() == consequence.Value;
+            return Culture.Name.ToUpper() == consequence.Numbers.Value;
         }
 
         private bool IsGenderConform(IEvaluation consequence)
         {
-            var female = consequence.Value == "FEMALE";
+            var female = consequence.Numbers.Value == "FEMALE";
 
             return female == IsFemale;
         }

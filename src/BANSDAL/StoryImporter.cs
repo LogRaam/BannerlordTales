@@ -3,9 +3,11 @@
 #region
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using TalesBase.Stories;
+using TalesBase.Stories.Evaluation;
 using TalesBase.TW;
 using TalesContract;
 using TalesEnums;
@@ -124,6 +126,13 @@ namespace TalesDAL
             return result;
         }
 
+        private CultureCode ExtractCultureCodeFrom(string cultureValue)
+        {
+            if (!Enum.TryParse(cultureValue, true, out CultureCode result)) return CultureCode.INVALID;
+
+            return result;
+        }
+
         private IEvaluation ExtractEvaluationFrom(string line)
         {
             line = line.ToUpper();
@@ -133,24 +142,61 @@ namespace TalesDAL
 
             var result = new BaseEvaluation
             {
-                Attribute = GetAttributeFrom(item),
-                Characteristic = GetCharacteristicFrom(item),
-                PersonalityTrait = GetPersonalityTraitFrom(item),
-                Skill = GetSkillFrom(item),
-                Operator = GetOperatorFrom(line),
-                Value = v.Reformat().Replace("%", string.Empty),
-                ValueIsPercentage = IsThisAPercentageValue(v),
-                RandomStart = GetRandomStartFrom(v),
-                RandomEnd = GetRandomEndFrom(v),
+                Persona = new Persona
+                {
+                    Attribute = GetAttributeFrom(item),
+                    Characteristic = GetCharacteristicFrom(item),
+                    PersonalityTrait = GetPersonalityTraitFrom(item),
+                    Skill = GetSkillFrom(item),
+                    Subject = line.Contains("NPC")
+                        ? Actor.NPC
+                        : Actor.PLAYER
+                },
+                PartyType = GetPartyTypeFrom(line),
                 Time = GetTimeFrom(line),
-                PregnancyRisk = IsAtRiskOfBecomingPregnant(line),
-                Subject = line.Contains("NPC")
-                    ? Actor.NPC
-                    : Actor.PLAYER,
-                Escaping = IsEscapingFromCaptor(line)
+                Equipments = new Equipments
+                {
+                    Weapon = line.Contains("WEAPON")
+                        ? GetWeaponFrom(line)
+                        : null,
+                    Armor = line.Contains("ARMOR")
+                        ? GetArmorFrom(line)
+                        : null,
+                    Culture = line.Contains("CULTURE")
+                        ? GetEquipmentCultureFrom(line)
+                        : CultureCode.INVALID,
+                    Material = line.Contains("MATERIAL")
+                        ? GetEquipmentMaterialFrom(line)
+                        : ArmorMaterialTypes.UNKNOWN,
+                    Appearance = line.Contains("APPEARANCE")
+                        ? GetEquipmentAppearanceFrom(line)
+                        : 0.0f
+                },
+                Numbers = new Numbers
+                {
+                    Operator = GetOperatorFrom(line),
+                    Value = v.Reformat().Replace("%", string.Empty),
+                    ValueIsPercentage = IsThisAPercentageValue(v),
+                    RandomStart = GetRandomStartFrom(v),
+                    RandomEnd = GetRandomEndFrom(v)
+                },
+                Outcome = new Outcome
+                {
+                    PregnancyRisk = IsAtRiskOfBecomingPregnant(line),
+                    Escaping = IsEscapingFromCaptor(line),
+                    ShouldUndress = ShouldRemoveClothes(line),
+                    ShouldEquip = ShouldEquip(line)
+                }
             };
 
-            if (result.RandomEnd > 0) result.Value = result.RandomEnd.ToString();
+            if (result.Numbers.RandomEnd > 0) result.Numbers.Value = result.Numbers.RandomEnd.ToString();
+
+            return result;
+        }
+
+        private ArmorMaterialTypes ExtractMaterialTypeFrom(string materialValue)
+        {
+            if (!Enum.TryParse(materialValue, true, out ArmorMaterialTypes result)) return ArmorMaterialTypes.UNKNOWN;
 
             return result;
         }
@@ -206,6 +252,35 @@ namespace TalesDAL
             return result;
         }
 
+        private string ExtractValueFromDeclaration(string line, string declaration)
+        {
+            var s = line.Split(',');
+            var t = "";
+
+            foreach (var section in s)
+            {
+                if (!section.ToUpper().Contains(declaration)) continue;
+
+                t = section.Split(' ').Last();
+            }
+
+            return t;
+        }
+
+        private string GetArmorFrom(string line)
+        {
+            //var r = new Regex(@"(?<=\b(armor|ARMOR|Armor)\s)(\w+)", RegexOptions.Compiled);
+            //var armor = r.Match(line);
+
+            var value = ExtractValueFromDeclaration(line, "ARMOR");
+
+            if (value == "CULTURE") return null;
+            if (value == "MATERIAL") return null;
+            if (value == "APPEARANCE") return null;
+
+            return value.ToLower();
+        }
+
 
         private Attributes? GetAttributeFrom(string line)
         {
@@ -236,6 +311,50 @@ namespace TalesDAL
             return Characteristics.UNKNOWN;
         }
 
+        private float GetEquipmentAppearanceFrom(string line)
+        {
+            /*
+            var r = new Regex(@"(?<=\b(appearance (<|>|=)|APPEARANCE (<|>|=)|Appearance (<|>|=))\s)(\w+)", RegexOptions.Compiled);
+            var appearance = r.Match(line);
+
+            if (appearance.Length == 0)
+            {
+                r = new Regex(@"(?<=\b(appearance|APPEARANCE|Appearance)\s)(\w+)", RegexOptions.Compiled);
+                appearance = r.Match(line);
+            }
+
+            float.TryParse(appearance.Value, NumberStyles.Any, new NumberFormatInfo(), out var result);
+            */
+
+            var t = ExtractValueFromDeclaration(line, "APPEARANCE");
+
+
+            float.TryParse(t, NumberStyles.Any, new NumberFormatInfo(), out var result);
+
+            return result;
+        }
+
+
+        private CultureCode GetEquipmentCultureFrom(string line)
+        {
+            //var r = new Regex(@"(?<=\b(culture|CULTURE|Culture)\s)(\w+)", RegexOptions.Compiled);
+            //var culture = r.Match(line);
+
+            var value = ExtractValueFromDeclaration(line, "CULTURE");
+
+            return ExtractCultureCodeFrom(value);
+        }
+
+        private ArmorMaterialTypes GetEquipmentMaterialFrom(string line)
+        {
+            //var r = new Regex(@"(?<=\b(material|MATERIAL|Material)\s)(\w+)", RegexOptions.Compiled);
+            //var material = r.Match(line);
+
+            var value = ExtractValueFromDeclaration(line, "MATERIAL");
+
+            return ExtractMaterialTypeFrom(value);
+        }
+
         private Operator GetOperatorFrom(string line)
         {
             if (line.Contains("=")) return Operator.EQUALTO;
@@ -247,6 +366,16 @@ namespace TalesDAL
             if (line.Contains(" IS ")) return Operator.EQUALTO;
 
             return Operator.EQUALTO;
+        }
+
+        private PartyType GetPartyTypeFrom(string line)
+        {
+            if (line.Contains("LORD")) return PartyType.LORD;
+            if (line.Contains("BANDIT")) return PartyType.BANDIT;
+            if (line.Contains("VILLAGER")) return PartyType.VILLAGER;
+            if (line.Contains("GARRISON")) return PartyType.GARRISONPARTY;
+
+            return PartyType.UNKNOWN;
         }
 
         private PersonalityTraits? GetPersonalityTraitFrom(string line)
@@ -385,6 +514,32 @@ namespace TalesDAL
                 : GetSimpleValueFrom(line);
         }
 
+        private string GetWeaponFrom(string line)
+        {
+            if (line.Contains("TYPE ")) return GetWeaponTypeFrom(line);
+
+            //var r = new Regex(@"(?<=\b(weapon|WEAPON|Weapon)\s)(\w+)", RegexOptions.Compiled);
+            //var weapon = r.Match(line);
+
+            var value = ExtractValueFromDeclaration(line, "WEAPON");
+
+            if (value == "CULTURE") return null;
+            if (value == "MATERIAL") return null;
+            if (value == "APPEARANCE") return null;
+
+            return value;
+        }
+
+        private string GetWeaponTypeFrom(string line)
+        {
+            //var r = new Regex(@"(?<=\b(type|TYPE|Type)\s)(\w+)", RegexOptions.Compiled);
+            //var weapon = r.Match(line);
+
+            var value = ExtractValueFromDeclaration(line, "TYPE");
+
+            return value.ToLower();
+        }
+
         private bool IsAtRiskOfBecomingPregnant(string line)
         {
             return line.Contains(" PREGNAN");
@@ -468,7 +623,8 @@ namespace TalesDAL
 
             var result = new BaseTrigger
             {
-                Link = line.ExtractLinkWithoutPercentage(), ChanceToTrigger = line.ExtractPercentageChancesFromLink()
+                Link = line.ExtractLinkWithoutPercentage(),
+                ChanceToTrigger = line.ExtractPercentageChancesFromLink()
             };
 
 
@@ -497,6 +653,58 @@ namespace TalesDAL
             var result = s[1].Trim().Replace("%", string.Empty);
 
             return result;
+        }
+
+        private bool ShouldEquip(string line)
+        {
+            if (line.Contains("RETURN CLOTH"))
+            {
+                //TODO: return civil clothes
+                return true;
+            }
+
+            if (line.Contains("RETURN ARMOR"))
+            {
+                //TODO: return military armor
+                return true;
+            }
+
+            if (line.Contains("RETURN EQUIPMENT"))
+            {
+                //TODO: return all equipment
+                return true;
+            }
+
+            if (line.Contains("GIVE WEAPON"))
+            {
+                //TODO: give new weapons
+                return true;
+            }
+
+            if (line.Contains("GIVE ARMOR"))
+            {
+                //TODO: give new military armor
+                return true;
+            }
+
+            if (line.Contains("GIVE CLOTH"))
+            {
+                //TODO: give new civilian clothes
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ShouldRemoveClothes(string line)
+        {
+            if (line.ToUpper().Contains("STRIP")) return true;
+            if (line.ToUpper().Contains("REMOVE CLOTHES")) return true;
+            if (line.ToUpper().Contains("REMOVE EQUIPMENT")) return true;
+            if (line.ToUpper().Contains("UNDRESS")) return true;
+            if (line.ToUpper().Contains("UNEQUIP")) return true;
+
+            return false;
         }
 
         private bool StoryIsFullyExtracted(string line)

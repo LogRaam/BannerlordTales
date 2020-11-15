@@ -43,6 +43,7 @@
     <Reference Include="TaleWorlds.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BodyArmorImporter.cs" />
     <Compile Include="ExtendedMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoryDal.cs" />

@@ -63,7 +63,11 @@
     <Compile Include="ICultureObject.cs" />
     <Compile Include="IDAL.cs" />
     <Compile Include="IAct.cs" />
+    <Compile Include="IEquipments.cs" />
     <Compile Include="IEventContext.cs" />
+    <Compile Include="INumbers.cs" />
+    <Compile Include="IOutcome.cs" />
+    <Compile Include="IPersona.cs" />
     <Compile Include="ISequence.cs" />
     <Compile Include="IStoryQualificationAudit.cs" />
     <Compile Include="IEventRequest.cs" />

@@ -59,6 +59,25 @@ Story
             Consequence: experience +200
             Consequence: Relation -1
 
+            Consequence: Strip Player
+            Consequence: Remove Clothes
+            Consequence: Undress
+            Consequence: remove equipment
+            
+            Consequence: return equipment
+            Consequence: return clothes
+
+            Consequence: undress and give clothes
+            Consequence: give weapon $weaponName
+            Consequence: give armor $armorName
+            Consequence: give clothes tattered_rags
+            Consequence: give armor culture Battania, material leather, appearance < 1
+            
+            
+
+
+
+
         Choice: Act1choice2.
         
             Goto: MySequence1

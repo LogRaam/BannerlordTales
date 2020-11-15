@@ -15,13 +15,13 @@ namespace TalesPersistence.Entities
     {
         public bool IsConsequenceConformFor(IEvaluation consequence)
         {
-            if (consequence.PersonalityTrait != null) return IsPersonalityTraitConformFor(consequence);
+            if (consequence.Persona.PersonalityTrait != null) return IsPersonalityTraitConformFor(consequence);
 
-            if (consequence.Attribute != null) return IsAttributeConformFor(consequence);
+            if (consequence.Persona.Attribute != null) return IsAttributeConformFor(consequence);
 
-            if (consequence.Skill != null) return IsSkillConformFor(consequence);
+            if (consequence.Persona.Skill != null) return IsSkillConformFor(consequence);
 
-            if (consequence.Characteristic != null) return IsCharacteristicConformFor(consequence);
+            if (consequence.Persona.Characteristic != null) return IsCharacteristicConformFor(consequence);
 
             return true;
         }
@@ -30,7 +30,7 @@ namespace TalesPersistence.Entities
 
         private bool IsAttributeConformFor(IEvaluation consequence)
         {
-            switch (consequence.Attribute)
+            switch (consequence.Persona.Attribute)
             {
                 case Attributes.VIGOR:        return IsVigorConformFor(consequence);
                 case Attributes.CONTROL:      return IsControlConformFor(consequence);
@@ -47,7 +47,7 @@ namespace TalesPersistence.Entities
 
         private bool IsCharacteristicConformFor(IEvaluation consequence)
         {
-            switch (consequence.Characteristic)
+            switch (consequence.Persona.Characteristic)
             {
                 case Characteristics.UNKNOWN:
                     throw new NotImplementedException();
@@ -103,7 +103,7 @@ namespace TalesPersistence.Entities
 
         private bool IsRenownConformFor(IEvaluation consequence)
         {
-            switch (consequence.Operator)
+            switch (consequence.Numbers.Operator)
             {
                 case Operator.UNKNOWN:
                     break;
@@ -139,7 +139,7 @@ namespace TalesPersistence.Entities
 
         private bool IsVigorConformFor(IEvaluation consequence)
         {
-            switch (consequence.Operator)
+            switch (consequence.Numbers.Operator)
             {
                 case Operator.UNKNOWN:     throw new ApplicationException("Operator unknown when trying to evaluate Vigor.");
                 case Operator.GREATERTHAN: return VigorGreaterThanConformFrom(consequence);
@@ -153,22 +153,22 @@ namespace TalesPersistence.Entities
 
         private bool VigorEqualToConformFrom(IEvaluation consequence)
         {
-            return Vigor == int.Parse(consequence.Value);
+            return Vigor == int.Parse(consequence.Numbers.Value);
         }
 
         private bool VigorGreaterThanConformFrom(IEvaluation consequence)
         {
-            return Vigor > int.Parse(consequence.Value);
+            return Vigor > int.Parse(consequence.Numbers.Value);
         }
 
         private bool VigorLowerThanConformFrom(IEvaluation consequence)
         {
-            return Vigor < int.Parse(consequence.Value);
+            return Vigor < int.Parse(consequence.Numbers.Value);
         }
 
         private bool VigorNotEqualToConformFrom(IEvaluation consequence)
         {
-            return Vigor != int.Parse(consequence.Value);
+            return Vigor != int.Parse(consequence.Numbers.Value);
         }
 
         #endregion

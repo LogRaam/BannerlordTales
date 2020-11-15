@@ -4,9 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using _45_TalesGameState;
 using _47_TalesMath;
+using TalesBase.Items;
 using TalesBase.TW;
 using TalesContract;
 using TalesDAL;
@@ -27,6 +29,7 @@ namespace TalesPersistence.Context
 
     public class GameContext
     {
+        private FileInfo _bodyArmorsFolder;
         private IHero _captor;
         private GameTime _gameTime;
         private int _hourOfDay;
@@ -37,6 +40,19 @@ namespace TalesPersistence.Context
         private bool _isNight;
         private IHero _player;
         private bool? _playerIsCaptor;
+
+        public List<BaseBodyArmor> BodyArmors { get; set; }
+
+        public FileInfo BodyArmorsFile
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _bodyArmorsFolder = new FileInfo(GameData.Instance.StoryContext.ModuleFolder.FullName + "\\Modules\\SandBoxCore\\ModuleData\\spitems\\body_armors.xml");
+
+                return _bodyArmorsFolder;
+            }
+            set => _bodyArmorsFolder = value;
+        }
 
 
         public IHero Captor
@@ -192,6 +208,7 @@ namespace TalesPersistence.Context
 
             return acts[TalesRandom.GenerateRandomNumber(acts.Count)];
         }
+
 
         public List<Story> GetAlreadyPlayedStories()
         {

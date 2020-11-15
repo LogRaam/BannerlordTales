@@ -24,7 +24,19 @@ namespace TalesPersistence.Context
         private DirectoryInfo _moduleFolder;
         private DirectoryInfo _storyImageFiles;
 
+
         public Textures BackgroundImages { get; set; } = new Textures();
+
+        public DirectoryInfo BodyArmorFolder
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _moduleFolder = new DirectoryInfo(BasePath.Name + "Modules/SandBoxCore/ModuleData/spitems/body_armors.xml");
+
+                return _moduleFolder;
+            }
+            set => _moduleFolder = value;
+        }
 
         public DirectoryInfo CustomStoriesFolder
         {
@@ -65,6 +77,7 @@ namespace TalesPersistence.Context
             }
             set => _storyImageFiles = value;
         }
+
 
         public void AddToPlayedActs(IAct act)
         {
