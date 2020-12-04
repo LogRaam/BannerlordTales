@@ -1,4 +1,4 @@
-Story
+                                     Story
 
     Name: Test Equipment Story
 	OneTimeStory: No

@@ -3,7 +3,10 @@
 #region
 
 using System;
+using System.Collections.Generic;
+using _45_TalesGameState;
 using _47_TalesMath;
+using Helpers;
 using TalesBase.Stories.Evaluation;
 using TalesContract;
 using TalesDAL;
@@ -33,7 +36,6 @@ namespace TalesPersistence.Entities
 
         public void ApplyConsequenceInGame()
         {
-            GameFunction.Log("ApplyConsequenceInGame()");
             //BUG:Renown doesnt seems to work
             ApplyPregnancyRiskConsequence();
             ApplyAttributeConsequence();
@@ -41,6 +43,7 @@ namespace TalesPersistence.Entities
             ApplyPersonalityTraitConsequence();
             ApplySkillConsequence();
             ApplyEscapeConsequence();
+            ApplyEquipmentConsequence();
         }
 
         public bool CanBePlayedInContext()
@@ -69,7 +72,7 @@ namespace TalesPersistence.Entities
             if (Persona.Attribute is Attributes.UNKNOWN) return;
 
             var value = GetModifierValue();
-            var hero = IdentifySubject().ToHero();
+            var hero = IdentifySubject().ToTwHero();
 
             if (Persona.Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
             if (Persona.Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
@@ -85,46 +88,29 @@ namespace TalesPersistence.Entities
             if (Persona.Characteristic == Characteristics.UNKNOWN) return;
 
             var value = GetModifierValue();
-            var hero = IdentifySubject().ToHero();
+            var hero = IdentifySubject().ToTwHero();
 
             if (Persona.Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
             if (Persona.Characteristic == Characteristics.GOLD) hero.Gold += value;
             if (Persona.Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
         }
 
+        private void ApplyEquipmentConsequence()
+        {
+            if (Outcome.ShouldUndress) ApplyShouldUndress();
+            if (Outcome.ShouldEquip) ApplyShouldEquip();
+        }
+
         private void ApplyEscapeConsequence()
         {
-            GameFunction.Log("ApplyEscapeConsequence() consequence Value => " + Numbers.Value + ", Escaping => " + Outcome.Escaping);
+            if (!Outcome.Escaping) return;
 
-            if (!Outcome.Escaping)
-            {
-                GameFunction.Log(".. not escaping => return");
+            var p = IdentifySubject().ToTwHero();
 
-                return;
-            }
+            if (!p.IsPrisoner) return;
 
-
-            var p = IdentifySubject().ToHero();
-
-            GameFunction.Log("... hero is " + p.Name);
-
-            if (!p.IsPrisoner)
-            {
-                GameFunction.Log("... hero is not a prisoner => return");
-
-                return;
-            }
-
-            if (p.IsHumanPlayerCharacter)
-            {
-                GameFunction.Log("... call => EndCaptivity()");
-                PlayerCaptivity.EndCaptivity();
-            }
-            else
-            {
-                GameFunction.Log("... call => SetPrisonerFreeAction.Apply(p, player)");
-                SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Player).ToHero());
-            }
+            if (p.IsHumanPlayerCharacter) PlayerCaptivity.EndCaptivity();
+            else SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Player).ToTwHero());
         }
 
         private void ApplyPersonalityTraitConsequence()
@@ -133,7 +119,7 @@ namespace TalesPersistence.Entities
             if (Persona.PersonalityTrait == PersonalityTraits.UNKNOWN) return;
 
             var value = GetModifierValue();
-            var hero = IdentifySubject().ToHero();
+            var hero = IdentifySubject().ToTwHero();
 
             if (Persona.PersonalityTrait == PersonalityTraits.MERCY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
             if (Persona.PersonalityTrait == PersonalityTraits.GENEROSITY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
@@ -146,6 +132,11 @@ namespace TalesPersistence.Entities
         {
             if (!Outcome.PregnancyRisk) return;
 
+            var age = GameData.Instance.GameContext.Player.Age;
+
+            if (age < 12) return;
+
+
             if (Numbers.ValueIsPercentage)
             {
                 if (TalesRandom.EvalPercentage(int.Parse(Numbers.Value))) MakePregnant();
@@ -155,7 +146,32 @@ namespace TalesPersistence.Entities
 
             if (string.IsNullOrEmpty(Numbers.Value) && Numbers.RandomEnd > 0)
                 if (TalesRandom.EvalPercentageRange(Numbers.RandomStart, Numbers.RandomEnd))
+                {
                     MakePregnant();
+
+                    return;
+                }
+
+
+            if (age < 30)
+            {
+                if (TalesRandom.EvalPercentage(15)) MakePregnant();
+
+                return;
+            }
+
+            if (TalesRandom.EvalPercentage(15 - (age * 0.25f))) MakePregnant();
+        }
+
+        private void ApplyShouldEquip()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ApplyShouldUndress()
+        {
+            if (CampaignState.CurrentGameStarted()) EquipmentHelper.AssignHeroEquipmentFromEquipment(new Hero(GameData.Instance.GameContext.Player).ToTwHero(), new Equipment(true));
+            else GameData.Instance.GameContext.Player.Equipments = new List<IEquipments>();
         }
 
         private void ApplySkillConsequence()
@@ -164,7 +180,7 @@ namespace TalesPersistence.Entities
             if (Persona.Skill == Skills.UNKNOWN) return;
 
             var value = GetModifierValue();
-            var hero = IdentifySubject().ToHero();
+            var hero = IdentifySubject().ToTwHero();
 
             SetSkill(hero, Persona.Skill.ToString(), value);
         }
@@ -230,7 +246,12 @@ namespace TalesPersistence.Entities
         {
             var actor = IdentifySubject();
 
-            if (!actor.IsPregnant) MakePregnantAction.Apply(actor.ToHero());
+            if (actor.IsPregnant) return;
+            if (!actor.IsFemale) return;
+            if (!actor.IsAlive) return;
+            if (!actor.IsFertile) return;
+
+            GameData.Instance.GameContext.MakePregnant(actor);
         }
 
 

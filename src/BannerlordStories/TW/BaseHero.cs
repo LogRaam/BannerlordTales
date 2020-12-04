@@ -23,7 +23,6 @@ namespace TalesBase.TW
 
     public class BaseHero : IHero
     {
-        protected MBGUID _id;
         private float _age;
         private bool _alwaysUnconscious;
         private int _athletics;
@@ -143,7 +142,7 @@ namespace TalesBase.TW
         {
             if (hero == null) return;
 
-            _id = hero.Id;
+            Id = hero.Id;
             _name = hero.Name?.ToString();
             _firstName = hero.FirstName?.ToString();
             _isHumanPlayerCharacter = hero.IsHumanPlayerCharacter;
@@ -157,7 +156,7 @@ namespace TalesBase.TW
         {
             if (character == null) return;
 
-            _id = character.Id;
+            Id = character.Id;
             _name = character.Name?.ToString();
             _isHumanPlayerCharacter = character.IsPlayerCharacter;
         }
@@ -482,6 +481,10 @@ namespace TalesBase.TW
             set => _engineering = value;
         }
 
+        public IEquipments Equipment { get; set; }
+
+        public List<IEquipments> Equipments { get; set; }
+
         public IList<IHero> ExSpouses
         {
             get
@@ -653,11 +656,7 @@ namespace TalesBase.TW
 
         public int Honor { get; set; }
 
-        public MBGUID Id
-        {
-            get => _id;
-            set => _id = value;
-        }
+        public MBGUID Id { get; set; }
 
         public int Intelligence
         {
@@ -1494,13 +1493,13 @@ namespace TalesBase.TW
         {
             get
             {
-                var t = Campaign.Current.Heroes.FirstOrDefault(n => n.Id == _id);
+                var t = Campaign.Current.Heroes.FirstOrDefault(n => n.Id == Id);
                 if (t == null)
                 {
                     t = _isHumanPlayerCharacter
                         ? Campaign.Current.Heroes.First(n => n.IsHumanPlayerCharacter)
                         : Campaign.Current.Heroes.First(n => n.IsPartyLeader);
-                    _id = t.Id;
+                    Id = t.Id;
                 }
 
                 return t;

@@ -3,6 +3,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,16 @@ namespace TalesDAL
 
     public class StoryImporter
     {
-        public IStory ImportFrom(FileInfo file)
+        public List<IStory> ImportFrom(FileInfo file)
         {
-            return ImportFrom(File.ReadAllLines(file.FullName));
+            var result = new List<IStory>();
+
+            var extractedList = ExtractStoriesFromArray(File.ReadAllLines(file.FullName));
+
+            foreach (var storyList in extractedList) result.Add(ImportFrom(storyList.ToArray()));
+
+
+            return result;
         }
 
         public IStory ImportFrom(string[] story)
@@ -225,6 +233,23 @@ namespace TalesDAL
             return seq;
         }
 
+        private List<List<string>> ExtractStoriesFromArray(string[] lines)
+        {
+            var result = new List<List<string>>();
+            var t = new List<string>();
+
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                if (line.ToUpper() == "STORY") t = new List<string>();
+                t.Add(line);
+                if (line.ToUpper() == "END") result.Add(t);
+            }
+
+            return result;
+        }
+
         private void ExtractStoryDataFrom(ref string line, ref BaseStory result)
         {
             if (line.ReferTo("NAME: ")) result.Header.Name = SetValueFrom(line);
@@ -284,7 +309,9 @@ namespace TalesDAL
 
         private Attributes? GetAttributeFrom(string line)
         {
-            switch (line)
+            Enum.TryParse(line, true, out Attributes result);
+
+            /*switch (line)
             {
                 case "VIGOR":        return Attributes.VIGOR;
                 case "CONTROL":      return Attributes.CONTROL;
@@ -294,12 +321,16 @@ namespace TalesDAL
                 case "INTELLIGENCE": return Attributes.INTELLIGENCE;
             }
 
-            return Attributes.UNKNOWN;
+            return Attributes.UNKNOWN;*/
+
+            return result;
         }
 
         private Characteristics? GetCharacteristicFrom(string line)
         {
-            switch (line)
+            Enum.TryParse(line, true, out Characteristics result);
+
+            /*switch (line)
             {
                 case "AGE":     return Characteristics.AGE;
                 case "GENDER":  return Characteristics.GENDER;
@@ -308,7 +339,9 @@ namespace TalesDAL
                 case "CULTURE": return Characteristics.CULTURE;
             }
 
-            return Characteristics.UNKNOWN;
+            return Characteristics.UNKNOWN;*/
+
+            return result;
         }
 
         private float GetEquipmentAppearanceFrom(string line)
@@ -370,17 +403,23 @@ namespace TalesDAL
 
         private PartyType GetPartyTypeFrom(string line)
         {
-            if (line.Contains("LORD")) return PartyType.LORD;
+            Enum.TryParse(line, true, out PartyType result);
+
+            /*if (line.Contains("LORD")) return PartyType.LORD;
             if (line.Contains("BANDIT")) return PartyType.BANDIT;
             if (line.Contains("VILLAGER")) return PartyType.VILLAGER;
             if (line.Contains("GARRISON")) return PartyType.GARRISONPARTY;
 
-            return PartyType.UNKNOWN;
+            return PartyType.UNKNOWN;*/
+
+            return result;
         }
 
         private PersonalityTraits? GetPersonalityTraitFrom(string line)
         {
-            switch (line)
+            Enum.TryParse(line, true, out PersonalityTraits result);
+
+            /*switch (line)
             {
                 case "MERCY":      return PersonalityTraits.MERCY;
                 case "GENEROSITY": return PersonalityTraits.GENEROSITY;
@@ -388,7 +427,9 @@ namespace TalesDAL
                 case "VALOR":      return PersonalityTraits.VALOR;
             }
 
-            return PersonalityTraits.UNKNOWN;
+            return PersonalityTraits.UNKNOWN;*/
+
+            return result;
         }
 
         private int GetRandomEndFrom(string line)
@@ -453,6 +494,9 @@ namespace TalesDAL
 
         private Skills? GetSkillFrom(string line)
         {
+            Enum.TryParse(line, true, out Skills result);
+
+            /*
             switch (line)
             {
                 case "ONEHANDED":   return Skills.ONEHANDED;
@@ -474,8 +518,10 @@ namespace TalesDAL
                 case "MEDICINE":    return Skills.MEDICINE;
                 case "ENGINEERING": return Skills.ENGINEERING;
             }
+            
+            return Skills.UNKNOWN;*/
 
-            return Skills.UNKNOWN;
+            return result;
         }
 
         private string GetSubjectItem(string line)
@@ -484,8 +530,6 @@ namespace TalesDAL
 
             var s = line.Split(' ').RemoveEmptyItems().ToList();
             s.RemoveEmptyItems();
-
-            //GameFunction.Log("GetSubjectItem(): " + line);
 
             var item = s[1].Reformat();
 
@@ -645,7 +689,6 @@ namespace TalesDAL
         {
             if (line.Contains("= R")) return string.Empty;
 
-            //GameFunction.Log(line);
             var s = line.Split(':').RemoveEmptyItems();
 
             if (s.Length < 2) return "";

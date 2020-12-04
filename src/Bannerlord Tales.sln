@@ -48,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Snippets", "Snippets", "{17
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5_TalesGameState", "45_TalesGameState\5_TalesGameState.csproj", "{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalesPersistenceTests", "TalesPersistenceTests\TalesPersistenceTests.csproj", "{61B8E40B-5191-4995-B836-10D52B83BFCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,10 @@ Global
 		{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50CDF45A-7167-4A9B-A102-BFDEC32A3D68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61B8E40B-5191-4995-B836-10D52B83BFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B8E40B-5191-4995-B836-10D52B83BFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B8E40B-5191-4995-B836-10D52B83BFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B8E40B-5191-4995-B836-10D52B83BFCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

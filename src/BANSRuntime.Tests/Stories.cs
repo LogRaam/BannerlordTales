@@ -18,7 +18,39 @@ namespace BannerlordTales.Tests
 {
     public class Stories
     {
-        public GameData KissTheBannerGameData()
+        /// <summary>
+        ///     Load stories from disk.  Actually use hard coded path due to issue with NCrunch.  This method will create a new
+        ///     instance of GameData.  It reset GameContext and StoryContext.
+        /// </summary>
+        public void LoadStoriesFromDisk()
+        {
+            var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
+
+            GameData.Instance = new GameData
+            {
+                StoryContext = new StoryContext
+                {
+                    PlayedStories = new List<IStory>(),
+                    Stories = new List<IStory>(),
+                    StoryImagesFolder = new DirectoryInfo(p + "\\StoryImages"),
+                    ModuleFolder = new DirectoryInfo(p),
+                    CustomStoriesFolder = new DirectoryInfo(p + "\\CustomStories")
+                }
+            };
+
+            GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk();
+        }
+
+        public void SetupKissTheBanner()
+        {
+            var sut = KissTheBannerStory();
+            GameData.Instance = KissTheBannerGameData();
+            GameData.Instance.StoryContext.Stories.Add(sut);
+        }
+
+        #region private
+
+        private GameData KissTheBannerGameData()
         {
             var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
             var g = new GameData
@@ -49,34 +81,6 @@ namespace BannerlordTales.Tests
 
             return g;
         }
-
-        public void LoadStoriesFromDisk()
-        {
-            var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
-
-            GameData.Instance = new GameData
-            {
-                StoryContext = new StoryContext
-                {
-                    PlayedStories = new List<IStory>(),
-                    Stories = new List<IStory>(),
-                    StoryImagesFolder = new DirectoryInfo(p + "\\StoryImages"),
-                    ModuleFolder = new DirectoryInfo(p),
-                    CustomStoriesFolder = new DirectoryInfo(p + "\\CustomStories")
-                }
-            };
-
-            GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk();
-        }
-
-        public void SetupKissTheBanner()
-        {
-            var sut = KissTheBannerStory();
-            GameData.Instance = KissTheBannerGameData();
-            GameData.Instance.StoryContext.Stories.Add(sut);
-        }
-
-        #region private
 
         private Story KissTheBannerStory()
         {

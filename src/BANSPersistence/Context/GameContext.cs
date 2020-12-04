@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using _45_TalesGameState;
-using _47_TalesMath;
 using TalesBase.Items;
 using TalesBase.TW;
 using TalesContract;
@@ -15,8 +14,10 @@ using TalesDAL;
 using TalesEnums;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
 using TaleWorlds.TwoDimension;
+using Hero = TalesPersistence.Entities.Hero;
 using Location = TalesEnums.Location;
 
 #endregion
@@ -60,7 +61,7 @@ namespace TalesPersistence.Context
             get
             {
                 if (CampaignState.CurrentGameStarted())
-                    if (Hero.MainHero.IsPrisoner)
+                    if (TaleWorlds.CampaignSystem.Hero.MainHero.IsPrisoner)
                         _captor = new BaseHero(Campaign.Current.MainParty.LeaderHero);
 
                 return _captor;
@@ -263,6 +264,18 @@ namespace TalesPersistence.Context
             }
         }
 
+        public void MakePregnant(Hero actor)
+        {
+            if (CampaignState.CurrentGameStarted())
+            {
+                MakePregnantAction.Apply(actor.ToTwHero());
+
+                return;
+            }
+
+            Player.IsPregnant = true;
+        }
+
 
         public bool ReadyToShowNewEvent()
         {
@@ -311,8 +324,6 @@ namespace TalesPersistence.Context
 
         private List<IAct> GetAllPrisonerQualifiedActs()
         {
-            GameFunction.Log("GetAllPrisonerQualifiedActs()");
-
             return GetAllQualifiedActs(GameData.Instance.StoryContext.Stories);
         }
 

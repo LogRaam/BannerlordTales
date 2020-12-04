@@ -20,7 +20,7 @@ namespace TalesDAL
         {
             var result = new List<IStory>();
             var files = folder.GetFiles("*.txt");
-            foreach (var file in files) result.Add(new StoryImporter().ImportFrom(file));
+            foreach (var file in files) result.AddRange(new StoryImporter().ImportFrom(file));
 
             return result;
         }

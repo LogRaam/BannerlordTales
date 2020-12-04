@@ -133,7 +133,7 @@ namespace TalesPersistence.Entities
             var equipment = new Equipment();
             equipment.AddEquipmentToSlotWithoutAgent(EquipmentIndex.Body, new EquipmentElement(armor));
 
-            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToHero(), equipment);
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToTwHero(), equipment);
         }
 
         public void GiveWeapon(string weaponId)
@@ -142,7 +142,7 @@ namespace TalesPersistence.Entities
             var equipment = new Equipment();
             equipment.AddEquipmentToSlotWithoutAgent(EquipmentIndex.Weapon1, new EquipmentElement(weapon));
 
-            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToHero(), equipment);
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToTwHero(), equipment);
         }
 
         public bool IsConsequenceConformFor(IEvaluation consequence)
@@ -158,7 +158,7 @@ namespace TalesPersistence.Entities
             return true;
         }
 
-        public TaleWorlds.CampaignSystem.Hero ToHero()
+        public TaleWorlds.CampaignSystem.Hero ToTwHero()
         {
             return TaleWorlds.CampaignSystem.Hero.FindFirst(n => n.Name.ToString() == Name && n.IsHumanPlayerCharacter == IsHumanPlayerCharacter && n.IsFemale == IsFemale);
         }
@@ -166,7 +166,7 @@ namespace TalesPersistence.Entities
         public void Undress()
         {
             //TODO: keep equipment somewhere in case we want to return it to player.
-            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToHero(), new Equipment());
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(ToTwHero(), new Equipment());
         }
 
         #region private

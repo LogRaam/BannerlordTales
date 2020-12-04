@@ -47,6 +47,7 @@ Story
             Consequence: health R -60 -20
             Consequence: renown R -10 -1
             Consequence: risk of becoming pregnant
+            Consequence: Undress and give clothes
     
 
     Sequence
@@ -91,6 +92,7 @@ Story
 
         Choice: Continue...            
             Consequence: Health R -10 -5
+            Consequence: Undress and give clothes
             Goto: Whip
             
        
@@ -103,6 +105,7 @@ Story
         Image: LogCaptivePostNight
 
         Choice: Continue...
+            Consequence: Undress and give clothes
 
 
     Sequence
@@ -150,7 +153,7 @@ Story
         Image: LogMiscGoldStash
 
         Choice: Continue...
-            Consequence: Gold R -1000 -100
+            Consequence: Gold R -1000 -100            
 
 
     Sequence
@@ -161,6 +164,7 @@ Story
 
         Choice: Continue...
             Consequence: Relation R -5 -1
+            Consequence: Undress and give clothes
             Goto: Lies Final
 
 
@@ -172,6 +176,7 @@ Story
 
         Choice: Take it and wait for him to cum.            
             Consequence: Renown R -5 -1
+            Consequence: Undress and give clothes
 
 
     Sequence
@@ -203,7 +208,8 @@ Story
         Image: lg_punished_tied_on_tree_nude
 
         Choice: Continue...
-            Consequence: Health R -50 -30            
+            Consequence: Health R -50 -30     
+            Consequence: Undress and give clothes
 
 
     Sequence
@@ -250,6 +256,7 @@ Story
             Consequence: Health R -50 -30
             Consequence: Renown -30
             Consequence: risk of becoming pregnant
+            Consequence: Undress and give clothes
 
 
     Sequence
@@ -262,6 +269,7 @@ Story
             Consequence: Health R -10 -5
             Consequence: Renown -30
             Consequence: risk of becoming pregnant
+            Consequence: Undress and give clothes
 
 
     Sequence

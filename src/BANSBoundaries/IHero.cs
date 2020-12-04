@@ -73,6 +73,7 @@ namespace TalesContract
         public int Endurance { get; set; }
 
         public int Engineering { get; set; }
+        public List<IEquipments> Equipments { get; set; }
 
         public IList<IHero> ExSpouses { get; set; }
 

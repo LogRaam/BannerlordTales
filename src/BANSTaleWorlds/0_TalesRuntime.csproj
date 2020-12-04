@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behavior\TalesCampaignBehavior.cs" />
+    <Compile Include="Behavior\temp.cs" />
     <Compile Include="ExtendedMethod.cs" />
     <Compile Include="IntegratedLoaderSubModule.cs" />
     <Compile Include="Menu\MenuBroker.cs" />

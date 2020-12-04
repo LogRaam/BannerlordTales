@@ -3,7 +3,6 @@
 #region
 
 using System;
-using _47_TalesMath;
 using TalesContract;
 using TalesPersistence.Stories;
 using TaleWorlds.CampaignSystem.GameMenus;
@@ -24,13 +23,7 @@ namespace TalesRuntime.Menu
 
         public void ActMenuSetup(MenuCallbackArgs args)
         {
-            GameFunction.Log("ActMenuSetup(MenuCallbackArgs args) args => " + args.MenuContext.GameMenu.StringId);
-            //args.MenuContext.GameMenu.AllowWaitingAutomatically();
-            //args.MenuContext.GameMenu.SetMenuAsWaitMenuAndInitiateWaiting();
-
-            GameFunction.Log("... call => SetBackgroundImage(_act.Image) Image => " + _act.Image);
             new MenuBroker().SetBackgroundImage(_act.Image);
-            //args.MenuContext.SetBackgroundMeshName(_act.Image);
 
             //TODO: Replace string flags by values (stringbuilder)
         }

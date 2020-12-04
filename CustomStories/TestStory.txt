@@ -72,11 +72,7 @@ Story
             Consequence: give armor $armorName
             Consequence: give clothes tattered_rags
             Consequence: give armor culture Battania, material leather, appearance < 1
-            
-            
-
-
-
+   
 
         Choice: Act1choice2.
         
@@ -141,5 +137,51 @@ Story
         Choice: This is the only choice available.
 
             Consequence: health -20%
+
+END
+
+
+Story
+
+    Name: Test Pregnancy
+	OneTimeStory: no
+    DependOn: None
+    Time: Night
+    StoryType: is captive
+    
+    Condition: Player is female
+    Condition: Captor is male
+
+    Act
+        Name:       GetPregnant
+        Image:      None
+        Location:   Map
+        Intro:      Testing pregnancy
+
+        Choice: TryGetPregnant
+        
+            Consequence: player get pregnant 100%
+
+
+    Act
+        Name:       GetPregnant2
+        Image:      None
+        Location:   Map
+        Intro:      Testing pregnancy
+
+        Choice: TryGetPregnant
+        
+            Consequence: chance of pregnancy 100%
+
+
+    Act
+        Name:       GetPregnant3
+        Image:      None
+        Location:   Map
+        Intro:      Testing pregnancy
+
+        Choice: TryGetPregnant
+        
+            Consequence: may be pregnant 100%
 
 END
