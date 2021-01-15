@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
@@ -91,7 +91,7 @@ namespace TalesRuntime.Behavior
 
         private void DailyTickEventRaised()
         {
-            GameData.Instance.GameContext.ResetEventChanceBonus();
+            GameData.Instance.GameContext.Events.ResetEventChanceBonus();
         }
 
         private void GameMenuOpenedEventRaised(MenuCallbackArgs obj) //3
@@ -117,9 +117,9 @@ namespace TalesRuntime.Behavior
 
         private void HourlyTickEventRaised()
         {
-            if (!GameData.Instance.GameContext.Player.IsPrisoner) return;
+            if (!GameData.Instance.GameContext.Heroes.Player.IsPrisoner) return;
             if (PlayerCaptivity.CaptivityStartTime.ElapsedHoursUntilNow < 1) return;
-            if (!GameData.Instance.GameContext.ReadyToShowNewEvent()) return;
+            if (!GameData.Instance.GameContext.Events.ReadyToShowNewEvent()) return;
 
             new MenuBroker().ShowActMenu();
         }

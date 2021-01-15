@@ -1,11 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 15/11/2020.
+﻿// unset
 
 #region
 
-using System.Linq;
 using BannerlordTales.Tests;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Linq;
 using TalesPersistence.Context;
 using TalesPersistence.Entities;
 using TalesPersistence.Stories;
@@ -25,7 +25,7 @@ namespace TalesPersistenceTests
             var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test Pregnancy"));
             var act = story.Acts.First(n => n.Name == "GetPregnant");
 
-            GameData.Instance.GameContext.Player = new Hero
+            GameData.Instance.GameContext.Heroes.Player = new Hero
             {
                 Age = 10,
                 IsPregnant = false,
@@ -42,7 +42,7 @@ namespace TalesPersistenceTests
 
             //Assert
             act.Choices[0].Consequences[0].Outcome.PregnancyRisk.Should().BeTrue();
-            GameData.Instance.GameContext.Player.IsPregnant.Should().BeFalse();
+            GameData.Instance.GameContext.Heroes.Player.IsPregnant.Should().BeFalse();
         }
 
 
@@ -54,7 +54,7 @@ namespace TalesPersistenceTests
             var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test Pregnancy"));
             var act = story.Acts.First(n => n.Name == "GetPregnant");
 
-            GameData.Instance.GameContext.Player = new Hero
+            GameData.Instance.GameContext.Heroes.Player = new Hero
             {
                 Age = 18,
                 IsPregnant = false,
@@ -71,7 +71,7 @@ namespace TalesPersistenceTests
 
             //Assert
             act.Choices[0].Consequences[0].Outcome.PregnancyRisk.Should().BeTrue();
-            GameData.Instance.GameContext.Player.IsPregnant.Should().BeFalse();
+            GameData.Instance.GameContext.Heroes.Player.IsPregnant.Should().BeFalse();
         }
 
 
@@ -83,7 +83,7 @@ namespace TalesPersistenceTests
             var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test Pregnancy"));
             var act = story.Acts.First(n => n.Name == "GetPregnant");
 
-            GameData.Instance.GameContext.Player = new Hero
+            GameData.Instance.GameContext.Heroes.Player = new Hero
             {
                 Age = 18,
                 IsPregnant = false,
@@ -100,7 +100,7 @@ namespace TalesPersistenceTests
 
             //Assert
             act.Choices[0].Consequences[0].Outcome.PregnancyRisk.Should().BeTrue();
-            GameData.Instance.GameContext.Player.IsPregnant.Should().BeFalse();
+            GameData.Instance.GameContext.Heroes.Player.IsPregnant.Should().BeFalse();
         }
 
 
@@ -112,7 +112,7 @@ namespace TalesPersistenceTests
             var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test Pregnancy"));
             var act = story.Acts.First(n => n.Name == "GetPregnant");
 
-            GameData.Instance.GameContext.Player = new Hero
+            GameData.Instance.GameContext.Heroes.Player = new Hero
             {
                 Age = 18,
                 IsPregnant = false,
@@ -129,7 +129,7 @@ namespace TalesPersistenceTests
 
             //Assert
             act.Choices[0].Consequences[0].Outcome.PregnancyRisk.Should().BeTrue();
-            GameData.Instance.GameContext.Player.IsPregnant.Should().BeFalse();
+            GameData.Instance.GameContext.Heroes.Player.IsPregnant.Should().BeFalse();
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace TalesPersistenceTests
             var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test Pregnancy"));
             var act = story.Acts.First(n => n.Name == "GetPregnant");
 
-            GameData.Instance.GameContext.Player = new Hero
+            GameData.Instance.GameContext.Heroes.Player = new Hero
             {
                 Age = 18,
                 IsPregnant = false,
@@ -157,7 +157,7 @@ namespace TalesPersistenceTests
 
             //Assert
             act.Choices[0].Consequences[0].Outcome.PregnancyRisk.Should().BeTrue();
-            GameData.Instance.GameContext.Player.IsPregnant.Should().BeTrue();
+            GameData.Instance.GameContext.Heroes.Player.IsPregnant.Should().BeTrue();
         }
     }
 }

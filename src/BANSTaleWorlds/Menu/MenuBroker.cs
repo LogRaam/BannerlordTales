@@ -1,11 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
+using _47_TalesMath;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _47_TalesMath;
 using TalesBase.Stories;
 using TalesContract;
 using TalesDAL;
@@ -29,7 +29,7 @@ namespace TalesRuntime.Menu
     {
         public void ExitToLastAndUnpause()
         {
-            if (!GameData.Instance.GameContext.Player.IsPrisoner) return;
+            if (!GameData.Instance.GameContext.Heroes.Player.IsPrisoner) return;
 
             SetBackgroundImage("LogCaptivePrisoner");
 
@@ -75,22 +75,22 @@ namespace TalesRuntime.Menu
 
         public void ShowActMenu()
         {
-            var stories = GameData.Instance.GameContext.GetNewStories().Where(n => n.Header.Name != "Test"
-                                                                                   && n.Header.TypeOfStory != StoryType.WAITING
-                                                                                   && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
-                                                                                   && n.Header.TypeOfStory != StoryType.TEST
-                                                                                   && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
+            var stories = GameData.Instance.GameContext.Acts.GetNewStories().Where(n => n.Header.Name != "Test"
+                                                                                        && n.Header.TypeOfStory != StoryType.WAITING
+                                                                                        && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
+                                                                                        && n.Header.TypeOfStory != StoryType.TEST
+                                                                                        && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
 
-            var act = GameData.Instance.GameContext.ChooseQualifiedActFrom(stories);
+            var act = GameData.Instance.GameContext.Acts.ChooseQualifiedActFrom(stories);
 
             if (act == null)
             {
-                stories = GameData.Instance.GameContext.GetAlreadyPlayedStories().Where(n => n.Header.Name != "Test"
-                                                                                             && n.Header.TypeOfStory != StoryType.WAITING
-                                                                                             && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
-                                                                                             && n.Header.TypeOfStory != StoryType.TEST
-                                                                                             && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
-                act = GameData.Instance.GameContext.ChooseQualifiedActFrom(stories);
+                stories = GameData.Instance.GameContext.Acts.GetAlreadyPlayedStories().Where(n => n.Header.Name != "Test"
+                                                                                                  && n.Header.TypeOfStory != StoryType.WAITING
+                                                                                                  && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
+                                                                                                  && n.Header.TypeOfStory != StoryType.TEST
+                                                                                                  && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
+                act = GameData.Instance.GameContext.Acts.ChooseQualifiedActFrom(stories);
             }
 
             if (act == null) return;
@@ -100,7 +100,7 @@ namespace TalesRuntime.Menu
 
         public void ShowSurrenderMenu()
         {
-            var act = GameData.Instance.GameContext.RetrieveActToPlay(StoryType.PLAYER_SURRENDER);
+            var act = GameData.Instance.GameContext.Acts.RetrieveActToPlay(StoryType.PLAYER_SURRENDER);
 
             if (act == null) return;
 

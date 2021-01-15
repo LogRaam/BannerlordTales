@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
@@ -100,6 +100,7 @@ namespace TalesDAL
                 if (story[i].ReferTo("NAME: ")) act.Name = SetValueFrom(story[i]);
                 if (story[i].ReferTo("IMAGE: ")) act.Image = SetValueFrom(story[i]);
                 if (story[i].ReferTo("LOCATION: ")) act.Location = SetLocationFrom(story[i]);
+                if (story[i].ReferTo("RESTRICTION: ")) act.Restrictions.Add(ExtractRestriction(ExtractText(story, ref i)));
                 if (story[i].ReferTo("CHOICE:"))
                 {
                     var c = ExtractChoice(story, ref i);
@@ -204,7 +205,15 @@ namespace TalesDAL
 
         private ArmorMaterialTypes ExtractMaterialTypeFrom(string materialValue)
         {
-            if (!Enum.TryParse(materialValue, true, out ArmorMaterialTypes result)) return ArmorMaterialTypes.UNKNOWN;
+            return !Enum.TryParse(materialValue, true, out ArmorMaterialTypes result)
+                ? ArmorMaterialTypes.UNKNOWN
+                : result;
+        }
+
+        private IEvaluation ExtractRestriction(string value)
+        {
+            var result = new BaseEvaluation();
+            result.Tags.Add(value);
 
             return result;
         }
@@ -766,6 +775,7 @@ namespace TalesDAL
             if (line.ReferTo("CHOICE:")) return true;
             if (line.ReferTo("ACT")) return true;
             if (line.ReferTo("SEQUENCE")) return true;
+            if (line.ReferTo("RESTRICTION:")) return true;
             if (line.ReferTo("END")) return true;
 
             return false;

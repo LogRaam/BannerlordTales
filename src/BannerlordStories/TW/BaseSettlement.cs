@@ -1,10 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 14/09/2020.
+﻿// unset
 
 #region
 
+using _45_TalesGameState;
 using System;
 using System.Collections.Generic;
-using _45_TalesGameState;
 using TalesContract;
 using TalesEnums;
 using TaleWorlds.CampaignSystem;
@@ -379,7 +379,7 @@ namespace TalesBase.TW
             set => _isRaided = value;
         }
 
-        public bool IsRebelling
+        /*public bool IsRebelling
         {
             get
             {
@@ -388,7 +388,7 @@ namespace TalesBase.TW
                 return _isRebelling;
             }
             set => _isRebelling = value;
-        }
+        }*/
 
         public bool IsStarving
         {

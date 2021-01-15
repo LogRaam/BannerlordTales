@@ -1,12 +1,12 @@
-﻿// Code written by Gabriel Mailhot, 26/10/2020.
+﻿// unset
 
 #region
 
-using System;
-using System.Collections.Generic;
 using _45_TalesGameState;
 using _47_TalesMath;
 using Helpers;
+using System;
+using System.Collections.Generic;
 using TalesBase.Stories.Evaluation;
 using TalesContract;
 using TalesDAL;
@@ -110,7 +110,7 @@ namespace TalesPersistence.Entities
             if (!p.IsPrisoner) return;
 
             if (p.IsHumanPlayerCharacter) PlayerCaptivity.EndCaptivity();
-            else SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Player).ToTwHero());
+            else SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Heroes.Player).ToTwHero());
         }
 
         private void ApplyPersonalityTraitConsequence()
@@ -132,7 +132,7 @@ namespace TalesPersistence.Entities
         {
             if (!Outcome.PregnancyRisk) return;
 
-            var age = GameData.Instance.GameContext.Player.Age;
+            var age = GameData.Instance.GameContext.Heroes.Player.Age;
 
             if (age < 12) return;
 
@@ -170,8 +170,8 @@ namespace TalesPersistence.Entities
 
         private void ApplyShouldUndress()
         {
-            if (CampaignState.CurrentGameStarted()) EquipmentHelper.AssignHeroEquipmentFromEquipment(new Hero(GameData.Instance.GameContext.Player).ToTwHero(), new Equipment(true));
-            else GameData.Instance.GameContext.Player.Equipments = new List<IEquipments>();
+            if (CampaignState.CurrentGameStarted()) EquipmentHelper.AssignHeroEquipmentFromEquipment(new Hero(GameData.Instance.GameContext.Heroes.Player).ToTwHero(), new Equipment(true));
+            else GameData.Instance.GameContext.Heroes.Player.Equipments = new List<IEquipments>();
         }
 
         private void ApplySkillConsequence()
@@ -238,8 +238,8 @@ namespace TalesPersistence.Entities
         private Hero IdentifySubject()
         {
             return Persona.Subject == Actor.NPC
-                ? new Hero(GameData.Instance.GameContext.Captor)
-                : new Hero(GameData.Instance.GameContext.Player);
+                ? new Hero(GameData.Instance.GameContext.Heroes.Captor)
+                : new Hero(GameData.Instance.GameContext.Heroes.Player);
         }
 
         private void MakePregnant()
@@ -251,7 +251,7 @@ namespace TalesPersistence.Entities
             if (!actor.IsAlive) return;
             if (!actor.IsFertile) return;
 
-            GameData.Instance.GameContext.MakePregnant(actor);
+            GameData.Instance.GameContext.Heroes.MakePregnant(actor);
         }
 
 
@@ -329,7 +329,7 @@ namespace TalesPersistence.Entities
             if (Time == GameTime.NONE) return true;
             if (Time == GameTime.UNKNOWN) return true;
 
-            return Time == GameData.Instance.GameContext.GameTime;
+            return Time == GameData.Instance.GameContext.Time.GameTime;
         }
 
         #endregion

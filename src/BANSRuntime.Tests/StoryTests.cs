@@ -1,11 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
-using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using TalesBase.Stories;
 using TalesBase.TW;
 using TalesContract;
@@ -164,8 +164,15 @@ namespace BannerlordTales.Tests
             {
                 GameContext = new GameContext
                 {
-                    PlayerIsCaptor = true,
-                    IsDay = true
+                    Heroes =
+                    {
+                        PlayerIsCaptor = true
+                    },
+
+                    Time =
+                    {
+                        IsDay = true
+                    }
                 }
             };
 
@@ -194,14 +201,20 @@ namespace BannerlordTales.Tests
             {
                 GameContext = new GameContext
                 {
-                    Player = new BaseHero
+                    Heroes =
                     {
-                        Age = 18,
-                        IsFemale = true,
-                        IsHumanPlayerCharacter = true,
-                        IsPrisoner = true
+                        Player = new BaseHero
+                        {
+                            Age = 18,
+                            IsFemale = true,
+                            IsHumanPlayerCharacter = true,
+                            IsPrisoner = true
+                        }
                     },
-                    IsDay = true
+                    Time =
+                    {
+                        IsDay = true
+                    }
                 }
             };
 
@@ -229,10 +242,16 @@ namespace BannerlordTales.Tests
             {
                 GameContext = new GameContext
                 {
-                    IsDay = true,
-                    Player = new BaseHero
+                    Time =
                     {
-                        IsPrisoner = true
+                        IsDay = true
+                    },
+                    Heroes =
+                    {
+                        Player = new BaseHero
+                        {
+                            IsPrisoner = true
+                        }
                     }
                 }
             };
@@ -263,10 +282,10 @@ namespace BannerlordTales.Tests
             var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test"));
             var act = new Act(story.Acts[0]);
 
-            GameData.Instance.GameContext.IsNight = true;
+            GameData.Instance.GameContext.Time.IsNight = true;
             GameData.Instance.StoryContext.PlayedStories.Add(story);
 
-            GameData.Instance.GameContext.Player = new BaseHero
+            GameData.Instance.GameContext.Heroes.Player = new BaseHero
             {
                 Age = 19,
                 IsFemale = true,
@@ -279,7 +298,7 @@ namespace BannerlordTales.Tests
                 PartyBelongedTo = new BaseMobileParty()
             };
 
-            GameData.Instance.GameContext.Captor = new BaseHero
+            GameData.Instance.GameContext.Heroes.Captor = new BaseHero
             {
                 Age = 23,
                 Culture = new BaseBasicCultureObject
@@ -293,7 +312,7 @@ namespace BannerlordTales.Tests
                 }
             };
 
-            GameData.Instance.GameContext.IsCurrentlyOnMap = true;
+            GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap = true;
 
 
             // Act
@@ -312,8 +331,8 @@ namespace BannerlordTales.Tests
             // Arrange
             new Stories().SetupKissTheBanner();
 
-            GameData.Instance.GameContext.IsCurrentlyOnMap = false;
-            GameData.Instance.GameContext.IsCurrentlyInSettlement = true;
+            GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap = false;
+            GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement = true;
 
             GameData.Instance.StoryContext.Stories[0].Acts[0].Location = Location.MAP;
 
@@ -470,6 +489,35 @@ namespace BannerlordTales.Tests
 
 
         [Test]
+        public void TestStory_ActRestriction_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test Tags"));
+
+            // Assert
+            story.Acts.First(n => n.Name == "ConditionalToTag").Intro.Contains("Restriction: ").Should().BeFalse();
+            story.Acts.First(n => n.Name == "ConditionalToTag").Restrictions.Count.Should().Be(1);
+        }
+
+
+        [Test]
+        public void TestStory_Condition_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Test"));
+
+            // Assert
+            story.Acts.First(n => n.Name == "MyAct1").Choices.First(n => n.Text == "Act1choice1.").Conditions.Count.Should().Be(27);
+        }
+
+
+        [Test]
         public void TestStory_Escaping_ShouldPass()
         {
             // Arrange
@@ -496,10 +544,10 @@ namespace BannerlordTales.Tests
             var seq1 = new Sequence(story.Sequences[0]);
             var seq2 = new Sequence(story.Sequences[1]);
 
-            GameData.Instance.GameContext.IsNight = true;
+            GameData.Instance.GameContext.Time.IsNight = true;
             GameData.Instance.StoryContext.PlayedStories.Add(story);
 
-            GameData.Instance.GameContext.Player = new BaseHero
+            GameData.Instance.GameContext.Heroes.Player = new BaseHero
             {
                 Age = 19,
                 IsFemale = true,
@@ -511,7 +559,7 @@ namespace BannerlordTales.Tests
                 IsPrisoner = true
             };
 
-            GameData.Instance.GameContext.Captor = new BaseHero
+            GameData.Instance.GameContext.Heroes.Captor = new BaseHero
             {
                 Age = 23,
                 Culture = new BaseBasicCultureObject
@@ -524,7 +572,7 @@ namespace BannerlordTales.Tests
                 }
             };
 
-            GameData.Instance.GameContext.IsCurrentlyOnMap = true;
+            GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap = true;
 
             // Act
             var s1 = new Story(story).IsQualifiedRightNow();
@@ -569,6 +617,20 @@ namespace BannerlordTales.Tests
             // Assert
             act.Id.Should().Be("LosingBattle_Layingontheground");
             act.Choices[1].Id.Should().Be("LosingBattle_Layingontheground_Waitandseewhathappensnext...");
+        }
+
+
+        [Test]
+        public void TestStory_StoryRestriction_ShouldPass()
+        {
+            // Arrange
+            new Stories().LoadStoriesFromDisk();
+
+            // Act
+            var story = new Story(GameData.Instance.StoryContext.Stories.First(n => n.Header.Name == "Losing Battle"));
+
+            // Assert
+            story.Restrictions.Count.Should().Be(4);
         }
 
 

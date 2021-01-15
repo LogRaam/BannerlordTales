@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
@@ -21,7 +21,6 @@ namespace TalesContract
         public bool AlwaysUnconscious { get; set; }
 
         public int Athletics { get; set; }
-
 
         public bool AwaitingTrial { get; set; }
 
@@ -89,11 +88,9 @@ namespace TalesContract
 
         public ICharacterSkills HeroSkills { get; set; }
 
-
         public CharacterStates HeroState { get; set; }
 
         public ICharacterTraits HeroTraits { get; set; }
-
 
         public int HitPoints { get; set; }
 
@@ -168,7 +165,6 @@ namespace TalesContract
 
         public bool IsSpecial { get; set; }
 
-
         public bool IsWanderer { get; set; }
 
         public bool IsWounded { get; set; }
@@ -211,13 +207,11 @@ namespace TalesContract
 
         public IList<IHero> Siblings { get; set; }
 
-
         public IHero Spouse { get; set; }
 
         public ISettlement StayingInSettlementOfNotable { get; set; }
 
         public IClan SupporterOf { get; set; }
-
 
         public float UnmodifiedClanLeaderRelationshipScoreWithPlayer { get; set; }
 

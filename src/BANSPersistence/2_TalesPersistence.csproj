@@ -71,8 +71,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\ActContext.cs" />
+    <Compile Include="Context\EventContext.cs" />
     <Compile Include="Context\GameContext.cs" />
     <Compile Include="Context\GameData.cs" />
+    <Compile Include="Context\HeroContext.cs" />
+    <Compile Include="Context\InventoryContext.cs" />
+    <Compile Include="Context\LocationContext.cs" />
+    <Compile Include="Context\TimeContext.cs" />
     <Compile Include="Entities\BasicCharacterObject.cs" />
     <Compile Include="Entities\BasicCultureObject.cs" />
     <Compile Include="Entities\Clan.cs" />

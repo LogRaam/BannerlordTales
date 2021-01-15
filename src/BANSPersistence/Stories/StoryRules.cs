@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 27/09/2020.
+﻿// unset
 
 #region
 
@@ -44,11 +44,11 @@ namespace TalesPersistence.Stories
         {
             switch (storyType)
             {
-                case StoryType.PLAYER_IS_CAPTIVE:      return GameData.Instance.GameContext.Player.IsPrisoner;
-                case StoryType.PLAYER_IS_CAPTOR:       return GameData.Instance.GameContext.PlayerIsCaptor != null && (bool)GameData.Instance.GameContext.PlayerIsCaptor;
-                case StoryType.PLAYER_ON_CAMPAIGN_MAP: return GameData.Instance.GameContext.IsCurrentlyOnMap != null && (bool)GameData.Instance.GameContext.IsCurrentlyOnMap;
-                case StoryType.PLAYER_IN_SETTLEMENT:   return GameData.Instance.GameContext.IsCurrentlyInSettlement != null && (bool)GameData.Instance.GameContext.IsCurrentlyInSettlement;
-                case StoryType.PLAYER_SURRENDER:       return GameData.Instance.GameContext.Player.IsPrisoner;
+                case StoryType.PLAYER_IS_CAPTIVE:      return GameData.Instance.GameContext.Heroes.Player.IsPrisoner;
+                case StoryType.PLAYER_IS_CAPTOR:       return GameData.Instance.GameContext.Heroes.PlayerIsCaptor != null && (bool)GameData.Instance.GameContext.Heroes.PlayerIsCaptor;
+                case StoryType.PLAYER_ON_CAMPAIGN_MAP: return GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap != null && (bool)GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap;
+                case StoryType.PLAYER_IN_SETTLEMENT:   return GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement != null && (bool)GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement;
+                case StoryType.PLAYER_SURRENDER:       return GameData.Instance.GameContext.Heroes.Player.IsPrisoner;
                 case StoryType.NONE:                   return true;
                 case StoryType.UNKNOWN:                throw new ApplicationException("Story type undefined.");
                 case StoryType.WAITING:                break;
@@ -62,8 +62,8 @@ namespace TalesPersistence.Stories
         {
             switch (Story.Header.Time)
             {
-                case GameTime.DAYTIME:   return GameData.Instance.GameContext.IsDay;
-                case GameTime.NIGHTTIME: return GameData.Instance.GameContext.IsNight;
+                case GameTime.DAYTIME:   return GameData.Instance.GameContext.Time.IsDay;
+                case GameTime.NIGHTTIME: return GameData.Instance.GameContext.Time.IsNight;
                 case GameTime.ANYTIME:   return true;
                 case GameTime.NONE:      return true;
                 case GameTime.UNKNOWN:   return true;

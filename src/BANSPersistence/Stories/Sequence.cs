@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 27/09/2020.
+﻿// unset
 
 #region
 
@@ -40,10 +40,10 @@ namespace TalesPersistence.Stories
                     switch (condition.Persona.Subject)
                     {
                         case Actor.PLAYER:
-                            return new Hero(GameData.Instance.GameContext.Player).IsConsequenceConformFor(condition);
+                            return new Hero(GameData.Instance.GameContext.Heroes.Player).IsConsequenceConformFor(condition);
 
                         case Actor.NPC:
-                            return ((Hero)GameData.Instance.GameContext.Captor).IsConsequenceConformFor(condition);
+                            return ((Hero)GameData.Instance.GameContext.Heroes.Captor).IsConsequenceConformFor(condition);
 
                         case Actor.UNKNOWN:
                             throw new ApplicationException("Act's Consequence evaluation failed: actor unknown.");

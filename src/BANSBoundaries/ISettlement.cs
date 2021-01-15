@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
@@ -73,7 +73,7 @@ namespace TalesContract
 
         public bool IsRaided { get; set; }
 
-        public bool IsRebelling { get; set; }
+        //public bool IsRebelling { get; set; }
 
         public bool IsStarving { get; set; }
 

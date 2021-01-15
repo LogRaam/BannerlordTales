@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
@@ -80,7 +80,7 @@ namespace TalesRuntime
 
         private static void LoadBodyArmorsIntoRuntime()
         {
-            GameData.Instance.GameContext.BodyArmors = new BodyArmorImporter().ImportBodyArmorsFrom(GameData.Instance.GameContext.BodyArmorsFile);
+            GameData.Instance.GameContext.Inventory.BodyArmors = new BodyArmorImporter().ImportBodyArmorsFrom(GameData.Instance.GameContext.Inventory.BodyArmorsFile);
         }
 
         private static void LoadCustomStoriesIntoRuntime()

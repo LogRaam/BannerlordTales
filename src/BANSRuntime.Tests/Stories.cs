@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// unset
 
 #region
 
@@ -57,17 +57,26 @@ namespace BannerlordTales.Tests
             {
                 GameContext = new GameContext
                 {
-                    IsCurrentlyInSettlement = false,
-                    IsCurrentlyOnMap = true,
-                    IsNight = false,
-                    Player = new BaseHero
+                    Tracking =
                     {
-                        Age = 18,
-                        IsFemale = true,
-                        IsHumanPlayerCharacter = true
+                        IsCurrentlyInSettlement = false,
+                        IsCurrentlyOnMap = true
                     },
-                    PlayerIsCaptor = true,
-                    IsDay = true
+                    Time =
+                    {
+                        IsNight = false,
+                        IsDay = true
+                    },
+                    Heroes =
+                    {
+                        Player = new BaseHero
+                        {
+                            Age = 18,
+                            IsFemale = true,
+                            IsHumanPlayerCharacter = true
+                        },
+                        PlayerIsCaptor = true
+                    }
                 },
                 StoryContext = new StoryContext
                 {

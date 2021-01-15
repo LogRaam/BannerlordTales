@@ -1,0 +1,66 @@
+Story
+
+    Name: Test Tags
+	OneTimeStory: no
+    DependOn: None
+    Time: Night
+    StoryType: is captive
+    
+    Condition: Player is female
+    Condition: Captor is male
+
+    Act
+        Name:       AcceptSlavery
+        Image:      None
+        Location:   Map
+        Intro:      Testing activating tag
+
+        Choice: Continue
+        
+            Consequence: Add Tag Slave
+
+
+    Act
+        Name:       RefuseSlavery
+        Image:      None
+        Location:   Map
+        Intro:      Testing Desactivating tag
+
+        Choice: Continue
+        
+            Consequence: Remove Tag Slave
+
+
+    Act
+        Name:       ConditionalToTag
+        Image:      None
+        Location:   Map
+        Intro:      Testing conditional tag
+
+        Restriction: Tag Slave
+
+        Choice: Continue
+
+
+    Act
+        Name:       ConditionalChoiceTag
+        Image:      None
+        Location:   Map
+        Intro:      Testing conditional choice        
+
+        Choice: Continue
+        Choice: ConditionalSlave
+            Condition: Tag Slave
+            Goto: WeAreSlave
+        
+
+    Act
+        Name:       WeAreSlave
+        Image:      None
+        Location:   Map
+        Intro:      It worked!        
+
+        Choice: Continue
+            
+
+END
