@@ -1,15 +1,15 @@
-﻿// Code written by Gabriel Mailhot, 01/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum CharacterStates
-   {
-      NOTSPAWNED,
-      ACTIVE,
-      FUGITIVE,
-      PRISONER,
-      RELEASED,
-      DEAD,
-      DISABLED
-   }
+    public enum CharacterStates
+    {
+        Notspawned,
+        Active,
+        Fugitive,
+        Prisoner,
+        Released,
+        Dead,
+        Disabled
+    }
 }

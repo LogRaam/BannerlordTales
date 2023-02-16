@@ -1,21 +1,25 @@
-﻿// Code written by Gabriel Mailhot, 02/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
+
+#region
+
+using TalesEnums;
+
+#endregion
 
 namespace TalesContract
 {
-   #region
+    #region
 
-   using TalesEnums;
+    #endregion
 
-   #endregion
+    public interface IProvocation
+    {
+        public IHero Actor { get; set; }
 
-   public interface IProvocation
-   {
-      public IHero actor { get; set; }
+        public ICampaignTime ProvocationTime { get; set; }
 
-      public ICampaignTime provocationTime { get; set; }
+        public ProvocationType ProvocationType { get; set; }
 
-      public ProvocationType provocationType { get; set; }
-
-      public IKingdom provocatorFaction { get; set; }
-   }
+        public IKingdom ProvocatorFaction { get; set; }
+    }
 }

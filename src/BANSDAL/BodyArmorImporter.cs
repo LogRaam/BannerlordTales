@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 12/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -56,26 +56,26 @@ namespace TalesDAL
 
         private CultureCode GetCultureCodeFrom(string value)
         {
-            if (value.Contains("aserai")) return CultureCode.ASERAI;
-            if (value.Contains("sturgia")) return CultureCode.STURGIA;
-            if (value.Contains("battania")) return CultureCode.BATTANIA;
-            if (value.Contains("looters")) return CultureCode.LOOTERS;
-            if (value.Contains("khuzait")) return CultureCode.KHUZAIT;
-            if (value.Contains("vlandia")) return CultureCode.VLANDIA;
-            if (value.Contains("empire")) return CultureCode.EMPIRE;
-            if (value.Contains("neutral_culture")) return CultureCode.NEUTRAL;
+            if (value.Contains("aserai")) return CultureCode.Aserai;
+            if (value.Contains("sturgia")) return CultureCode.Sturgia;
+            if (value.Contains("battania")) return CultureCode.Battania;
+            if (value.Contains("looters")) return CultureCode.Looters;
+            if (value.Contains("khuzait")) return CultureCode.Khuzait;
+            if (value.Contains("vlandia")) return CultureCode.Vlandia;
+            if (value.Contains("empire")) return CultureCode.Empire;
+            if (value.Contains("neutral_culture")) return CultureCode.Neutral;
 
-            return CultureCode.ANYOTHERCULTURE;
+            return CultureCode.Anyotherculture;
         }
 
         private ArmorMaterialTypes GetMaterialTypeFrom(string value)
         {
-            if (value.Contains("Cloth")) return ArmorMaterialTypes.CLOTH;
-            if (value.Contains("Leather")) return ArmorMaterialTypes.LEATHER;
-            if (value.Contains("Chainmail")) return ArmorMaterialTypes.CHAINMAIL;
-            if (value.Contains("Plate")) return ArmorMaterialTypes.PLATE;
+            if (value.Contains("Cloth")) return ArmorMaterialTypes.Cloth;
+            if (value.Contains("Leather")) return ArmorMaterialTypes.Leather;
+            if (value.Contains("Chainmail")) return ArmorMaterialTypes.Chainmail;
+            if (value.Contains("Plate")) return ArmorMaterialTypes.Plate;
 
-            return ArmorMaterialTypes.UNKNOWN;
+            return ArmorMaterialTypes.Unknown;
         }
 
         #endregion

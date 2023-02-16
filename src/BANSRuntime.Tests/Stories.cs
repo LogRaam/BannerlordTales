@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -8,6 +8,7 @@ using TalesBase.Stories;
 using TalesBase.Stories.Evaluation;
 using TalesBase.TW;
 using TalesContract;
+using TalesDAL;
 using TalesEnums;
 using TalesPersistence.Context;
 using TalesPersistence.Stories;
@@ -24,7 +25,7 @@ namespace BannerlordTales.Tests
         /// </summary>
         public void LoadStoriesFromDisk()
         {
-            var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
+            var p = "P:\\OneDrive\\Programmation\\Bannerlord\\BannerlordTales";
 
             GameData.Instance = new GameData
             {
@@ -52,41 +53,25 @@ namespace BannerlordTales.Tests
 
         private GameData KissTheBannerGameData()
         {
-            var p = "D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\LogRaamBannerlordTales";
-            var g = new GameData
+            var g = new GameData();
+            g.GameContext = new GameContext();
+            g.GameContext.Tracking.IsCurrentlyInSettlement = false;
+            g.GameContext.Tracking.IsCurrentlyOnMap = true;
+            g.GameContext.Time.IsNight = false;
+            g.GameContext.Time.IsDay = true;
+            g.GameContext.Heroes.Player = new BaseHero
             {
-                GameContext = new GameContext
-                {
-                    Tracking =
-                    {
-                        IsCurrentlyInSettlement = false,
-                        IsCurrentlyOnMap = true
-                    },
-                    Time =
-                    {
-                        IsNight = false,
-                        IsDay = true
-                    },
-                    Heroes =
-                    {
-                        Player = new BaseHero
-                        {
-                            Age = 18,
-                            IsFemale = true,
-                            IsHumanPlayerCharacter = true
-                        },
-                        PlayerIsCaptor = true
-                    }
-                },
-                StoryContext = new StoryContext
-                {
-                    PlayedStories = new List<IStory>(),
-                    Stories = new List<IStory>(),
-                    StoryImagesFolder = new DirectoryInfo(p + "\\StoryImages"),
-                    ModuleFolder = new DirectoryInfo(p),
-                    CustomStoriesFolder = new DirectoryInfo(p + "\\CustomStories")
-                }
+                Age = 18,
+                IsFemale = true,
+                IsHumanPlayerCharacter = true
             };
+            g.GameContext.Heroes.PlayerIsCaptor = true;
+            g.StoryContext = new StoryContext();
+            g.StoryContext.PlayedStories = new List<IStory>();
+            g.StoryContext.Stories = new List<IStory>();
+            g.StoryContext.StoryImagesFolder = new StoryLoader().GetStoryImagesDirectoryInfo(); //new DirectoryInfo(p + "\\StoryImages"),
+            g.StoryContext.ModuleFolder = new StoryLoader().GetModuleDirectoryInfo();
+            g.StoryContext.CustomStoriesFolder = new StoryLoader().GetCustomStoriesDirectoryInfo();
 
             return g;
         }
@@ -99,8 +84,8 @@ namespace BannerlordTales.Tests
                 {
                     CanBePlayedOnlyOnce = true,
                     DependOn = "None",
-                    Time = GameTime.DAYTIME,
-                    TypeOfStory = StoryType.PLAYER_IS_CAPTOR
+                    Time = GameTime.Daytime,
+                    TypeOfStory = StoryType.PlayerIsCaptor
                 },
                 Restrictions = new List<IEvaluation>
                 {
@@ -108,12 +93,12 @@ namespace BannerlordTales.Tests
                     {
                         Persona = new Persona
                         {
-                            Subject = Actor.PLAYER,
-                            Characteristic = Characteristics.AGE
+                            Subject = Actor.Player,
+                            Characteristic = Characteristics.Age
                         },
                         Numbers = new Numbers
                         {
-                            Operator = Operator.GREATERTHAN,
+                            Operator = Operator.Greaterthan,
                             Value = "18"
                         }
                     },
@@ -121,12 +106,12 @@ namespace BannerlordTales.Tests
                     {
                         Persona = new Persona
                         {
-                            Subject = Actor.PLAYER,
-                            Characteristic = Characteristics.GENDER
+                            Subject = Actor.Player,
+                            Characteristic = Characteristics.Gender
                         },
                         Numbers = new Numbers
                         {
-                            Operator = Operator.EQUALTO,
+                            Operator = Operator.Equalto,
                             Value = "female"
                         }
                     },
@@ -134,12 +119,12 @@ namespace BannerlordTales.Tests
                     {
                         Persona = new Persona
                         {
-                            Subject = Actor.NPC
+                            Subject = Actor.Npc
                         },
-                        PartyType = PartyType.LORD,
+                        PartyType = PartyType.Lord,
                         Numbers = new Numbers
                         {
-                            Operator = Operator.EQUALTO,
+                            Operator = Operator.Equalto,
                             Value = "Noble"
                         }
                     }
@@ -150,7 +135,7 @@ namespace BannerlordTales.Tests
                     {
                         Name = "Kiss the Banner",
                         Image = "None",
-                        Location = Location.MAP,
+                        Location = Location.Map,
                         Intro = "Your captors demand, in order to inspire the people, that their captives kiss their banner. It's your turn.",
                         Choices = new List<IChoice>
                         {
@@ -163,12 +148,12 @@ namespace BannerlordTales.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Subject = Actor.PLAYER,
-                                            Characteristic = Characteristics.RENOWN
+                                            Subject = Actor.Player,
+                                            Characteristic = Characteristics.Renown
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "-1"
                                         }
                                     }
@@ -195,7 +180,7 @@ namespace BannerlordTales.Tests
                     {
                         Name = "Refuse to kiss the banner",
                         Image = "None",
-                        Location = Location.MAP,
+                        Location = Location.Map,
                         Intro = "Your captors wrap you in their banner and beat your body with clubs.",
                         Choices = new List<IChoice>
                         {
@@ -208,12 +193,12 @@ namespace BannerlordTales.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Subject = Actor.PLAYER,
-                                            Characteristic = Characteristics.HEALTH
+                                            Subject = Actor.Player,
+                                            Characteristic = Characteristics.Health
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "-10"
                                         }
                                     }

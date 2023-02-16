@@ -1,10 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 11/13/2022.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesEnums
 {
-    public enum Attributes
+    public enum CharacterAttributesEnum
     {
-        NotAssigned,
         Vigor,
         Control,
         Endurance,

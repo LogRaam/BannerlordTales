@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -20,7 +20,7 @@ namespace TalesBase.Stories
         public string DependOn { get; set; }
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
-        public GameTime Time { get; set; } = GameTime.NONE;
-        public StoryType TypeOfStory { get; set; } = StoryType.NONE;
+        public GameTime Time { get; set; } = GameTime.None;
+        public StoryType TypeOfStory { get; set; } = StoryType.None;
     }
 }

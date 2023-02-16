@@ -1,9 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using TalesContract;
-using TaleWorlds.Core;
+using CharacterSkills = TaleWorlds.Core.CharacterSkills;
 
 #endregion
 
@@ -20,9 +20,7 @@ namespace TalesBase.TW
             //TODO
         }
 
-        public BaseSkill()
-        {
-        }
+        public BaseSkill() { }
 
         public int Athletics { get; set; }
 

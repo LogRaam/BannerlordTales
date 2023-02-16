@@ -1,13 +1,12 @@
-﻿// Code written by Gabriel Mailhot, 03/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum GameTime
-   {
-      UNKNOWN,
-      DAYTIME,
-      NIGHTTIME,
-      ANYTIME,
-      NONE
-   }
+    public enum GameTime
+    {
+        Daytime,
+        Nighttime,
+        Anytime,
+        None
+    }
 }

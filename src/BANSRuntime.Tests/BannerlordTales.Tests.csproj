@@ -70,6 +70,10 @@
       <Project>{42ac2dcf-34f0-4318-a9d6-3055747809c5}</Project>
       <Name>7_TalesContract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BANSDAL\4_TalesDAL.csproj">
+      <Project>{C9D17544-C699-4993-B04F-D7DDD0EAE33E}</Project>
+      <Name>4_TalesDAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BANSEnums\8_TalesEnums.csproj">
       <Project>{67a0824b-c0b1-4e11-944c-04461c3c2f20}</Project>
       <Name>8_TalesEnums</Name>

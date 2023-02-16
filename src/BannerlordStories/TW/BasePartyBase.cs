@@ -1,12 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 15/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using System.Collections.Generic;
 using TalesContract;
 using TalesEnums;
-using TaleWorlds.CampaignSystem;
-using IFaction = TalesContract.IFaction;
+using TaleWorlds.CampaignSystem.Party;
 
 #endregion
 
@@ -22,9 +21,7 @@ namespace TalesBase.TW
             Name = party.Name.ToString();
         }
 
-        public BasePartyBase()
-        {
-        }
+        public BasePartyBase() { }
 
         public IBasicCultureObject BasicCulture { get; set; }
         public float CavalryStrength { get; set; }

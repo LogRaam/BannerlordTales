@@ -1,17 +1,17 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesEnums
 {
     public enum StoryType
     {
-        UNKNOWN,
-        PLAYER_SURRENDER,
-        PLAYER_IS_CAPTIVE,
-        PLAYER_IS_CAPTOR,
-        PLAYER_ON_CAMPAIGN_MAP,
-        PLAYER_IN_SETTLEMENT,
-        WAITING,
-        TEST,
-        NONE
+        Unknown,
+        PlayerSurrender,
+        PlayerIsCaptive,
+        PlayerIsCaptor,
+        PlayerOnCampaignMap,
+        PlayerInSettlement,
+        Waiting,
+        Test,
+        None
     }
 }

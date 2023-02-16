@@ -50,6 +50,7 @@
     <Compile Include="Attributes.cs" />
     <Compile Include="BattleSide.cs" />
     <Compile Include="BoardGameType.cs" />
+    <Compile Include="CharacterAttributesEnum.cs" />
     <Compile Include="Characteristics.cs" />
     <Compile Include="CharacterStates.cs" />
     <Compile Include="CultureCode.cs" />

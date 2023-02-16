@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -27,9 +27,7 @@ namespace TalesPersistence.Stories
         }
 
 
-        public Sequence()
-        {
-        }
+        public Sequence() { }
 
         public bool AllConditionsConformToEvent()
         {
@@ -39,13 +37,13 @@ namespace TalesPersistence.Stories
                 {
                     switch (condition.Persona.Subject)
                     {
-                        case Actor.PLAYER:
+                        case Actor.Player:
                             return new Hero(GameData.Instance.GameContext.Heroes.Player).IsConsequenceConformFor(condition);
 
-                        case Actor.NPC:
+                        case Actor.Npc:
                             return ((Hero)GameData.Instance.GameContext.Heroes.Captor).IsConsequenceConformFor(condition);
 
-                        case Actor.UNKNOWN:
+                        case Actor.NotAssigned:
                             throw new ApplicationException("Act's Consequence evaluation failed: actor unknown.");
 
                         default:

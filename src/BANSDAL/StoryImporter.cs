@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -137,7 +137,7 @@ namespace TalesDAL
 
         private CultureCode ExtractCultureCodeFrom(string cultureValue)
         {
-            if (!Enum.TryParse(cultureValue, true, out CultureCode result)) return CultureCode.INVALID;
+            if (!Enum.TryParse(cultureValue, true, out CultureCode result)) return CultureCode.Invalid;
 
             return result;
         }
@@ -151,16 +151,7 @@ namespace TalesDAL
 
             var result = new BaseEvaluation
             {
-                Persona = new Persona
-                {
-                    Attribute = GetAttributeFrom(item),
-                    Characteristic = GetCharacteristicFrom(item),
-                    PersonalityTrait = GetPersonalityTraitFrom(item),
-                    Skill = GetSkillFrom(item),
-                    Subject = line.Contains("NPC")
-                        ? Actor.NPC
-                        : Actor.PLAYER
-                },
+                Persona = new Persona(),
                 PartyType = GetPartyTypeFrom(line),
                 Time = GetTimeFrom(line),
                 Equipments = new Equipments
@@ -173,10 +164,10 @@ namespace TalesDAL
                         : null,
                     Culture = line.Contains("CULTURE")
                         ? GetEquipmentCultureFrom(line)
-                        : CultureCode.INVALID,
+                        : CultureCode.Invalid,
                     Material = line.Contains("MATERIAL")
                         ? GetEquipmentMaterialFrom(line)
-                        : ArmorMaterialTypes.UNKNOWN,
+                        : ArmorMaterialTypes.Unknown,
                     Appearance = line.Contains("APPEARANCE")
                         ? GetEquipmentAppearanceFrom(line)
                         : 0.0f
@@ -197,6 +188,13 @@ namespace TalesDAL
                     ShouldEquip = ShouldEquip(line)
                 }
             };
+            result.Persona.Attribute = GetAttributeFrom(item);
+            result.Persona.Characteristic = GetCharacteristicFrom(item);
+            result.Persona.PersonalityTrait = GetPersonalityTraitFrom(item);
+            result.Persona.Skill = GetSkillFrom(item);
+            result.Persona.Subject = line.Contains("NPC")
+                ? Actor.Npc
+                : Actor.Player;
 
             if (result.Numbers.RandomEnd > 0) result.Numbers.Value = result.Numbers.RandomEnd.ToString();
 
@@ -206,7 +204,7 @@ namespace TalesDAL
         private ArmorMaterialTypes ExtractMaterialTypeFrom(string materialValue)
         {
             return !Enum.TryParse(materialValue, true, out ArmorMaterialTypes result)
-                ? ArmorMaterialTypes.UNKNOWN
+                ? ArmorMaterialTypes.Unknown
                 : result;
         }
 
@@ -399,15 +397,15 @@ namespace TalesDAL
 
         private Operator GetOperatorFrom(string line)
         {
-            if (line.Contains("=")) return Operator.EQUALTO;
-            if (line.Contains(">")) return Operator.GREATERTHAN;
-            if (line.Contains("<")) return Operator.LOWERTHAN;
+            if (line.Contains("=")) return Operator.Equalto;
+            if (line.Contains(">")) return Operator.Greaterthan;
+            if (line.Contains("<")) return Operator.Lowerthan;
 
-            if (line.Contains(" GREATER THAN ")) return Operator.GREATERTHAN;
-            if (line.Contains(" LOWER THAN ")) return Operator.LOWERTHAN;
-            if (line.Contains(" IS ")) return Operator.EQUALTO;
+            if (line.Contains(" GREATER THAN ")) return Operator.Greaterthan;
+            if (line.Contains(" LOWER THAN ")) return Operator.Lowerthan;
+            if (line.Contains(" IS ")) return Operator.Equalto;
 
-            return Operator.EQUALTO;
+            return Operator.Equalto;
         }
 
         private PartyType GetPartyTypeFrom(string line)
@@ -443,7 +441,7 @@ namespace TalesDAL
 
         private int GetRandomEndFrom(string line)
         {
-            if (line.Contains("BETWEEN ")) return GetRandomEndVerboseFrom(line);
+            if (line.ToUpper().Contains("BETWEEN ")) return GetRandomEndVerboseFrom(line);
 
             if (!line.TrimStart().StartsWith("R ")) return 0;
 
@@ -468,7 +466,7 @@ namespace TalesDAL
 
         private int GetRandomStartFrom(string line)
         {
-            if (line.Contains("BETWEEN ")) return GetRandomStartVerboseFrom(line);
+            if (line.ToUpper().Contains("BETWEEN ")) return GetRandomStartVerboseFrom(line);
 
             if (!line.TrimStart().StartsWith("R ")) return 0;
 
@@ -537,25 +535,27 @@ namespace TalesDAL
         {
             if (line.ToUpper().Contains("ESCAP")) return "ESCAPE";
 
+            if (line.Reformat().Contains("Npc Is ")) return "Npc";
+
             var s = line.Split(' ').RemoveEmptyItems().ToList();
             s.RemoveEmptyItems();
 
             var item = s[1].Reformat();
 
-            if (item == "NPC") item = s[2].Reformat();
+            if (item == "Npc") item = s[2].Reformat();
 
             return item;
         }
 
         private GameTime GetTimeFrom(string line)
         {
-            if (line.EndsWith("DAYTIME")) return GameTime.DAYTIME;
-            if (line.EndsWith("DAY")) return GameTime.DAYTIME;
+            if (line.EndsWith("DAYTIME")) return GameTime.Daytime;
+            if (line.EndsWith("DAY")) return GameTime.Daytime;
 
-            if (line.EndsWith("NIGHTTIME")) return GameTime.NIGHTTIME;
-            if (line.EndsWith("NIGHT")) return GameTime.NIGHTTIME;
+            if (line.EndsWith("NIGHTTIME")) return GameTime.Nighttime;
+            if (line.EndsWith("NIGHT")) return GameTime.Nighttime;
 
-            return GameTime.ANYTIME;
+            return GameTime.Anytime;
         }
 
         private string GetValueFrom(string line)
@@ -631,7 +631,7 @@ namespace TalesDAL
             }
             catch
             {
-                return Location.UNKNOWN;
+                return Location.Unknown;
             }
         }
 
@@ -639,8 +639,8 @@ namespace TalesDAL
         {
             var s = line.Split(':')[1].Reformat();
 
-            if (s == "YES") return true;
-            if (s == "TRUE") return true;
+            if (s == "Yes") return true;
+            if (s == "True") return true;
 
             return false;
         }
@@ -649,25 +649,25 @@ namespace TalesDAL
         {
             var t = line.ToUpper();
 
-            if (t.Contains("SURRENDER")) return StoryType.PLAYER_SURRENDER;
-            if (t.Contains("CAPTIVE")) return StoryType.PLAYER_IS_CAPTIVE;
-            if (t.Contains("CAPTOR")) return StoryType.PLAYER_IS_CAPTOR;
-            if (t.Contains("MAP")) return StoryType.PLAYER_ON_CAMPAIGN_MAP;
-            if (t.Contains("SETTLEMENT")) return StoryType.PLAYER_IN_SETTLEMENT;
-            if (t.Contains("WAIT")) return StoryType.WAITING;
+            if (t.Contains("SURRENDER")) return StoryType.PlayerSurrender;
+            if (t.Contains("CAPTIVE")) return StoryType.PlayerIsCaptive;
+            if (t.Contains("CAPTOR")) return StoryType.PlayerIsCaptor;
+            if (t.Contains("MAP")) return StoryType.PlayerOnCampaignMap;
+            if (t.Contains("SETTLEMENT")) return StoryType.PlayerInSettlement;
+            if (t.Contains("WAIT")) return StoryType.Waiting;
 
-            return StoryType.NONE;
+            return StoryType.None;
         }
 
         private GameTime SetTimeFrom(string line)
         {
             var s = line.Split(':')[1].Reformat();
 
-            if (s == "DAY") return GameTime.DAYTIME;
-            if (s == "NIGHT") return GameTime.NIGHTTIME;
-            if (s == "ANYTIME") return GameTime.ANYTIME;
+            if (s == "Day") return GameTime.Daytime;
+            if (s == "Night") return GameTime.Nighttime;
+            if (s == "Anytime") return GameTime.Anytime;
 
-            return GameTime.UNKNOWN;
+            return GameTime.None;
         }
 
         private ITrigger SetTriggerFrom(string line)

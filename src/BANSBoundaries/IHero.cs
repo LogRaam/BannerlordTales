@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -18,11 +18,7 @@ namespace TalesContract
     {
         public float Age { get; set; }
 
-        public bool AlwaysUnconscious { get; set; }
-
         public int Athletics { get; set; }
-
-        public bool AwaitingTrial { get; set; }
 
         public ICampaignTime BirthDay { get; set; }
 
@@ -51,8 +47,6 @@ namespace TalesContract
 
         public int Control { get; set; }
 
-        public float Controversy { get; set; }
-
         public int Crafting { get; set; }
 
         public int Crossbow { get; set; }
@@ -67,8 +61,6 @@ namespace TalesContract
 
         public IHero DeathMarkKillerHero { get; set; }
 
-        public bool Detected { get; set; }
-
         public int Endurance { get; set; }
 
         public int Engineering { get; set; }
@@ -82,11 +74,9 @@ namespace TalesContract
 
         public int Gold { get; set; }
 
-        public ITown GovernorOf { get; set; }
-
         public bool HasMet { get; set; }
 
-        public ICharacterSkills HeroSkills { get; set; }
+        public CharacterSkills HeroSkills { get; set; }
 
         public CharacterStates HeroState { get; set; }
 
@@ -117,8 +107,6 @@ namespace TalesContract
 
         public bool IsFemale { get; set; }
 
-        public bool IsFertile { get; set; }
-
         public bool IsFugitive { get; set; }
 
         public bool IsGangLeader { get; set; }
@@ -131,21 +119,13 @@ namespace TalesContract
 
         public bool IsMainHeroIll { get; set; }
 
-        public bool IsMercenary { get; set; }
-
         public bool IsMerchant { get; set; }
 
         public bool IsMinorFactionHero { get; set; }
 
-        public bool IsNoble { get; set; }
-
         public bool IsNotable { get; set; }
 
         public bool IsNotSpawned { get; set; }
-
-        public bool IsOccupiedByAnEvent { get; set; }
-
-        public bool IsOutlaw { get; set; }
 
         public bool IsPartyLeader { get; set; }
 
@@ -171,12 +151,6 @@ namespace TalesContract
 
         public ICampaignTime LastMeetingTimeWithPlayer { get; set; }
 
-        public bool LastSeenInSettlement { get; set; }
-
-        public ISettlement LastSeenPlace { get; set; }
-
-        public ICampaignTime LastSeenTime { get; set; }
-
         public int Level { get; set; }
 
         public IFaction MapFaction { get; set; }
@@ -187,29 +161,17 @@ namespace TalesContract
 
         public string Name { get; set; }
 
-        public bool NeverBecomePrisoner { get; set; }
-
-        public bool Noncombatant { get; }
-
-        public IMobileParty PartyBelongedTo { get; set; }
-
-        public IPartyBase PartyBelongedToAsPrisoner { get; set; }
-
         public float PassedTimeAtHomeSettlement { get; set; }
 
         public float Power { get; set; }
 
         public float ProbabilityOfDeath { get; set; }
 
-        public FactionRank Rank { get; set; }
-
         public float RelationScoreWithPlayer { get; set; }
 
         public IList<IHero> Siblings { get; set; }
 
         public IHero Spouse { get; set; }
-
-        public ISettlement StayingInSettlementOfNotable { get; set; }
 
         public IClan SupporterOf { get; set; }
 

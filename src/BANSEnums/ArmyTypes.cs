@@ -1,14 +1,14 @@
-﻿// Code written by Gabriel Mailhot, 02/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum ArmyTypes
-   {
-      UNKNOWN,
-      BESIEGER,
-      RAIDER,
-      DEFENDER,
-      PATROLLING,
-      NUMBEROFARMYTYPES
-   }
+    public enum ArmyTypes
+    {
+        Unknown,
+        Besieger,
+        Raider,
+        Defender,
+        Patrolling,
+        Numberofarmytypes
+    }
 }

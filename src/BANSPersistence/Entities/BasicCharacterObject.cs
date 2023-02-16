@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 26/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -32,14 +32,14 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Persona.Attribute)
             {
-                case Attributes.VIGOR:        return IsVigorConformFor(consequence);
-                case Attributes.CONTROL:      return IsControlConformFor(consequence);
-                case Attributes.ENDURANCE:    return IsEnduranceConformFor(consequence);
-                case Attributes.CUNNING:      return IsCunningConformFor(consequence);
-                case Attributes.SOCIAL:       return IsSocialConformFor(consequence);
-                case Attributes.INTELLIGENCE: return IsIntelligenceConformFor(consequence);
-                case Attributes.UNKNOWN:      return true;
-                case null:                    return true;
+                case Attributes.Vigor: return IsVigorConformFor(consequence);
+                case Attributes.Control: return IsControlConformFor(consequence);
+                case Attributes.Endurance: return IsEnduranceConformFor(consequence);
+                case Attributes.Cunning: return IsCunningConformFor(consequence);
+                case Attributes.Social: return IsSocialConformFor(consequence);
+                case Attributes.Intelligence: return IsIntelligenceConformFor(consequence);
+                case Attributes.NotAssigned: return true;
+                case null: return true;
 
                 default: return true;
             }
@@ -49,23 +49,23 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Persona.Characteristic)
             {
-                case Characteristics.UNKNOWN:
+                case Characteristics.NotAssigned:
                     throw new NotImplementedException();
 
 
-                case Characteristics.AGE:
+                case Characteristics.Age:
                     throw new NotImplementedException();
 
-                case Characteristics.GENDER:
+                case Characteristics.Gender:
                     throw new NotImplementedException();
 
-                case Characteristics.HEALTH:
+                case Characteristics.Health:
                     throw new NotImplementedException();
 
-                case Characteristics.GOLD:
+                case Characteristics.Gold:
                     throw new NotImplementedException();
 
-                case Characteristics.RENOWN:
+                case Characteristics.Renown:
                     return IsRenownConformFor(consequence);
 
                 case null:
@@ -105,20 +105,20 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Numbers.Operator)
             {
-                case Operator.UNKNOWN:
+                case Operator.Unknown:
                     break;
 
-                case Operator.GREATERTHAN:
+                case Operator.Greaterthan:
                     break;
 
-                case Operator.LOWERTHAN:
+                case Operator.Lowerthan:
                     break;
 
-                case Operator.EQUALTO:
-                {
-                    //TODO: must find how to recover renown
-                    break;
-                }
+                case Operator.Equalto:
+                    {
+                        //TODO: must find how to recover renown
+                        break;
+                    }
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -141,12 +141,12 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Numbers.Operator)
             {
-                case Operator.UNKNOWN:     throw new ApplicationException("Operator unknown when trying to evaluate Vigor.");
-                case Operator.GREATERTHAN: return VigorGreaterThanConformFrom(consequence);
-                case Operator.LOWERTHAN:   return VigorLowerThanConformFrom(consequence);
-                case Operator.EQUALTO:     return VigorEqualToConformFrom(consequence);
-                case Operator.NOTEQUALTO:  return VigorNotEqualToConformFrom(consequence);
-                default:                   throw new ArgumentOutOfRangeException();
+                case Operator.Unknown: throw new ApplicationException("Operator unknown when trying to evaluate Vigor.");
+                case Operator.Greaterthan: return VigorGreaterThanConformFrom(consequence);
+                case Operator.Lowerthan: return VigorLowerThanConformFrom(consequence);
+                case Operator.Equalto: return VigorEqualToConformFrom(consequence);
+                case Operator.Notequalto: return VigorNotEqualToConformFrom(consequence);
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 

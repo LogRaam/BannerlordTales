@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -22,9 +22,9 @@ namespace TalesPersistence.Context
         {
             get
             {
-                _gameTime = GameTime.ANYTIME;
-                if (IsDay) _gameTime = GameTime.DAYTIME;
-                if (IsNight) _gameTime = GameTime.NIGHTTIME;
+                _gameTime = GameTime.Anytime;
+                if (IsDay) _gameTime = GameTime.Daytime;
+                if (IsNight) _gameTime = GameTime.Nighttime;
 
                 return _gameTime;
             }

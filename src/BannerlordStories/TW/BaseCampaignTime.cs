@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 14/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -13,8 +13,6 @@ namespace TalesBase.TW
     {
         public BaseCampaignTime(CampaignTime time)
         {
-            if (time == null) return;
-
             CurrentHourInDay = time.CurrentHourInDay;
             ElapsedDaysUntilNow = time.ElapsedDaysUntilNow;
             ElapsedHoursUntilNow = time.ElapsedHoursUntilNow;
@@ -24,12 +22,12 @@ namespace TalesBase.TW
             ElapsedWeeksUntilNow = time.ElapsedWeeksUntilNow;
             ElapsedYearsUntilNow = time.ElapsedYearsUntilNow;
             GetDayOfSeason = time.GetDayOfSeason;
-            GetDayOfSeasonf = time.GetDayOfSeasonf;
+            //GetDayOfSeasonf = time.GetDayOfSeasonf;
             GetDayOfWeek = time.GetDayOfWeek;
             GetDayOfYear = time.GetDayOfYear;
             GetHourOfDay = time.GetHourOfDay;
             GetSeasonOfYear = time.GetSeasonOfYear;
-            GetSeasonOfYearf = time.GetSeasonOfYearf;
+            //GetSeasonOfYearf = time.GetSeasonOfYearf;
             GetWeekOfSeason = time.GetWeekOfSeason;
             GetYear = time.GetYear;
             IsDayTime = time.IsDayTime;
@@ -54,9 +52,7 @@ namespace TalesBase.TW
             ToYears = time.ToYears;
         }
 
-        public BaseCampaignTime()
-        {
-        }
+        public BaseCampaignTime() { }
 
         public float CurrentHourInDay { get; set; }
 

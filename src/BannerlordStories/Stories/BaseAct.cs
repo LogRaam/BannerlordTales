@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -24,7 +24,7 @@ namespace TalesBase.Stories
 
         public string Intro { get; set; }
 
-        public Location Location { get; set; } = Location.UNKNOWN;
+        public Location Location { get; set; } = Location.Unknown;
 
         public string Name { get; set; }
 

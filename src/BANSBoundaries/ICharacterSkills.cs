@@ -1,9 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 16/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesContract
 {
-   public class ICharacterSkills
-   {
-      //todo: add skills here
-   }
+    public class CharacterSkills
+    {
+        //todo: add skills here
+    }
 }

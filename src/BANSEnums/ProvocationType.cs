@@ -1,14 +1,14 @@
-﻿// Code written by Gabriel Mailhot, 02/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum ProvocationType
-   {
-      ATTACKLORD,
-      ATTACKVILLAGER,
-      ATTACKCARAVAN,
-      RAIDVILLAGE,
-      BESIEGETOWN,
-      BORDERPASS
-   }
+    public enum ProvocationType
+    {
+        Attacklord,
+        Attackvillager,
+        Attackcaravan,
+        Raidvillage,
+        Besiegetown,
+        Borderpass
+    }
 }

@@ -1,9 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 15/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using TalesContract;
-using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.CharacterDevelopment;
 
 #endregion
 
@@ -22,9 +22,7 @@ namespace TalesBase.TW
             Valor = traits.Valor;
         }
 
-        public BaseCharacterTraits()
-        {
-        }
+        public BaseCharacterTraits() { }
 
         public int Calculating { get; set; }
         public int Generosity { get; set; }

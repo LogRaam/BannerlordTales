@@ -1,28 +1,28 @@
-﻿// Code written by Gabriel Mailhot, 12/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesEnums
 {
     public enum HeroOccupation
     {
-        ARTISAN,
-        CHILD,
-        COMMANDER,
-        FACTIONLEADER,
-        FUGITIVE,
-        GANGLEADER,
-        HEADMAN,
-        MERCENARY,
-        MERCHANT,
-        MINORFACTIONHERO,
-        NOBLE,
-        NOTABLE,
-        OUTLAW,
-        PARTYLEADER,
-        PLAYERCOMPANION,
-        PREACHER,
-        REBEL,
-        RURALNOTABLE,
-        SPECIAL,
-        WANDERER
+        Artisan,
+        Child,
+        Commander,
+        Factionleader,
+        Fugitive,
+        Gangleader,
+        Headman,
+        Mercenary,
+        Merchant,
+        Minorfactionhero,
+        Noble,
+        Notable,
+        Outlaw,
+        Partyleader,
+        Playercompanion,
+        Preacher,
+        Rebel,
+        Ruralnotable,
+        Special,
+        Wanderer
     }
 }

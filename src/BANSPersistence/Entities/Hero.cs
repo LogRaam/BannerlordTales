@@ -1,10 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 26/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
-using System;
 using _47_TalesMath;
 using Helpers;
+using System;
 using TalesBase.TW;
 using TalesContract;
 using TalesEnums;
@@ -20,9 +20,9 @@ namespace TalesPersistence.Entities
         public Hero(IHero hero)
         {
             Age = hero.Age;
-            AlwaysUnconscious = hero.AlwaysUnconscious;
+            //AlwaysUnconscious = hero.AlwaysUnconscious;
             Athletics = hero.Athletics;
-            AwaitingTrial = hero.AwaitingTrial;
+
             if (hero.BirthDay != null) BirthDay = hero.BirthDay;
             if (hero.BornSettlement != null) BornSettlement = hero.BornSettlement;
             Bow = hero.Bow;
@@ -36,7 +36,7 @@ namespace TalesPersistence.Entities
             if (hero.CompanionOf != null) CompanionOf = hero.CompanionOf;
             if (hero.CompanionsInParty != null) CompanionsInParty = hero.CompanionsInParty;
             Control = hero.Control;
-            Controversy = hero.Controversy;
+
             Crafting = hero.Crafting;
             Calculating = hero.Calculating;
             Crossbow = hero.Crossbow;
@@ -45,14 +45,14 @@ namespace TalesPersistence.Entities
             if (hero.CurrentSettlement != null) CurrentSettlement = hero.CurrentSettlement;
             if (hero.DeathDay != null) DeathDay = hero.DeathDay;
             if (hero.DeathMarkKillerHero != null) DeathMarkKillerHero = hero.DeathMarkKillerHero;
-            Detected = hero.Detected;
+
             Endurance = hero.Endurance;
             Engineering = hero.Engineering;
             if (hero.ExSpouses != null) ExSpouses = hero.ExSpouses;
             Father = hero.Father;
             FirstName = hero.FirstName;
             Gold = hero.Gold;
-            if (hero.GovernorOf != null) GovernorOf = hero.GovernorOf;
+
             HasMet = hero.HasMet;
             if (hero.HeroSkills != null) HeroSkills = hero.HeroSkills;
             HeroState = hero.HeroState;
@@ -70,21 +70,21 @@ namespace TalesPersistence.Entities
             IsDisabled = hero.IsDisabled;
             IsFactionLeader = hero.IsFactionLeader;
             IsFemale = hero.IsFemale;
-            IsFertile = hero.IsFertile;
+
             IsFugitive = hero.IsFugitive;
             IsGangLeader = hero.IsGangLeader;
             IsHeadman = hero.IsHeadman;
             IsHealthFull = hero.IsHealthFull;
             IsHumanPlayerCharacter = hero.IsHumanPlayerCharacter;
             IsMainHeroIll = hero.IsMainHeroIll;
-            IsMercenary = hero.IsMercenary;
+
             IsMerchant = hero.IsMerchant;
             IsMinorFactionHero = hero.IsMinorFactionHero;
-            IsNoble = hero.IsNoble;
+
             IsNotable = hero.IsNotable;
             IsNotSpawned = hero.IsNotSpawned;
-            IsOccupiedByAnEvent = hero.IsOccupiedByAnEvent;
-            IsOutlaw = hero.IsOutlaw;
+
+
             IsPartyLeader = hero.IsPartyLeader;
             IsPlayerCompanion = hero.IsPlayerCompanion;
             IsPreacher = hero.IsPreacher;
@@ -97,35 +97,30 @@ namespace TalesPersistence.Entities
             IsWanderer = hero.IsWanderer;
             IsWounded = hero.IsWounded;
             if (hero.LastMeetingTimeWithPlayer != null) LastMeetingTimeWithPlayer = hero.LastMeetingTimeWithPlayer;
-            LastSeenInSettlement = hero.LastSeenInSettlement;
-            if (hero.LastSeenPlace != null) LastSeenPlace = hero.LastSeenPlace;
-            if (hero.LastSeenTime != null) LastSeenTime = hero.LastSeenTime;
+
+
             Level = hero.Level;
             if (hero.MapFaction != null) MapFaction = hero.MapFaction;
             MaxHitPoints = hero.MaxHitPoints;
             if (hero.Mother != null) Mother = hero.Mother;
             Name = hero.Name;
-            NeverBecomePrisoner = hero.NeverBecomePrisoner;
-            Noncombatant = hero.Noncombatant;
-            if (hero.PartyBelongedTo != null) PartyBelongedTo = hero.PartyBelongedTo;
-            if (hero.PartyBelongedToAsPrisoner != null) PartyBelongedToAsPrisoner = hero.PartyBelongedToAsPrisoner;
+
+
             PassedTimeAtHomeSettlement = hero.PassedTimeAtHomeSettlement;
             Power = hero.Power;
             ProbabilityOfDeath = hero.ProbabilityOfDeath;
-            Rank = hero.Rank;
+
             RelationScoreWithPlayer = hero.RelationScoreWithPlayer;
             if (hero.Siblings != null) Siblings = hero.Siblings;
             if (hero.Spouse != null) Spouse = hero.Spouse;
-            if (hero.StayingInSettlementOfNotable != null) StayingInSettlementOfNotable = hero.StayingInSettlementOfNotable;
+
             if (hero.SupporterOf != null) SupporterOf = hero.SupporterOf;
             UnmodifiedClanLeaderRelationshipScoreWithPlayer = hero.UnmodifiedClanLeaderRelationshipScoreWithPlayer;
             Vigor = hero.Vigor;
             Weight = hero.Weight;
         }
 
-        public Hero()
-        {
-        }
+        public Hero() { }
 
         public void GiveBodyArmor(string bodyArmorId)
         {
@@ -175,14 +170,14 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Persona.Attribute)
             {
-                case Attributes.VIGOR:        return GameMath.IsEvaluationConform(consequence, Vigor);
-                case Attributes.CONTROL:      return GameMath.IsEvaluationConform(consequence, Control);
-                case Attributes.ENDURANCE:    return GameMath.IsEvaluationConform(consequence, Endurance);
-                case Attributes.CUNNING:      return GameMath.IsEvaluationConform(consequence, Cunning);
-                case Attributes.SOCIAL:       return GameMath.IsEvaluationConform(consequence, Social);
-                case Attributes.INTELLIGENCE: return GameMath.IsEvaluationConform(consequence, Intelligence);
-                case Attributes.UNKNOWN:      return true;
-                case null:                    return true;
+                case Attributes.Vigor: return GameMath.IsEvaluationConform(consequence, Vigor);
+                case Attributes.Control: return GameMath.IsEvaluationConform(consequence, Control);
+                case Attributes.Endurance: return GameMath.IsEvaluationConform(consequence, Endurance);
+                case Attributes.Cunning: return GameMath.IsEvaluationConform(consequence, Cunning);
+                case Attributes.Social: return GameMath.IsEvaluationConform(consequence, Social);
+                case Attributes.Intelligence: return GameMath.IsEvaluationConform(consequence, Intelligence);
+                case Attributes.NotAssigned: return true;
+                case null: return true;
 
                 default: return true;
             }
@@ -193,14 +188,14 @@ namespace TalesPersistence.Entities
         {
             switch (consequence.Persona.Characteristic)
             {
-                case Characteristics.UNKNOWN: return true;
-                case Characteristics.AGE:     return GameMath.IsEvaluationConform(consequence, Age);
-                case Characteristics.GENDER:  return IsGenderConform(consequence);
-                case Characteristics.HEALTH:  return GameMath.IsEvaluationConform(consequence, HitPoints);
-                case Characteristics.GOLD:    return GameMath.IsEvaluationConform(consequence, Gold);
-                case Characteristics.RENOWN:  return GameMath.IsEvaluationConform(consequence, Clan.Renown);
-                case Characteristics.CULTURE: return IsCultureConform(consequence);
-                default:                      throw new ArgumentOutOfRangeException();
+                case Characteristics.NotAssigned: return true;
+                case Characteristics.Age: return GameMath.IsEvaluationConform(consequence, Age);
+                case Characteristics.Gender: return IsGenderConform(consequence);
+                case Characteristics.Health: return GameMath.IsEvaluationConform(consequence, HitPoints);
+                case Characteristics.Gold: return GameMath.IsEvaluationConform(consequence, Gold);
+                case Characteristics.Renown: return GameMath.IsEvaluationConform(consequence, Clan.Renown);
+                case Characteristics.Culture: return IsCultureConform(consequence);
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 

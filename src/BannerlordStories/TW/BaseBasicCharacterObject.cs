@@ -1,8 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 14/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using TalesContract;
+using TalesEnums;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
@@ -12,9 +13,7 @@ namespace TalesBase.TW
 {
     public class BaseBasicCharacterObject : IBasicCharacterObject
     {
-        public BaseBasicCharacterObject()
-        {
-        }
+        public BaseBasicCharacterObject() { }
 
         public BaseBasicCharacterObject(BasicCharacterObject character)
         {
@@ -31,12 +30,12 @@ namespace TalesBase.TW
             Level = character.Level;
             Name = character.Name.ToString();
             var h = Hero.FindFirst(n => n.Name == character.Name && n.Culture == character.Culture && n.IsHumanPlayerCharacter == character.IsPlayerCharacter);
-            Vigor = h.GetAttributeValue(CharacterAttributesEnum.Vigor);
-            Control = h.GetAttributeValue(CharacterAttributesEnum.Control);
-            Endurance = h.GetAttributeValue(CharacterAttributesEnum.Endurance);
-            Cunning = h.GetAttributeValue(CharacterAttributesEnum.Cunning);
-            Social = h.GetAttributeValue(CharacterAttributesEnum.Social);
-            Intelligence = h.GetAttributeValue(CharacterAttributesEnum.Intelligence);
+            Vigor = h.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Vigor.ToString()));
+            Control = h.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Control.ToString()));
+            Endurance = h.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Endurance.ToString()));
+            Cunning = h.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Cunning.ToString()));
+            Social = h.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Social.ToString()));
+            Intelligence = h.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Intelligence.ToString()));
         }
 
         public float Age { get; set; }

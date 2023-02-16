@@ -1,10 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 11/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using System.Collections.Generic;
 using TalesContract;
-using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 
 #endregion
 

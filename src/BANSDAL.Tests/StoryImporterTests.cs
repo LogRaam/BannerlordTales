@@ -1,10 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
-using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Collections.Generic;
 using TalesBase.Stories;
 using TalesBase.Stories.Evaluation;
 using TalesBase.TW;
@@ -68,10 +68,10 @@ namespace TalesDAL.Tests
             // Assert
             var test = actualResult.Acts[0].Choices[0].Consequences[0];
             test.Outcome.ShouldEquip.Should().BeTrue();
-            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
-            test.Equipments.Material.Should().Be(ArmorMaterialTypes.LEATHER);
+            test.Equipments.Culture.Should().Be(CultureCode.Sturgia);
+            test.Equipments.Material.Should().Be(ArmorMaterialTypes.Leather);
             test.Equipments.Appearance.Should().Be(2);
-            test.Numbers.Operator.Should().Be(Operator.LOWERTHAN);
+            test.Numbers.Operator.Should().Be(Operator.Lowerthan);
         }
 
         [Test]
@@ -95,10 +95,10 @@ namespace TalesDAL.Tests
             // Assert
             var test = actualResult.Acts[0].Choices[0].Consequences[0];
             test.Outcome.ShouldEquip.Should().BeTrue();
-            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
-            test.Equipments.Material.Should().Be(ArmorMaterialTypes.LEATHER);
+            test.Equipments.Culture.Should().Be(CultureCode.Sturgia);
+            test.Equipments.Material.Should().Be(ArmorMaterialTypes.Leather);
             test.Equipments.Appearance.Should().Be(2);
-            test.Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            test.Numbers.Operator.Should().Be(Operator.Greaterthan);
         }
 
 
@@ -124,7 +124,7 @@ namespace TalesDAL.Tests
             var test = actualResult.Acts[0].Choices[0].Consequences[0];
             test.Outcome.ShouldEquip.Should().BeTrue();
             test.Equipments.Appearance.Should().Be(2);
-            test.Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            test.Numbers.Operator.Should().Be(Operator.Greaterthan);
         }
 
         [Test]
@@ -148,10 +148,10 @@ namespace TalesDAL.Tests
             // Assert
             var test = actualResult.Acts[0].Choices[0].Consequences[0];
             test.Outcome.ShouldEquip.Should().BeTrue();
-            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
-            test.Equipments.Material.Should().Be(ArmorMaterialTypes.LEATHER);
+            test.Equipments.Culture.Should().Be(CultureCode.Sturgia);
+            test.Equipments.Material.Should().Be(ArmorMaterialTypes.Leather);
             test.Equipments.Appearance.Should().Be(2);
-            test.Numbers.Operator.Should().Be(Operator.EQUALTO);
+            test.Numbers.Operator.Should().Be(Operator.Equalto);
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace TalesDAL.Tests
             // Assert
             var test = actualResult.Acts[0].Choices[0].Consequences[0];
             test.Outcome.ShouldEquip.Should().BeTrue();
-            test.Equipments.Culture.Should().Be(CultureCode.STURGIA);
+            test.Equipments.Culture.Should().Be(CultureCode.Sturgia);
             test.Equipments.Weapon.Should().Be("dagger");
         }
 
@@ -327,11 +327,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Characteristic = Characteristics.HEALTH
+                                            Characteristic = Characteristics.Health
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "100",
                                             ValueIsPercentage = true
                                         }
@@ -442,7 +442,7 @@ namespace TalesDAL.Tests
                 "END"
             };
 
-            var expectedResult = GameTime.DAYTIME;
+            var expectedResult = GameTime.Daytime;
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -466,7 +466,7 @@ namespace TalesDAL.Tests
                 "END"
             };
 
-            var expectedResult = GameTime.NIGHTTIME;
+            var expectedResult = GameTime.Nighttime;
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -495,11 +495,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.HEALTH
+                    Characteristic = Characteristics.Health
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.GREATERTHAN,
+                    Operator = Operator.Greaterthan,
                     Value = "20",
                     ValueIsPercentage = true
                 }
@@ -535,11 +535,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.HEALTH
+                    Characteristic = Characteristics.Health
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.GREATERTHAN,
+                    Operator = Operator.Greaterthan,
                     Value = "20",
                     ValueIsPercentage = true
                 }
@@ -575,11 +575,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.HEALTH
+                    Characteristic = Characteristics.Health
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.GREATERTHAN,
+                    Operator = Operator.Greaterthan,
                     Value = "20",
                     ValueIsPercentage = true
                 }
@@ -615,11 +615,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.HEALTH
+                    Characteristic = Characteristics.Health
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.LOWERTHAN,
+                    Operator = Operator.Lowerthan,
                     Value = "20",
                     ValueIsPercentage = true
                 }
@@ -655,11 +655,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.HEALTH
+                    Characteristic = Characteristics.Health
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
+                    Operator = Operator.Equalto,
                     RandomStart = -10,
                     RandomEnd = -20
                 }
@@ -696,11 +696,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.HEALTH
+                    Characteristic = Characteristics.Health
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
+                    Operator = Operator.Equalto,
                     RandomStart = -10,
                     RandomEnd = -20
                 }
@@ -900,7 +900,7 @@ namespace TalesDAL.Tests
                 "Location: Map",
                 "END"
             };
-            var expectedResult = Location.MAP;
+            var expectedResult = Location.Map;
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -1005,11 +1005,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.AGE
+                    Characteristic = Characteristics.Age
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.GREATERTHAN,
+                    Operator = Operator.Greaterthan,
                     Value = "18"
                 }
             };
@@ -1039,12 +1039,12 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.GENDER
+                    Characteristic = Characteristics.Gender
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
-                    Value = "FEMALE"
+                    Operator = Operator.Equalto,
+                    Value = "Female"
                 }
             };
 
@@ -1074,11 +1074,11 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    PersonalityTrait = PersonalityTraits.VALOR
+                    PersonalityTrait = PersonalityTraits.Valor
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.LOWERTHAN,
+                    Operator = Operator.Lowerthan,
                     Value = "30"
                 }
             };
@@ -1155,10 +1155,10 @@ namespace TalesDAL.Tests
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.GENEROSITY);
-            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.Generosity);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.Greaterthan);
             actualResult.Restrictions[0].Numbers.Value.Should().Be("5");
-            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.PLAYER);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.Player);
         }
 
 
@@ -1179,10 +1179,10 @@ namespace TalesDAL.Tests
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.HONOR);
-            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.Honor);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.Greaterthan);
             actualResult.Restrictions[0].Numbers.Value.Should().Be("5");
-            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.PLAYER);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.Player);
         }
 
 
@@ -1203,10 +1203,10 @@ namespace TalesDAL.Tests
             var actualResult = sut.ImportFrom(param.ToArray());
 
             // Assert
-            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.MERCY);
-            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.GREATERTHAN);
+            actualResult.Restrictions[0].Persona.PersonalityTrait.Should().Be(PersonalityTraits.Mercy);
+            actualResult.Restrictions[0].Numbers.Operator.Should().Be(Operator.Greaterthan);
             actualResult.Restrictions[0].Numbers.Value.Should().Be("5");
-            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.PLAYER);
+            actualResult.Restrictions[0].Persona.Subject.Should().Be(Actor.Player);
         }
 
         [Test]
@@ -1345,13 +1345,13 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.GENDER,
-                    Subject = Actor.NPC
+                    Characteristic = Characteristics.Gender,
+                    Subject = Actor.Npc
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
-                    Value = "MALE"
+                    Operator = Operator.Equalto,
+                    Value = "Male"
                 }
             };
 
@@ -1383,13 +1383,13 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.CULTURE,
-                    Subject = Actor.NPC
+                    Characteristic = Characteristics.Culture,
+                    Subject = Actor.Npc
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
-                    Value = "NORD"
+                    Operator = Operator.Equalto,
+                    Value = "Nord"
                 }
             };
 
@@ -1421,13 +1421,13 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Subject = Actor.NPC
+                    Subject = Actor.Npc
                 },
-                PartyType = PartyType.LORD,
+                PartyType = PartyType.Lord,
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
-                    Value = "LORD"
+                    Operator = Operator.Equalto,
+                    Value = "Lord"
                 }
             };
 
@@ -1466,7 +1466,7 @@ namespace TalesDAL.Tests
                     {
                         Name = "My Act 1",
                         Image = "None",
-                        Location = Location.MAP,
+                        Location = Location.Map,
                         Intro = "This is an intro for act 1."
                     }
                 }
@@ -1553,11 +1553,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Attribute = Attributes.VIGOR
+                                            Attribute = Attributes.Vigor
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.GREATERTHAN,
+                                            Operator = Operator.Greaterthan,
                                             Value = "1"
                                         }
                                     }
@@ -1610,11 +1610,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Attribute = Attributes.ENDURANCE
+                                            Attribute = Attributes.Endurance
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "3"
                                         }
                                     }
@@ -1668,11 +1668,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Attribute = Attributes.CONTROL
+                                            Attribute = Attributes.Control
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.LOWERTHAN,
+                                            Operator = Operator.Lowerthan,
                                             Value = "2"
                                         }
                                     }
@@ -1727,11 +1727,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Attribute = Attributes.CUNNING
+                                            Attribute = Attributes.Cunning
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.GREATERTHAN,
+                                            Operator = Operator.Greaterthan,
                                             Value = "4"
                                         }
                                     },
@@ -1739,11 +1739,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Attribute = Attributes.SOCIAL
+                                            Attribute = Attributes.Social
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.LOWERTHAN,
+                                            Operator = Operator.Lowerthan,
                                             Value = "5"
                                         }
                                     },
@@ -1751,11 +1751,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Attribute = Attributes.INTELLIGENCE
+                                            Attribute = Attributes.Intelligence
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "6",
                                             ValueIsPercentage = false
                                         }
@@ -1820,11 +1820,11 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Characteristic = Characteristics.HEALTH
+                                            Characteristic = Characteristics.Health
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.GREATERTHAN,
+                                            Operator = Operator.Greaterthan,
                                             Value = "20",
                                             ValueIsPercentage = true
                                         }
@@ -1937,12 +1937,13 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Characteristic = Characteristics.HEALTH,
-                                            Subject = Actor.PLAYER
+                                            Characteristic = Characteristics.Health,
+                                            Subject = Actor.Player,
+                                            PersonalityTrait = PersonalityTraits.NotAssigned
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.GREATERTHAN,
+                                            Operator = Operator.Greaterthan,
                                             Value = "20",
                                             ValueIsPercentage = true
                                         }
@@ -1954,12 +1955,12 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Characteristic = Characteristics.RENOWN,
-                                            Subject = Actor.PLAYER
+                                            Characteristic = Characteristics.Renown,
+                                            Subject = Actor.Player
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "-1",
                                             ValueIsPercentage = false
                                         }
@@ -1968,12 +1969,12 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Characteristic = Characteristics.HEALTH,
-                                            Subject = Actor.PLAYER
+                                            Characteristic = Characteristics.Health,
+                                            Subject = Actor.Player
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             RandomStart = -1,
                                             RandomEnd = -10,
                                             ValueIsPercentage = false
@@ -1983,7 +1984,7 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Subject = Actor.PLAYER
+                                            Subject = Actor.Player
                                         },
                                         Outcome = new Outcome
                                         {
@@ -2058,7 +2059,7 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Subject = Actor.NPC
+                                            Subject = Actor.Npc
                                         },
                                         Outcome = new Outcome
                                         {
@@ -2131,12 +2132,12 @@ namespace TalesDAL.Tests
                                     {
                                         Persona = new Persona
                                         {
-                                            Subject = Actor.PLAYER,
-                                            Characteristic = Characteristics.HEALTH
+                                            Subject = Actor.Player,
+                                            Characteristic = Characteristics.Health
                                         },
                                         Numbers = new Numbers
                                         {
-                                            Operator = Operator.EQUALTO,
+                                            Operator = Operator.Equalto,
                                             Value = "-10"
                                         }
                                     }
@@ -2284,7 +2285,7 @@ namespace TalesDAL.Tests
                 "END"
             };
 
-            var expectedResult = StoryType.PLAYER_SURRENDER;
+            var expectedResult = StoryType.PlayerSurrender;
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -2329,7 +2330,7 @@ namespace TalesDAL.Tests
                 "END"
             };
 
-            var expectedResult = GameTime.NIGHTTIME;
+            var expectedResult = GameTime.Nighttime;
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -2352,7 +2353,7 @@ namespace TalesDAL.Tests
                 "END"
             };
 
-            var expectedResult = StoryType.PLAYER_IS_CAPTIVE;
+            var expectedResult = StoryType.PlayerIsCaptive;
 
             // Act
             var actualResult = sut.ImportFrom(param.ToArray());
@@ -2378,12 +2379,12 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.AGE,
-                    Subject = Actor.PLAYER
+                    Characteristic = Characteristics.Age,
+                    Subject = Actor.Player
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.GREATERTHAN,
+                    Operator = Operator.Greaterthan,
                     Value = "18"
                 }
             };
@@ -2416,13 +2417,13 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.GENDER,
-                    Subject = Actor.PLAYER
+                    Characteristic = Characteristics.Gender,
+                    Subject = Actor.Player
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
-                    Value = "FEMALE"
+                    Operator = Operator.Equalto,
+                    Value = "Female"
                 }
             };
 
@@ -2453,13 +2454,13 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.CULTURE,
-                    Subject = Actor.PLAYER
+                    Characteristic = Characteristics.Culture,
+                    Subject = Actor.Player
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.EQUALTO,
-                    Value = "EMPIRE"
+                    Operator = Operator.Equalto,
+                    Value = "Empire"
                 }
             };
 
@@ -2491,12 +2492,12 @@ namespace TalesDAL.Tests
             {
                 Persona = new Persona
                 {
-                    Characteristic = Characteristics.AGE,
-                    Subject = Actor.NPC
+                    Characteristic = Characteristics.Age,
+                    Subject = Actor.Npc
                 },
                 Numbers = new Numbers
                 {
-                    Operator = Operator.GREATERTHAN,
+                    Operator = Operator.Greaterthan,
                     Value = "18"
                 }
             };

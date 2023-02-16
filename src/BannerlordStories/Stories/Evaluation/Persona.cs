@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 14/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -11,10 +11,10 @@ namespace TalesBase.Stories.Evaluation
 {
     public class Persona : IPersona
     {
-        public Attributes? Attribute { get; set; } = Attributes.UNKNOWN;
-        public Characteristics? Characteristic { get; set; } = Characteristics.UNKNOWN;
-        public PersonalityTraits? PersonalityTrait { get; set; } = PersonalityTraits.UNKNOWN;
-        public Skills? Skill { get; set; } = Skills.UNKNOWN;
-        public Actor Subject { get; set; } = Actor.UNKNOWN;
+        public Attributes? Attribute { get; set; } = Attributes.NotAssigned;
+        public Characteristics? Characteristic { get; set; } = Characteristics.NotAssigned;
+        public PersonalityTraits? PersonalityTrait { get; set; } = PersonalityTraits.NotAssigned;
+        public Skills? Skill { get; set; } = Skills.NotAssigned;
+        public Actor Subject { get; set; } = Actor.NotAssigned;
     }
 }

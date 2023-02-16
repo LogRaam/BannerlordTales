@@ -1,15 +1,16 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesEnums
 {
     public enum PartyType
     {
-        UNKNOWN,
-        DEFAULT,
-        LORD,
-        BANDIT,
-        VILLAGER,
-        GARRISONPARTY,
-        CARAVAN
+        Unknown,
+        Default,
+        Lord,
+        Bandit,
+        Villager,
+        Garrisonparty,
+        Caravan,
+        NotAssigned
     }
 }

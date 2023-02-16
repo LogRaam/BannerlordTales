@@ -1,11 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 15/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using System.Collections.Generic;
 using TalesContract;
-using TaleWorlds.CampaignSystem;
-using IFaction = TalesContract.IFaction;
+using TaleWorlds.CampaignSystem.Settlements;
 
 #endregion
 
@@ -18,9 +17,7 @@ namespace TalesBase.TW
             //TODO
         }
 
-        public BaseTown()
-        {
-        }
+        public BaseTown() { }
 
         public bool AfterSneakFight { get; set; }
 

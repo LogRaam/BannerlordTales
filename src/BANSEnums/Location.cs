@@ -1,17 +1,17 @@
-﻿// Code written by Gabriel Mailhot, 03/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum Location
-   {
-      UNKNOWN,
-      MAP,
-      SETTLEMENT,
-      VILLAGE,
-      DUNGEON,
-      CASTLE,
-      FORTIFICATION,
-      TOWN,
-      HIDEOUT
-   }
+    public enum Location
+    {
+        Unknown,
+        Map,
+        Settlement,
+        Village,
+        Dungeon,
+        Castle,
+        Fortification,
+        Town,
+        Hideout
+    }
 }

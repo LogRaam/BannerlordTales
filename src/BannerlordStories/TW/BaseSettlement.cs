@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -7,8 +7,7 @@ using System;
 using System.Collections.Generic;
 using TalesContract;
 using TalesEnums;
-using TaleWorlds.CampaignSystem;
-using IFaction = TalesContract.IFaction;
+using TaleWorlds.CampaignSystem.Settlements;
 
 #endregion
 
@@ -71,9 +70,7 @@ namespace TalesBase.TW
         private IVillage _village;
         private int _wallSectionCount;
 
-        public BaseSettlement()
-        {
-        }
+        public BaseSettlement() { }
 
         public BaseSettlement(Settlement settlement)
         {
@@ -196,49 +193,6 @@ namespace TalesBase.TW
             set => _encyclopediaText = value;
         }
 
-        public int GetNumberOfAvailableRecruits
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _getNumberOfAvailableRecruits = Origin().GetNumberOfAvailableRecruits();
-
-                return _getNumberOfAvailableRecruits;
-            }
-            set => _getNumberOfAvailableRecruits = value;
-        }
-
-        public bool HasFestival
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _hasFestival = Origin().HasFestival;
-
-                return _hasFestival;
-            }
-            set => _hasFestival = value;
-        }
-
-        public bool HasMultipleRecruits
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _hasMultipleRecruits = Origin().HasMultipleRecruits;
-
-                return _hasMultipleRecruits;
-            }
-            set => _hasMultipleRecruits = value;
-        }
-
-        public bool HasRecruits
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _hasRecruits = Origin().HasRecruits;
-
-                return _hasRecruits;
-            }
-            set => _hasRecruits = value;
-        }
 
         public bool HasVisited
         {
@@ -328,7 +282,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _isHideout = Origin().IsHideout();
+                if (CampaignState.CurrentGameStarted()) _isHideout = Origin().IsHideout;
 
                 return _isHideout;
             }
@@ -346,27 +300,6 @@ namespace TalesBase.TW
             set => _isInspected = value;
         }
 
-        public bool IsMinorFactionBase
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isMinorFactionBase = Origin().IsMinorFactionBase();
-
-                return _isMinorFactionBase;
-            }
-            set => _isMinorFactionBase = value;
-        }
-
-        public bool IsQuestSettlement
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isQuestSettlement = Origin().IsQuestSettlement;
-
-                return _isQuestSettlement;
-            }
-            set => _isQuestSettlement = value;
-        }
 
         public bool IsRaided
         {
@@ -379,16 +312,6 @@ namespace TalesBase.TW
             set => _isRaided = value;
         }
 
-        /*public bool IsRebelling
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isRebelling = Origin().IsRebelling;
-
-                return _isRebelling;
-            }
-            set => _isRebelling = value;
-        }*/
 
         public bool IsStarving
         {
@@ -585,16 +508,6 @@ namespace TalesBase.TW
             set => _numberOfTroopsKilledOnSide = value;
         }
 
-        public IMobileParty oldMilitiaParty
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _oldMilitiaParty = new BaseMobileParty(Origin().oldMilitaParty);
-
-                return _oldMilitiaParty;
-            }
-            set => _oldMilitiaParty = value;
-        }
 
         public IClan OwnerClan
         {
@@ -643,17 +556,6 @@ namespace TalesBase.TW
             set => _settlementHitPoints = value;
         }
 
-        public bool SettlementTaken
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _settlementTaken = Origin().SettlementTaken;
-
-                return _settlementTaken;
-            }
-
-            set => _settlementTaken = value;
-        }
 
         public float SettlementTotalWallHitPoints
         {
@@ -669,27 +571,6 @@ namespace TalesBase.TW
         public IList<float> SettlementWallSectionHitPointsRatioList { get; set; }
         public IList<IPartyBase> SiegeParties { get; set; }
 
-        public ITown Town
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _town = new BaseTown(Origin().Town);
-
-                return _town;
-            }
-            set => _town = value;
-        }
-
-        public IVillage Village
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _village = new BaseVillage(Origin().Village);
-
-                return _village;
-            }
-            set => _village = value;
-        }
 
         public int WallSectionCount
         {

@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -7,6 +7,7 @@ using _47_TalesMath;
 using Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TalesBase.Stories.Evaluation;
 using TalesContract;
 using TalesDAL;
@@ -14,6 +15,7 @@ using TalesEnums;
 using TalesPersistence.Context;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.Core;
 
 #endregion
@@ -38,7 +40,7 @@ namespace TalesPersistence.Entities
         {
             //BUG:Renown doesnt seems to work
             ApplyPregnancyRiskConsequence();
-            ApplyAttributeConsequence();
+            //ApplyAttributeConsequence(); //BUG: I don<t know how to change Attribute anymore.
             ApplyCharacteristicConsequence();
             ApplyPersonalityTraitConsequence();
             ApplySkillConsequence();
@@ -69,30 +71,30 @@ namespace TalesPersistence.Entities
         private void ApplyAttributeConsequence()
         {
             if (Persona.Attribute == null) return;
-            if (Persona.Attribute is Attributes.UNKNOWN) return;
+            if (Persona.Attribute is Attributes.NotAssigned) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToTwHero();
 
-            if (Persona.Attribute is Attributes.VIGOR) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
-            if (Persona.Attribute is Attributes.CONTROL) SetAttribute(hero, CharacterAttributesEnum.Control, value);
-            if (Persona.Attribute is Attributes.ENDURANCE) SetAttribute(hero, CharacterAttributesEnum.Endurance, value);
-            if (Persona.Attribute is Attributes.CUNNING) SetAttribute(hero, CharacterAttributesEnum.Cunning, value);
-            if (Persona.Attribute is Attributes.SOCIAL) SetAttribute(hero, CharacterAttributesEnum.Social, value);
-            if (Persona.Attribute is Attributes.INTELLIGENCE) SetAttribute(hero, CharacterAttributesEnum.Intelligence, value);
+            if (Persona.Attribute is Attributes.Vigor) SetAttribute(hero, CharacterAttributesEnum.Vigor, value);
+            if (Persona.Attribute is Attributes.Control) SetAttribute(hero, CharacterAttributesEnum.Control, value);
+            if (Persona.Attribute is Attributes.Endurance) SetAttribute(hero, CharacterAttributesEnum.Endurance, value);
+            if (Persona.Attribute is Attributes.Cunning) SetAttribute(hero, CharacterAttributesEnum.Cunning, value);
+            if (Persona.Attribute is Attributes.Social) SetAttribute(hero, CharacterAttributesEnum.Social, value);
+            if (Persona.Attribute is Attributes.Intelligence) SetAttribute(hero, CharacterAttributesEnum.Intelligence, value);
         }
 
         private void ApplyCharacteristicConsequence()
         {
             if (Persona.Characteristic == null) return;
-            if (Persona.Characteristic == Characteristics.UNKNOWN) return;
+            if (Persona.Characteristic == Characteristics.NotAssigned) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToTwHero();
 
-            if (Persona.Characteristic == Characteristics.HEALTH) hero.HitPoints += value;
-            if (Persona.Characteristic == Characteristics.GOLD) hero.Gold += value;
-            if (Persona.Characteristic == Characteristics.RENOWN) hero.Clan.Renown += value;
+            if (Persona.Characteristic == Characteristics.Health) hero.HitPoints += value;
+            if (Persona.Characteristic == Characteristics.Gold) hero.Gold += value;
+            if (Persona.Characteristic == Characteristics.Renown) hero.Clan.Renown += value;
         }
 
         private void ApplyEquipmentConsequence()
@@ -110,21 +112,21 @@ namespace TalesPersistence.Entities
             if (!p.IsPrisoner) return;
 
             if (p.IsHumanPlayerCharacter) PlayerCaptivity.EndCaptivity();
-            else SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Heroes.Player).ToTwHero());
+            else EndCaptivityAction.ApplyByEscape(new Hero(GameData.Instance.GameContext.Heroes.Player).ToTwHero()); //SetPrisonerFreeAction.Apply(p, new Hero(GameData.Instance.GameContext.Heroes.Player).ToTwHero());
         }
 
         private void ApplyPersonalityTraitConsequence()
         {
             if (Persona.PersonalityTrait == null) return;
-            if (Persona.PersonalityTrait == PersonalityTraits.UNKNOWN) return;
+            if (Persona.PersonalityTrait == PersonalityTraits.NotAssigned) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToTwHero();
 
-            if (Persona.PersonalityTrait == PersonalityTraits.MERCY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
-            if (Persona.PersonalityTrait == PersonalityTraits.GENEROSITY) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
-            if (Persona.PersonalityTrait == PersonalityTraits.HONOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "HONOR"), hero.GetHeroTraits().Honor + value);
-            if (Persona.PersonalityTrait == PersonalityTraits.VALOR) hero.SetTraitLevel(TraitObject.FindFirst(n => n.StringId.ToUpper() == "VALOR"), hero.GetHeroTraits().Valor + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.Mercy) hero.SetTraitLevel(TraitObject.All.First(n => n.StringId.ToUpper() == "MERCY"), hero.GetHeroTraits().Mercy + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.Generosity) hero.SetTraitLevel(TraitObject.All.First(n => n.StringId.ToUpper() == "GENEROSITY"), hero.GetHeroTraits().Generosity + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.Honor) hero.SetTraitLevel(TraitObject.All.First(n => n.StringId.ToUpper() == "HONOR"), hero.GetHeroTraits().Honor + value);
+            if (Persona.PersonalityTrait == PersonalityTraits.Valor) hero.SetTraitLevel(TraitObject.All.First(n => n.StringId.ToUpper() == "VALOR"), hero.GetHeroTraits().Valor + value);
         }
 
 
@@ -177,7 +179,7 @@ namespace TalesPersistence.Entities
         private void ApplySkillConsequence()
         {
             if (Persona.Skill == null) return;
-            if (Persona.Skill == Skills.UNKNOWN) return;
+            if (Persona.Skill == Skills.NotAssigned) return;
 
             var value = GetModifierValue();
             var hero = IdentifySubject().ToTwHero();
@@ -189,15 +191,15 @@ namespace TalesPersistence.Entities
         {
             switch (Persona.Attribute)
             {
-                case Attributes.UNKNOWN:      return true;
-                case Attributes.VIGOR:        return GameMath.IsEvaluationConform(this, IdentifySubject().Vigor);
-                case Attributes.CONTROL:      return GameMath.IsEvaluationConform(this, IdentifySubject().Control);
-                case Attributes.ENDURANCE:    return GameMath.IsEvaluationConform(this, IdentifySubject().Endurance);
-                case Attributes.CUNNING:      return GameMath.IsEvaluationConform(this, IdentifySubject().Cunning);
-                case Attributes.SOCIAL:       return GameMath.IsEvaluationConform(this, IdentifySubject().Social);
-                case Attributes.INTELLIGENCE: return GameMath.IsEvaluationConform(this, IdentifySubject().Intelligence);
-                case null:                    throw new NullReferenceException("Attribute is null");
-                default:                      throw new ArgumentOutOfRangeException();
+                case Attributes.NotAssigned: return true;
+                case Attributes.Vigor: return GameMath.IsEvaluationConform(this, IdentifySubject().Vigor);
+                case Attributes.Control: return GameMath.IsEvaluationConform(this, IdentifySubject().Control);
+                case Attributes.Endurance: return GameMath.IsEvaluationConform(this, IdentifySubject().Endurance);
+                case Attributes.Cunning: return GameMath.IsEvaluationConform(this, IdentifySubject().Cunning);
+                case Attributes.Social: return GameMath.IsEvaluationConform(this, IdentifySubject().Social);
+                case Attributes.Intelligence: return GameMath.IsEvaluationConform(this, IdentifySubject().Intelligence);
+                case null: throw new NullReferenceException("Attribute is null");
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -205,15 +207,21 @@ namespace TalesPersistence.Entities
         {
             switch (Persona.Characteristic)
             {
-                case Characteristics.UNKNOWN: return true;
-                case Characteristics.AGE:     return GameMath.IsEvaluationConform(this, IdentifySubject().Age);
-                case Characteristics.GENDER:  return EvalGender(IdentifySubject());
-                case Characteristics.HEALTH:  return GameMath.IsEvaluationConform(this, IdentifySubject().HitPoints);
-                case Characteristics.GOLD:    return GameMath.IsEvaluationConform(this, IdentifySubject().Gold);
-                case Characteristics.RENOWN:  return GameMath.IsEvaluationConform(this, IdentifySubject().Clan.Renown);
-                case Characteristics.CULTURE: return Numbers.Value.ToUpper() == IdentifySubject().Culture.CultureCode.ToString();
-                case null:                    throw new NullReferenceException("Characteristic is null");
-                default:                      throw new ArgumentOutOfRangeException();
+                case Characteristics.NotAssigned: return true;
+                case Characteristics.Age: return GameMath.IsEvaluationConform(this, IdentifySubject().Age);
+                case Characteristics.Gender: return EvalGender(IdentifySubject());
+                case Characteristics.Health: return GameMath.IsEvaluationConform(this, IdentifySubject().HitPoints);
+                case Characteristics.Gold: return GameMath.IsEvaluationConform(this, IdentifySubject().Gold);
+                case Characteristics.Renown: return GameMath.IsEvaluationConform(this, IdentifySubject().Clan.Renown);
+                case Characteristics.Culture:
+                    {
+                        var b = Numbers.Value.Reformat();
+                        var c = IdentifySubject().Culture.CultureCode.ToString();
+
+                        return b == c;
+                    }
+                case null: throw new NullReferenceException("Characteristic is null");
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -237,7 +245,7 @@ namespace TalesPersistence.Entities
 
         private Hero IdentifySubject()
         {
-            return Persona.Subject == Actor.NPC
+            return Persona.Subject == Actor.Npc
                 ? new Hero(GameData.Instance.GameContext.Heroes.Captor)
                 : new Hero(GameData.Instance.GameContext.Heroes.Player);
         }
@@ -249,7 +257,6 @@ namespace TalesPersistence.Entities
             if (actor.IsPregnant) return;
             if (!actor.IsFemale) return;
             if (!actor.IsAlive) return;
-            if (!actor.IsFertile) return;
 
             GameData.Instance.GameContext.Heroes.MakePregnant(actor);
         }
@@ -259,14 +266,10 @@ namespace TalesPersistence.Entities
         {
             switch (PartyType)
             {
-                case PartyType.UNKNOWN:       return true;
-                case PartyType.DEFAULT:       return true;
-                case PartyType.LORD:          return IdentifySubject().PartyBelongedTo.IsLordParty;
-                case PartyType.BANDIT:        return IdentifySubject().PartyBelongedTo.IsBandit;
-                case PartyType.VILLAGER:      return IdentifySubject().PartyBelongedTo.IsVillager;
-                case PartyType.GARRISONPARTY: return IdentifySubject().PartyBelongedTo.IsGarrison;
-                case PartyType.CARAVAN:       return IdentifySubject().PartyBelongedTo.IsCaravan;
-                default:                      throw new ArgumentOutOfRangeException();
+                case PartyType.Unknown: return true;
+                case PartyType.Default: return true;
+
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -274,60 +277,61 @@ namespace TalesPersistence.Entities
         {
             switch (Persona.PersonalityTrait)
             {
-                case PersonalityTraits.UNKNOWN:    return true;
-                case PersonalityTraits.MERCY:      return GameMath.IsEvaluationConform(this, IdentifySubject().Mercy);
-                case PersonalityTraits.GENEROSITY: return GameMath.IsEvaluationConform(this, IdentifySubject().Generosity);
-                case PersonalityTraits.HONOR:      return GameMath.IsEvaluationConform(this, IdentifySubject().Honor);
-                case PersonalityTraits.VALOR:      return GameMath.IsEvaluationConform(this, IdentifySubject().Valor);
-                default:                           throw new ArgumentOutOfRangeException();
+                case PersonalityTraits.NotAssigned: return true;
+                case PersonalityTraits.Mercy: return GameMath.IsEvaluationConform(this, IdentifySubject().Mercy);
+                case PersonalityTraits.Generosity: return GameMath.IsEvaluationConform(this, IdentifySubject().Generosity);
+                case PersonalityTraits.Honor: return GameMath.IsEvaluationConform(this, IdentifySubject().Honor);
+                case PersonalityTraits.Valor: return GameMath.IsEvaluationConform(this, IdentifySubject().Valor);
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
         private void SetAttribute(TaleWorlds.CampaignSystem.Hero hero, CharacterAttributesEnum attribute, int value)
         {
-            hero.SetAttributeValue(attribute, hero.GetAttributeValue(attribute) + value);
+            //hero.SetAttributeValue(attribute, hero.GetAttributeValue(attribute) + value); //Deprecated in v1.1.0
         }
 
 
         private void SetSkill(TaleWorlds.CampaignSystem.Hero hero, string skill, int value)
         {
-            var s = SkillObject.FindFirst(n => n.StringId.ToUpper() == skill);
+            //var s = SkillObject.FindFirst(n => n.StringId.ToUpper() == skill);
+            var s = new SkillObject(skill);
             hero.SetSkillValue(s, hero.GetSkillValue(s) + value);
         }
+
 
         private bool SkillAccepted()
         {
             switch (Persona.Skill)
             {
-                case Skills.UNKNOWN:     return true;
-                case Skills.ONEHANDED:   return GameMath.IsEvaluationConform(this, IdentifySubject().OneHanded);
-                case Skills.TWOHANDED:   return GameMath.IsEvaluationConform(this, IdentifySubject().TwoHanded);
-                case Skills.POLEARM:     return GameMath.IsEvaluationConform(this, IdentifySubject().Polearm);
-                case Skills.BOW:         return GameMath.IsEvaluationConform(this, IdentifySubject().Bow);
-                case Skills.CROSSBOW:    return GameMath.IsEvaluationConform(this, IdentifySubject().Crossbow);
-                case Skills.THROWING:    return GameMath.IsEvaluationConform(this, IdentifySubject().Throwing);
-                case Skills.RIDING:      return GameMath.IsEvaluationConform(this, IdentifySubject().Riding);
-                case Skills.ATHLETICS:   return GameMath.IsEvaluationConform(this, IdentifySubject().Athletics);
-                case Skills.CRAFTING:    return GameMath.IsEvaluationConform(this, IdentifySubject().Crafting);
-                case Skills.SCOUTING:    return GameMath.IsEvaluationConform(this, IdentifySubject().Scouting);
-                case Skills.TACTICS:     return GameMath.IsEvaluationConform(this, IdentifySubject().Tactics);
-                case Skills.ROGUERY:     return GameMath.IsEvaluationConform(this, IdentifySubject().Roguery);
-                case Skills.CHARM:       return GameMath.IsEvaluationConform(this, IdentifySubject().Charm);
-                case Skills.LEADERSHIP:  return GameMath.IsEvaluationConform(this, IdentifySubject().Leadership);
-                case Skills.TRADE:       return GameMath.IsEvaluationConform(this, IdentifySubject().Trade);
-                case Skills.STEWARD:     return GameMath.IsEvaluationConform(this, IdentifySubject().Steward);
-                case Skills.MEDICINE:    return GameMath.IsEvaluationConform(this, IdentifySubject().Medecine);
-                case Skills.ENGINEERING: return GameMath.IsEvaluationConform(this, IdentifySubject().Engineering);
-                default:                 throw new ArgumentOutOfRangeException();
+                case Skills.NotAssigned: return true;
+                case Skills.OneHanded: return GameMath.IsEvaluationConform(this, IdentifySubject().OneHanded);
+                case Skills.TwoHanded: return GameMath.IsEvaluationConform(this, IdentifySubject().TwoHanded);
+                case Skills.Polearm: return GameMath.IsEvaluationConform(this, IdentifySubject().Polearm);
+                case Skills.Bow: return GameMath.IsEvaluationConform(this, IdentifySubject().Bow);
+                case Skills.Crossbow: return GameMath.IsEvaluationConform(this, IdentifySubject().Crossbow);
+                case Skills.Throwing: return GameMath.IsEvaluationConform(this, IdentifySubject().Throwing);
+                case Skills.Riding: return GameMath.IsEvaluationConform(this, IdentifySubject().Riding);
+                case Skills.Athletics: return GameMath.IsEvaluationConform(this, IdentifySubject().Athletics);
+                case Skills.Crafting: return GameMath.IsEvaluationConform(this, IdentifySubject().Crafting);
+                case Skills.Scouting: return GameMath.IsEvaluationConform(this, IdentifySubject().Scouting);
+                case Skills.Tactics: return GameMath.IsEvaluationConform(this, IdentifySubject().Tactics);
+                case Skills.Roguery: return GameMath.IsEvaluationConform(this, IdentifySubject().Roguery);
+                case Skills.Charm: return GameMath.IsEvaluationConform(this, IdentifySubject().Charm);
+                case Skills.Leadership: return GameMath.IsEvaluationConform(this, IdentifySubject().Leadership);
+                case Skills.Trade: return GameMath.IsEvaluationConform(this, IdentifySubject().Trade);
+                case Skills.Steward: return GameMath.IsEvaluationConform(this, IdentifySubject().Steward);
+                case Skills.Medicine: return GameMath.IsEvaluationConform(this, IdentifySubject().Medicine);
+                case Skills.Engineering: return GameMath.IsEvaluationConform(this, IdentifySubject().Engineering);
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
 
         private bool TimeAccepted()
         {
-            if (Time == GameTime.ANYTIME) return true;
-            if (Time == GameTime.NONE) return true;
-            if (Time == GameTime.UNKNOWN) return true;
+            if (Time == GameTime.Anytime) return true;
+            if (Time == GameTime.None) return true;
 
             return Time == GameData.Instance.GameContext.Time.GameTime;
         }

@@ -1,13 +1,13 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum PersonalityTraits
-   {
-      UNKNOWN,
-      MERCY,
-      GENEROSITY,
-      HONOR,
-      VALOR
-   }
+    public enum PersonalityTraits
+    {
+        NotAssigned,
+        Mercy,
+        Generosity,
+        Honor,
+        Valor
+    }
 }

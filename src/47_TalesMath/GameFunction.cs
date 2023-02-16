@@ -1,10 +1,9 @@
-﻿// Code written by Gabriel Mailhot, 29/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using System;
 using System.Diagnostics;
-using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 #endregion
@@ -41,7 +40,7 @@ namespace _47_TalesMath
             if (MBCommon.IsPaused) return;
 
             MBCommon.PauseGameEngine();
-            Game.Current.GameStateManager.ActiveStateDisabledByUser = true;
+            //Game.Current.GameStateManager.ActiveStateDisabledByUser = true;
         }
 
         public void UnPauseGame()
@@ -49,7 +48,7 @@ namespace _47_TalesMath
             if (!MBCommon.IsPaused) return;
 
             MBCommon.UnPauseGameEngine();
-            Game.Current.GameStateManager.ActiveStateDisabledByUser = false;
+            //Game.Current.GameStateManager.ActiveStateDisabledByUser = false;
         }
     }
 }

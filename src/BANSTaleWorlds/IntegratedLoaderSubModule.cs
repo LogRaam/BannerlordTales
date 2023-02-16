@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -66,7 +66,7 @@ namespace TalesRuntime
         {
             base.OnSubModuleLoad();
 
-            GameData.Instance.StoryContext.ModuleFolder = new DirectoryInfo(Path.GetDirectoryName(ModuleInfo.GetPath("LogRaamBannerlordTales")) ?? string.Empty);
+            GameData.Instance.StoryContext.ModuleFolder = new StoryLoader().GetModuleDirectoryInfo();
         }
 
         #region private
@@ -102,7 +102,7 @@ namespace TalesRuntime
             foreach (var image in GameData.Instance.StoryContext.StoryImagesFolder.GetFiles("*.png"))
             {
                 var texture = Texture.LoadTextureFromPath(image.Name, image.DirectoryName);
-                texture.PreloadTexture();
+                texture.PreloadTexture(false); //NOTE: param "blocking" is new.
 
                 var texture2D = new TaleWorlds.TwoDimension.Texture(new EngineTexture(texture));
                 var key = Path.GetFileNameWithoutExtension(image.Name);

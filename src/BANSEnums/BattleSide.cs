@@ -1,12 +1,12 @@
-﻿// Code written by Gabriel Mailhot, 01/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum BattleSide
-   {
-      NONE = -1,
-      DEFENDER = 0,
-      ATTACKER = 1,
-      NUMSIDES = 2
-   }
+    public enum BattleSide
+    {
+        None = -1,
+        Defender = 0,
+        Attacker = 1,
+        Numsides = 2
+    }
 }

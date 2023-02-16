@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -29,15 +29,15 @@ namespace TalesPersistence.Context
         {
             switch (act.Location)
             {
-                case Location.UNKNOWN:                                                        return true;
-                case Location.MAP when Tracking.IsCurrentlyOnMap != null:                     return (bool)Tracking.IsCurrentlyOnMap;
-                case Location.SETTLEMENT when Tracking.IsCurrentlyInSettlement != null:       return (bool)Tracking.IsCurrentlyInSettlement;
-                case Location.VILLAGE when Tracking.IsCurrentlyInVillage != null:             return (bool)Tracking.IsCurrentlyInVillage;
-                case Location.DUNGEON when Tracking.IsCurrentlyInDungeon != null:             return (bool)Tracking.IsCurrentlyInDungeon;
-                case Location.CASTLE when Tracking.IsCurrentlyInCastle != null:               return (bool)Tracking.IsCurrentlyInCastle;
-                case Location.FORTIFICATION when Tracking.IsCurrentlyInFortification != null: return (bool)Tracking.IsCurrentlyInFortification;
-                case Location.TOWN when Tracking.IsCurrentlyInTown != null:                   return (bool)Tracking.IsCurrentlyInTown;
-                case Location.HIDEOUT when Tracking.IsCurrentlyInHideout != null:             return (bool)Tracking.IsCurrentlyInHideout;
+                case Location.Unknown: return true;
+                case Location.Map when Tracking.IsCurrentlyOnMap != null: return (bool)Tracking.IsCurrentlyOnMap;
+                case Location.Settlement when Tracking.IsCurrentlyInSettlement != null: return (bool)Tracking.IsCurrentlyInSettlement;
+                case Location.Village when Tracking.IsCurrentlyInVillage != null: return (bool)Tracking.IsCurrentlyInVillage;
+                case Location.Dungeon when Tracking.IsCurrentlyInDungeon != null: return (bool)Tracking.IsCurrentlyInDungeon;
+                case Location.Castle when Tracking.IsCurrentlyInCastle != null: return (bool)Tracking.IsCurrentlyInCastle;
+                case Location.Fortification when Tracking.IsCurrentlyInFortification != null: return (bool)Tracking.IsCurrentlyInFortification;
+                case Location.Town when Tracking.IsCurrentlyInTown != null: return (bool)Tracking.IsCurrentlyInTown;
+                case Location.Hideout when Tracking.IsCurrentlyInHideout != null: return (bool)Tracking.IsCurrentlyInHideout;
 
                 default: return true;
             }

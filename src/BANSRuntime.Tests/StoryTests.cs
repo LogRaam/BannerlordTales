@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -180,8 +180,8 @@ namespace BannerlordTales.Tests
             {
                 Header = new StoryHeader
                 {
-                    Time = GameTime.DAYTIME,
-                    TypeOfStory = StoryType.PLAYER_IS_CAPTOR
+                    Time = GameTime.Daytime,
+                    TypeOfStory = StoryType.PlayerIsCaptor
                 }
             };
 
@@ -222,8 +222,8 @@ namespace BannerlordTales.Tests
             {
                 Header = new StoryHeader
                 {
-                    Time = GameTime.DAYTIME,
-                    TypeOfStory = StoryType.PLAYER_IS_CAPTIVE
+                    Time = GameTime.Daytime,
+                    TypeOfStory = StoryType.PlayerIsCaptive
                 }
             };
 
@@ -261,8 +261,8 @@ namespace BannerlordTales.Tests
             {
                 Header = new StoryHeader
                 {
-                    Time = GameTime.DAYTIME,
-                    TypeOfStory = StoryType.PLAYER_IS_CAPTIVE
+                    Time = GameTime.Daytime,
+                    TypeOfStory = StoryType.PlayerIsCaptive
                 }
             };
 
@@ -291,11 +291,10 @@ namespace BannerlordTales.Tests
                 IsFemale = true,
                 Culture = new BaseBasicCultureObject
                 {
-                    CultureCode = CultureCode.EMPIRE
+                    CultureCode = CultureCode.Empire
                 },
                 Vigor = 5,
-                IsPrisoner = true,
-                PartyBelongedTo = new BaseMobileParty()
+                IsPrisoner = true
             };
 
             GameData.Instance.GameContext.Heroes.Captor = new BaseHero
@@ -303,12 +302,7 @@ namespace BannerlordTales.Tests
                 Age = 23,
                 Culture = new BaseBasicCultureObject
                 {
-                    CultureCode = CultureCode.ASERAI
-                },
-                PartyBelongedTo = new BaseMobileParty
-                {
-                    Name = "aParty",
-                    IsLordParty = true
+                    CultureCode = CultureCode.Aserai
                 }
             };
 
@@ -334,7 +328,7 @@ namespace BannerlordTales.Tests
             GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap = false;
             GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement = true;
 
-            GameData.Instance.StoryContext.Stories[0].Acts[0].Location = Location.MAP;
+            GameData.Instance.StoryContext.Stories[0].Acts[0].Location = Location.Map;
 
             var sut = (Story)GameData.Instance.StoryContext.Stories[0];
 
@@ -553,7 +547,7 @@ namespace BannerlordTales.Tests
                 IsFemale = true,
                 Culture = new BaseBasicCultureObject
                 {
-                    CultureCode = CultureCode.EMPIRE
+                    CultureCode = CultureCode.Empire
                 },
                 Vigor = 5,
                 IsPrisoner = true
@@ -564,11 +558,7 @@ namespace BannerlordTales.Tests
                 Age = 23,
                 Culture = new BaseBasicCultureObject
                 {
-                    CultureCode = CultureCode.ASERAI
-                },
-                PartyBelongedTo = new BaseMobileParty
-                {
-                    IsLordParty = true
+                    CultureCode = CultureCode.Aserai
                 }
             };
 
@@ -646,7 +636,7 @@ namespace BannerlordTales.Tests
             // Assert
             story.Acts.Count.Should().Be(1);
             story.Sequences.Count.Should().Be(21);
-            story.Header.TypeOfStory.Should().Be(StoryType.PLAYER_SURRENDER);
+            story.Header.TypeOfStory.Should().Be(StoryType.PlayerSurrender);
         }
 
         [Test]
@@ -726,8 +716,8 @@ namespace BannerlordTales.Tests
             story.Acts.Count.Should().Be(1);
             story.Acts[0].ParentStory.Header.Name.Should().Be(story.Header.Name);
             story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Numbers.Value.Should().Be("-10");
-            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Persona.Subject.Should().Be(Actor.PLAYER);
-            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Persona.Characteristic.Should().Be(Characteristics.HEALTH);
+            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Persona.Subject.Should().Be(Actor.Player);
+            story.Sequences.First(n => n.Name == "Refuse to kiss the banner").Choices[0].Consequences[0].Persona.Characteristic.Should().Be(Characteristics.Health);
         }
     }
 }

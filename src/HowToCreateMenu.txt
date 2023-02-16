@@ -16,14 +16,14 @@ GameMenu.ActivateGameMenu("menuId");
 You can pause the game like this:
 
 MBCommon.PauseGameEngine();
-         Game.Current.GameStateManager.ActiveStateDisabledByUser = true;
+Game.Current.GameStateManager.ActiveStateDisabledByUser = true;
 
-         ..and unpause it like that:
+..and unpause it like that:
 
-         MBCommon.UnPauseGameEngine();
-         Game.Current.GameStateManager.ActiveStateDisabledByUser = false;
+MBCommon.UnPauseGameEngine();
+Game.Current.GameStateManager.ActiveStateDisabledByUser = false;
 
-         InformationManager.DisplayMessage() will display a message on bottom left screen.
+InformationManager.DisplayMessage() will display a message on bottom left screen.
 
-         InformationManager.AddQuickInformation(new string("This is a quick info")); will show a banner message on campaign screen.
+InformationManager.AddQuickInformation(new string("This is a quick info")); will show a banner message on campaign screen.
 

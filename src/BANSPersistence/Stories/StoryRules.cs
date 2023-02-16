@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -44,15 +44,15 @@ namespace TalesPersistence.Stories
         {
             switch (storyType)
             {
-                case StoryType.PLAYER_IS_CAPTIVE:      return GameData.Instance.GameContext.Heroes.Player.IsPrisoner;
-                case StoryType.PLAYER_IS_CAPTOR:       return GameData.Instance.GameContext.Heroes.PlayerIsCaptor != null && (bool)GameData.Instance.GameContext.Heroes.PlayerIsCaptor;
-                case StoryType.PLAYER_ON_CAMPAIGN_MAP: return GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap != null && (bool)GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap;
-                case StoryType.PLAYER_IN_SETTLEMENT:   return GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement != null && (bool)GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement;
-                case StoryType.PLAYER_SURRENDER:       return GameData.Instance.GameContext.Heroes.Player.IsPrisoner;
-                case StoryType.NONE:                   return true;
-                case StoryType.UNKNOWN:                throw new ApplicationException("Story type undefined.");
-                case StoryType.WAITING:                break;
-                default:                               throw new ApplicationException("Story type undefined.");
+                case StoryType.PlayerIsCaptive: return GameData.Instance.GameContext.Heroes.Player.IsPrisoner;
+                case StoryType.PlayerIsCaptor: return GameData.Instance.GameContext.Heroes.PlayerIsCaptor != null && (bool)GameData.Instance.GameContext.Heroes.PlayerIsCaptor;
+                case StoryType.PlayerOnCampaignMap: return GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap != null && (bool)GameData.Instance.GameContext.Tracking.IsCurrentlyOnMap;
+                case StoryType.PlayerInSettlement: return GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement != null && (bool)GameData.Instance.GameContext.Tracking.IsCurrentlyInSettlement;
+                case StoryType.PlayerSurrender: return GameData.Instance.GameContext.Heroes.Player.IsPrisoner;
+                case StoryType.None: return true;
+                case StoryType.Unknown: throw new ApplicationException("Story type undefined.");
+                case StoryType.Waiting: break;
+                default: throw new ApplicationException("Story type undefined.");
             }
 
             return true;
@@ -62,12 +62,11 @@ namespace TalesPersistence.Stories
         {
             switch (Story.Header.Time)
             {
-                case GameTime.DAYTIME:   return GameData.Instance.GameContext.Time.IsDay;
-                case GameTime.NIGHTTIME: return GameData.Instance.GameContext.Time.IsNight;
-                case GameTime.ANYTIME:   return true;
-                case GameTime.NONE:      return true;
-                case GameTime.UNKNOWN:   return true;
-                default:                 return true;
+                case GameTime.Daytime: return GameData.Instance.GameContext.Time.IsDay;
+                case GameTime.Nighttime: return GameData.Instance.GameContext.Time.IsNight;
+                case GameTime.Anytime: return true;
+                case GameTime.None: return true;
+                default: return true;
             }
         }
 

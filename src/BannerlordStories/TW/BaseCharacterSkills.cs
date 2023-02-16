@@ -1,59 +1,49 @@
-﻿// Code written by Gabriel Mailhot, 16/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using TalesContract;
-using TaleWorlds.Core;
 
 #endregion
 
 namespace TalesBase.TW
 {
-    public class BaseCharacterSkills : ICharacterSkills
+    public class BaseCharacterSkills : CharacterSkills
     {
-        public BaseCharacterSkills(CharacterSkills skills)
-        {
-            //TODO: find a way to asign values
-        }
+        public int Athletics { get; set; }
 
-        public BaseCharacterSkills()
-        {
-        }
+        public int Bow { get; set; }
 
-        public int ATHLETICS { get; set; }
+        public int Charm { get; set; }
 
-        public int BOW { get; set; }
+        public int Crafting { get; set; }
 
-        public int CHARM { get; set; }
+        public int Crossbow { get; set; }
 
-        public int CRAFTING { get; set; }
+        public int Engineering { get; set; }
 
-        public int CROSSBOW { get; set; }
+        public int Leadership { get; set; }
 
-        public int ENGINEERING { get; set; }
+        public int Medicine { get; set; }
 
-        public int LEADERSHIP { get; set; }
+        public int Onehanded { get; set; }
 
-        public int MEDICINE { get; set; }
+        public int Polearm { get; set; }
 
-        public int ONEHANDED { get; set; }
+        public int Riding { get; set; }
 
-        public int POLEARM { get; set; }
+        public int Roguery { get; set; }
 
-        public int RIDING { get; set; }
+        public int Scouting { get; set; }
 
-        public int ROGUERY { get; set; }
+        public int Steward { get; set; }
 
-        public int SCOUTING { get; set; }
+        public int Tactics { get; set; }
 
-        public int STEWARD { get; set; }
+        public int Throwing { get; set; }
 
-        public int TACTICS { get; set; }
+        public int Trade { get; set; }
 
-        public int THROWING { get; set; }
-
-        public int TRADE { get; set; }
-
-        public int TWOHANDED { get; set; }
+        public int Twohanded { get; set; }
     }
 }

@@ -1,15 +1,15 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesEnums
 {
     public enum Characteristics
     {
-        UNKNOWN,
-        AGE,
-        GENDER,
-        HEALTH,
-        GOLD,
-        RENOWN,
-        CULTURE
+        NotAssigned,
+        Age,
+        Gender,
+        Health,
+        Gold,
+        Renown,
+        Culture
     }
 }

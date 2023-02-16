@@ -1,10 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
+using _45_TalesGameState;
 using System;
 using System.Collections.Generic;
-using _45_TalesGameState;
 using TalesContract;
 using TaleWorlds.CampaignSystem;
 using Occupation = TalesEnums.Occupation;
@@ -29,16 +29,17 @@ namespace TalesBase.TW
         private string _hairTags;
         private IHero _heroObject;
         private int _hitPoints;
-        private bool _isArcher;
         private bool _isBasicTroop;
         private bool _isChildTemplate;
         private bool _isFemale;
         private bool _isHero;
         private bool _isInfantry;
         private bool _isMounted;
-        private bool _isNotTransferable;
+        private bool _isNotTransferableInHideouts;
+        private bool _isNotTransferableInPartyScreen;
         private bool _isOriginalCharacter;
         private bool _isPlayerCharacter;
+        private bool _isRanged;
         private bool _isRegular;
         private bool _isTemplate;
         private int _level;
@@ -47,11 +48,9 @@ namespace TalesBase.TW
         private ICharacterObject _oneToOneConversationCharacter;
         private ICharacterObject _playerCharacter;
         private string _tattooTags;
-        private ICharacterObject _templateCharacter;
         private IList<BaseCharacterObject> _templates = new List<BaseCharacterObject>();
         private int _tier;
         private int _troopWage;
-        private int _upgradeXpCost;
 
         public BaseCharacterObject(CharacterObject character)
         {
@@ -63,9 +62,7 @@ namespace TalesBase.TW
         }
 
 
-        public BaseCharacterObject()
-        {
-        }
+        public BaseCharacterObject() { }
 
         public BaseCharacterObject(IHero hero)
         {
@@ -186,17 +183,6 @@ namespace TalesBase.TW
             set => _hitPoints = value;
         }
 
-        public bool IsArcher
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isArcher = Origin().IsArcher;
-
-                return _isArcher;
-            }
-            set => _isArcher = value;
-        }
-
         public bool IsBasicTroop
         {
             get
@@ -263,15 +249,26 @@ namespace TalesBase.TW
             set => _isMounted = value;
         }
 
-        public bool IsNotTransferable
+        public bool IsNotTransferableInHideouts
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _isMounted = Origin().IsNotTransferable;
+                if (CampaignState.CurrentGameStarted()) _isMounted = Origin().IsNotTransferableInHideouts;
 
-                return _isMounted;
+                return _isNotTransferableInHideouts;
             }
-            set => _isNotTransferable = value;
+            set => _isNotTransferableInHideouts = value;
+        }
+
+        public bool IsNotTransferableInPartyScreen
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _isMounted = Origin().IsNotTransferableInPartyScreen;
+
+                return _isNotTransferableInPartyScreen;
+            }
+            set => _isNotTransferableInPartyScreen = value;
         }
 
         public bool IsOriginalCharacter
@@ -294,6 +291,17 @@ namespace TalesBase.TW
                 return _isPlayerCharacter;
             }
             set => _isPlayerCharacter = value;
+        }
+
+        public bool IsRanged
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _isRanged = Origin().IsRanged;
+
+                return _isRanged;
+            }
+            set => _isRanged = value;
         }
 
         public bool IsRegular
@@ -384,16 +392,6 @@ namespace TalesBase.TW
             set => _tattooTags = value;
         }
 
-        public ICharacterObject TemplateCharacter
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _templateCharacter = new BaseCharacterObject(Origin().TemplateCharacter);
-
-                return _templateCharacter;
-            }
-            set => _templateCharacter = value;
-        }
 
         public IList<BaseCharacterObject> Templates
         {
@@ -429,17 +427,6 @@ namespace TalesBase.TW
         }
 
         public ICharacterObject[] UpgradeTargets { get; set; }
-
-        public int UpgradeXpCost
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _upgradeXpCost = Origin().UpgradeXpCost;
-
-                return _upgradeXpCost;
-            }
-            set => _upgradeXpCost = value;
-        }
 
         #region private
 

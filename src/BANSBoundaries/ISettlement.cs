@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -39,13 +39,6 @@ namespace TalesContract
 
         public string EncyclopediaText { get; set; }
 
-        public int GetNumberOfAvailableRecruits { get; set; }
-
-        public bool HasFestival { get; set; }
-
-        public bool HasMultipleRecruits { get; set; }
-
-        public bool HasRecruits { get; set; }
 
         public bool HasVisited { get; set; }
 
@@ -67,13 +60,9 @@ namespace TalesContract
 
         public bool IsInspected { get; set; }
 
-        public bool IsMinorFactionBase { get; set; }
-
-        public bool IsQuestSettlement { get; set; }
 
         public bool IsRaided { get; set; }
 
-        //public bool IsRebelling { get; set; }
 
         public bool IsStarving { get; set; }
 
@@ -117,7 +106,6 @@ namespace TalesContract
 
         public int NumberOfTroopsKilledOnSide { get; set; }
 
-        public IMobileParty oldMilitiaParty { get; set; }
 
         public IClan OwnerClan { get; set; }
 
@@ -131,7 +119,6 @@ namespace TalesContract
 
         public float SettlementHitPoints { get; set; }
 
-        public bool SettlementTaken { get; set; }
 
         public float SettlementTotalWallHitPoints { get; set; }
 
@@ -139,9 +126,6 @@ namespace TalesContract
 
         public IList<IPartyBase> SiegeParties { get; set; }
 
-        public ITown Town { get; set; }
-
-        public IVillage Village { get; set; }
 
         public int WallSectionCount { get; set; }
     }

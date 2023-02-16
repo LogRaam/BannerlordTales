@@ -1,11 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 01/09/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum EventType
-   {
-      UNDEFINED = -1,
-      PLAYERENTERED = 0,
-      PLAYERLEFT = 1
-   }
+    public enum EventType
+    {
+        Undefined = -1,
+        Playerentered = 0,
+        Playerleft = 1
+    }
 }

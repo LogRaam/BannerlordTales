@@ -319,7 +319,7 @@ Story
 
         Name: Push Tragic Final   
 
-        Text: He pulls down his pants and pulls out his cock. He rubs it on your face until it gets hard. Then he grabs your hair and pushes it down your throat.  He goes back and forth until he comes in your mouth.  Then the men go back to bed laughing at you.C
+        Text: He pulls down his pants and pulls out his cock. He rubs it on your face until it gets hard. Then he grabs your hair and pushes it down your throat.  He goes back and forth until he comes in your mouth.  Then the men go back to bed laughing at you.
         Image: LogAbuseBlowjobGangForced
 
         Choice: Try to sleep
@@ -384,7 +384,7 @@ Story
 
         Name: TradingFreedomDontMoveNext   
 
-        Text: You get down on all fours and turn around to show him your ass. He starts touching it.  "How beautiful you are.  You're my queen."  Then he penetrates you and fucks you until he comes inside you.  Then he gets up and leaves.  You feel your hot sperm dripping between your buttocks.  A prisoner who is tied up next to you looks at you silently.
+        Text: You get down on all fours and turn around to show him your ass. He starts touching it.  "How beautiful you are.  You're my queen."  Then he penetrates you and fucks you until he comes inside you.  Then he gets up and leaves.  You feel his hot sperm dripping between your buttocks.  A prisoner who is tied up next to you looks at you silently.
         Image: LogAbuseBehindAssCloseup
 
         Choice: stay quiet
@@ -500,7 +500,7 @@ Story
         Text: The man looks at you with a smile.  "A real Warrior!  Just as I hoped!"  He leans over to you and undoes your ties...
         Image: None
 
-        Choice: Hit him in the face and you run away.
+        Choice: Hit him in the face and run away.
         	Goto: Trading Death Fleeing Success  50%
 	        Goto: Trading Death Fleeing Failed  50%
 	
@@ -527,7 +527,8 @@ Story
         Text: You accept.  The man's face lights up with happiness.  He approaches you gently.   Nervously, he takes your face in his hands and kiss you.  He slips gently over you and you make love.  You can feel his desire deep inside you.  Dawn is about to rise.  The man discreetly gets up and gives you a key.  "There is a change of guard at sunrise.  I'll create a diversion, you can escape through the back of the camp.  Use the key to free yourself.  Good luck, my love."  Then he leaves.  At sunrise, you undo your ties and head to the back of the camp.  As expected, there is no one there.  You flee into the woods.
         Image: LogConsensualLove
 
-        Choice: Continue...   		
+        Choice: Continue...   	
+            Consequence: chance of pregnancy
 			Consequence:Escape
 
 
@@ -704,7 +705,7 @@ Sequence
 
         Name: Refuse Request Failed   
 
-        Text: "Attend, tu n'a pas bien compris.  Soit tu acceptes, soit je te laisse pas le choix!"
+        Text: "Wait, you don't understand.  Either you accept, or I leave you no choice!"
         Image: LogCaptiveShut2
 
         Choice: Agree to his request		

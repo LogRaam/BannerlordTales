@@ -1,12 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 15/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
 using System.Collections.Generic;
 using TalesContract;
 using TalesEnums;
-using TaleWorlds.CampaignSystem;
-using IFaction = TalesContract.IFaction;
+using TaleWorlds.CampaignSystem.Party;
 
 #endregion
 
@@ -21,9 +20,7 @@ namespace TalesBase.TW
             Name = mobileParty.Name.ToString();
         }
 
-        public BaseMobileParty()
-        {
-        }
+        public BaseMobileParty() { }
 
 
         public IClan ActualClan { get; set; }

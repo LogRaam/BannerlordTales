@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -76,20 +76,20 @@ namespace TalesRuntime.Menu
         public void ShowActMenu()
         {
             var stories = GameData.Instance.GameContext.Acts.GetNewStories().Where(n => n.Header.Name != "Test"
-                                                                                        && n.Header.TypeOfStory != StoryType.WAITING
-                                                                                        && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
-                                                                                        && n.Header.TypeOfStory != StoryType.TEST
-                                                                                        && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
+                                                                                        && n.Header.TypeOfStory != StoryType.Waiting
+                                                                                        && n.Header.TypeOfStory != StoryType.PlayerSurrender
+                                                                                        && n.Header.TypeOfStory != StoryType.Test
+                                                                                        && n.Header.TypeOfStory != StoryType.Unknown).ToList();
 
             var act = GameData.Instance.GameContext.Acts.ChooseQualifiedActFrom(stories);
 
             if (act == null)
             {
                 stories = GameData.Instance.GameContext.Acts.GetAlreadyPlayedStories().Where(n => n.Header.Name != "Test"
-                                                                                                  && n.Header.TypeOfStory != StoryType.WAITING
-                                                                                                  && n.Header.TypeOfStory != StoryType.PLAYER_SURRENDER
-                                                                                                  && n.Header.TypeOfStory != StoryType.TEST
-                                                                                                  && n.Header.TypeOfStory != StoryType.UNKNOWN).ToList();
+                                                                                                  && n.Header.TypeOfStory != StoryType.Waiting
+                                                                                                  && n.Header.TypeOfStory != StoryType.PlayerSurrender
+                                                                                                  && n.Header.TypeOfStory != StoryType.Test
+                                                                                                  && n.Header.TypeOfStory != StoryType.Unknown).ToList();
                 act = GameData.Instance.GameContext.Acts.ChooseQualifiedActFrom(stories);
             }
 
@@ -100,7 +100,7 @@ namespace TalesRuntime.Menu
 
         public void ShowSurrenderMenu()
         {
-            var act = GameData.Instance.GameContext.Acts.RetrieveActToPlay(StoryType.PLAYER_SURRENDER);
+            var act = GameData.Instance.GameContext.Acts.RetrieveActToPlay(StoryType.PlayerSurrender);
 
             if (act == null) return;
 
@@ -122,7 +122,7 @@ namespace TalesRuntime.Menu
             {
                 var m = new MenuCallBackDelegate(act);
 
-                gameStarter.AddGameMenu(act.Id, act.Intro, m.ActMenuSetup, GameOverlays.MenuOverlayType.None, GameMenu.MenuFlags.none, "BannerlordTales");
+                gameStarter.AddGameMenu(act.Id, act.Intro, m.ActMenuSetup, GameOverlays.MenuOverlayType.None, GameMenu.MenuFlags.None, "BannerlordTales");
 
                 foreach (var choice in act.Choices)
                 {
@@ -138,7 +138,7 @@ namespace TalesRuntime.Menu
             {
                 var m = new MenuCallBackDelegate(sequence);
 
-                gameStarter.AddGameMenu(sequence.Id, sequence.Intro, m.ActMenuSetup, GameOverlays.MenuOverlayType.None, GameMenu.MenuFlags.none, "BannerlordTales");
+                gameStarter.AddGameMenu(sequence.Id, sequence.Intro, m.ActMenuSetup, GameOverlays.MenuOverlayType.None, GameMenu.MenuFlags.None, "BannerlordTales");
 
                 foreach (var choice in sequence.Choices)
                 {
@@ -180,7 +180,7 @@ namespace TalesRuntime.Menu
         {
             var result = new List<IStory>();
             foreach (var story in GameData.Instance.StoryContext.Stories)
-                if (story.Header.TypeOfStory == StoryType.WAITING)
+                if (story.Header.TypeOfStory == StoryType.Waiting)
                     result.Add(story);
 
             return result;

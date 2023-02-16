@@ -1,14 +1,14 @@
-﻿// Code written by Gabriel Mailhot, 12/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 namespace TalesEnums
 {
     public enum ArmorMaterialTypes
     {
-        NONE,
-        CLOTH,
-        LEATHER,
-        CHAINMAIL,
-        PLATE,
-        UNKNOWN
+        None,
+        Cloth,
+        Leather,
+        Chainmail,
+        Plate,
+        Unknown
     }
 }

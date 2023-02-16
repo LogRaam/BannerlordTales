@@ -1,27 +1,27 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
 
 namespace TalesEnums
 {
-   public enum Skills
-   {
-      UNKNOWN,
-      ONEHANDED,
-      TWOHANDED,
-      POLEARM,
-      BOW,
-      CROSSBOW,
-      THROWING,
-      RIDING,
-      ATHLETICS,
-      CRAFTING,
-      SCOUTING,
-      TACTICS,
-      ROGUERY,
-      CHARM,
-      LEADERSHIP,
-      TRADE,
-      STEWARD,
-      MEDICINE,
-      ENGINEERING
-   }
+    public enum Skills
+    {
+        NotAssigned,
+        OneHanded,
+        TwoHanded,
+        Polearm,
+        Bow,
+        Crossbow,
+        Throwing,
+        Riding,
+        Athletics,
+        Crafting,
+        Scouting,
+        Tactics,
+        Roguery,
+        Charm,
+        Leadership,
+        Trade,
+        Steward,
+        Medicine,
+        Engineering
+    }
 }

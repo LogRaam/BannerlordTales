@@ -1,16 +1,20 @@
-﻿// Code written by Gabriel Mailhot, 29/08/2020.
+﻿// Code written by Gabriel Mailhot, 11/13/2022.
+
+#region
+
+using System.Collections.Generic;
+using System.IO;
+
+#endregion
 
 namespace TalesContract
 {
-   #region
+    #region
 
-   using System.Collections.Generic;
-   using System.IO;
+    #endregion
 
-   #endregion
-
-   public interface IDAL
-   {
-      List<IStory> LoadStoriesFromFolder(DirectoryInfo moduleFolder);
-   }
+    public interface IDal
+    {
+        List<IStory> LoadStoriesFromFolder(DirectoryInfo moduleFolder);
+    }
 }

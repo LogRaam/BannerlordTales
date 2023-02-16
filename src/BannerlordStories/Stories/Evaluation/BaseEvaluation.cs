@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -19,9 +19,9 @@ namespace TalesBase.Stories.Evaluation
         public IEquipments Equipments { get; set; } = new Equipments();
         public INumbers Numbers { get; set; } = new Numbers();
         public IOutcome Outcome { get; set; } = new Outcome();
-        public PartyType PartyType { get; set; } = PartyType.UNKNOWN;
+        public PartyType PartyType { get; set; } = PartyType.NotAssigned;
         public IPersona Persona { get; set; } = new Persona();
         public List<string> Tags { get; set; } = new List<string>();
-        public GameTime Time { get; set; } = GameTime.UNKNOWN;
+        public GameTime Time { get; set; } = GameTime.Anytime;
     }
 }

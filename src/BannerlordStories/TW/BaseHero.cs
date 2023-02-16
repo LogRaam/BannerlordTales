@@ -1,16 +1,17 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
+using _45_TalesGameState;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _45_TalesGameState;
 using TalesContract;
 using TalesEnums;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.ObjectSystem;
+using CharacterSkills = TalesContract.CharacterSkills;
 using IFaction = TalesContract.IFaction;
 
 #endregion
@@ -30,6 +31,7 @@ namespace TalesBase.TW
         private ICampaignTime _birthDay;
         private ISettlement _bornSettlement;
         private int _bow;
+        private bool _canBecomePrisoner;
         private bool _canBeCompanion;
         private bool _canHaveRecruits;
         private ICampaignTime _captivityStartTime;
@@ -57,7 +59,7 @@ namespace TalesBase.TW
         private int _gold;
         private ITown _governorOf;
         private bool _hasMet;
-        private ICharacterSkills _heroSkills;
+        private CharacterSkills _heroSkills;
         private CharacterStates _heroState;
         private ICharacterTraits _heroTraits;
         private int _hitPoints;
@@ -107,6 +109,7 @@ namespace TalesBase.TW
         private IFaction _mapFaction;
         private int _maxHitPoints;
         private int _medecine;
+        private int _medicine;
         private IHero _mother;
         private string _name;
         private bool _neverBecomePrisoner;
@@ -148,9 +151,7 @@ namespace TalesBase.TW
             _isHumanPlayerCharacter = hero.IsHumanPlayerCharacter;
         }
 
-        public BaseHero()
-        {
-        }
+        public BaseHero() { }
 
         public BaseHero(BasicCharacterObject character)
         {
@@ -172,39 +173,18 @@ namespace TalesBase.TW
             set => _age = value;
         }
 
-        public bool AlwaysUnconscious
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _alwaysUnconscious = Origin.AlwaysUnconscious;
-
-                return _alwaysUnconscious;
-            }
-            set => _alwaysUnconscious = value;
-        }
 
         public int Athletics
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _riding = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Athletics"));
+                if (CampaignState.CurrentGameStarted()) _riding = Origin.GetSkillValue(new SkillObject(Skills.Athletics.ToString()));
 
-                return _riding;
+                return _athletics;
             }
             set => _athletics = value;
         }
 
-
-        public bool AwaitingTrial
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _awaitingTrial = Origin.AwaitingTrial;
-
-                return _awaitingTrial;
-            }
-            set => _awaitingTrial = value;
-        }
 
         public ICampaignTime BirthDay
         {
@@ -232,7 +212,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _bow = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Polearm"));
+                if (CampaignState.CurrentGameStarted()) _bow = Origin.GetSkillValue(new SkillObject(Skills.Bow.ToString()));
 
                 return _bow;
             }
@@ -240,6 +220,17 @@ namespace TalesBase.TW
         }
 
         public int Calculating { get; set; }
+
+        public bool CanBecomePrisoner
+        {
+            get
+            {
+                if (CampaignState.CurrentGameStarted()) _canBecomePrisoner = Origin.CanBecomePrisoner();
+
+                return _canBecomePrisoner;
+            }
+            set => _canBecomePrisoner = value;
+        }
 
 
         public bool CanBeCompanion
@@ -290,7 +281,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _charm = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Charm"));
+                if (CampaignState.CurrentGameStarted()) _charm = Origin.GetSkillValue(new SkillObject(Skills.Charm.ToString()));
 
                 return _charm;
             }
@@ -353,29 +344,19 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _control = Origin.GetAttributeValue(CharacterAttributesEnum.Control);
+                if (CampaignState.CurrentGameStarted()) _control = Origin.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Control.ToString()));
 
                 return _control;
             }
             set => _control = value;
         }
 
-        public float Controversy
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _controversy = Origin.Controversy;
-
-                return _controversy;
-            }
-            set => _controversy = value;
-        }
 
         public int Crafting
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _crafting = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Crafting"));
+                if (CampaignState.CurrentGameStarted()) _crafting = Origin.GetSkillValue(new SkillObject(Skills.Crafting.ToString()));
 
                 return _crafting;
             }
@@ -386,7 +367,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _crossbow = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Crossbow"));
+                if (CampaignState.CurrentGameStarted()) _crossbow = Origin.GetSkillValue(new SkillObject(Skills.Crossbow.ToString()));
 
                 return _crossbow;
             }
@@ -408,7 +389,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _cunning = Origin.GetAttributeValue(CharacterAttributesEnum.Cunning);
+                if (CampaignState.CurrentGameStarted()) _cunning = Origin.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Cunning.ToString()));
 
                 return _cunning;
             }
@@ -448,22 +429,12 @@ namespace TalesBase.TW
             set => _deathMarkKillerHero = value;
         }
 
-        public bool Detected
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _detected = Origin.Detected;
-
-                return _detected;
-            }
-            set => _detected = value;
-        }
 
         public int Endurance
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _endurance = Origin.GetAttributeValue(CharacterAttributesEnum.Endurance);
+                if (CampaignState.CurrentGameStarted()) _endurance = Origin.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Endurance.ToString()));
 
                 return _endurance;
             }
@@ -474,7 +445,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _engineering = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Engineering"));
+                if (CampaignState.CurrentGameStarted()) _engineering = Origin.GetSkillValue(new SkillObject(Skills.Engineering.ToString()));
 
                 return _engineering;
             }
@@ -538,16 +509,6 @@ namespace TalesBase.TW
             set => _gold = value;
         }
 
-        public ITown GovernorOf
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _governorOf = new BaseTown(Origin.GovernorOf);
-
-                return _governorOf;
-            }
-            set => _governorOf = value;
-        }
 
         public bool HasMet
         {
@@ -560,32 +521,32 @@ namespace TalesBase.TW
             set => _hasMet = value;
         }
 
-        public ICharacterSkills HeroSkills
+        public CharacterSkills HeroSkills
         {
             get
             {
                 if (CampaignState.CurrentGameStarted())
                 {
-                    _heroSkills = new BaseCharacterSkills(Origin.GetHeroSkills())
+                    _heroSkills = new BaseCharacterSkills
                     {
-                        ATHLETICS = Athletics,
-                        BOW = Bow,
-                        CHARM = Charm,
-                        CRAFTING = Crafting,
-                        CROSSBOW = Crossbow,
-                        ENGINEERING = Engineering,
-                        LEADERSHIP = Leadership,
-                        MEDICINE = Medecine,
-                        ONEHANDED = OneHanded,
-                        POLEARM = Polearm,
-                        RIDING = Riding,
-                        ROGUERY = Roguery,
-                        SCOUTING = Scouting,
-                        STEWARD = Steward,
-                        TACTICS = Tactics,
-                        THROWING = Throwing,
-                        TRADE = Trade,
-                        TWOHANDED = TwoHanded
+                        Athletics = Athletics,
+                        Bow = Bow,
+                        Charm = Charm,
+                        Crafting = Crafting,
+                        Crossbow = Crossbow,
+                        Engineering = Engineering,
+                        Leadership = Leadership,
+                        Medicine = Medicine,
+                        Onehanded = OneHanded,
+                        Polearm = Polearm,
+                        Riding = Riding,
+                        Roguery = Roguery,
+                        Scouting = Scouting,
+                        Steward = Steward,
+                        Tactics = Tactics,
+                        Throwing = Throwing,
+                        Trade = Trade,
+                        Twohanded = TwoHanded
                     };
                 }
 
@@ -662,7 +623,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _intelligence = Origin.GetAttributeValue(CharacterAttributesEnum.Intelligence);
+                if (CampaignState.CurrentGameStarted()) _intelligence = Origin.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Intelligence.ToString()));
 
                 return _intelligence;
             }
@@ -768,16 +729,6 @@ namespace TalesBase.TW
             set => _isFemale = value;
         }
 
-        public bool IsFertile
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isFertile = Origin.IsFertile;
-
-                return _isFertile;
-            }
-            set => _isFertile = value;
-        }
 
         public bool IsFugitive
         {
@@ -845,16 +796,6 @@ namespace TalesBase.TW
             set => _isMainHeroIll = value;
         }
 
-        public bool IsMercenary
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isMercenary = Origin.IsMercenary;
-
-                return _isMercenary;
-            }
-            set => _isMercenary = value;
-        }
 
         public bool IsMerchant
         {
@@ -878,16 +819,6 @@ namespace TalesBase.TW
             set => _isMinorFactionHero = value;
         }
 
-        public bool IsNoble
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isNoble = Origin.IsNoble;
-
-                return _isNoble;
-            }
-            set => _isNoble = value;
-        }
 
         public bool IsNotable
         {
@@ -911,27 +842,6 @@ namespace TalesBase.TW
             set => _isNotSpawned = value;
         }
 
-        public bool IsOccupiedByAnEvent
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isOccupiedByAnEvent = Origin.IsOccupiedByAnEvent();
-
-                return _isOccupiedByAnEvent;
-            }
-            set => _isOccupiedByAnEvent = value;
-        }
-
-        public bool IsOutlaw
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _isOutlaw = Origin.IsOutlaw;
-
-                return _isOutlaw;
-            }
-            set => _isOutlaw = value;
-        }
 
         public bool IsPartyLeader
         {
@@ -1066,44 +976,12 @@ namespace TalesBase.TW
             set => _lastMeetingTimeWithPlayer = value;
         }
 
-        public bool LastSeenInSettlement
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _lastSeenInSettlement = Origin.LastSeenInSettlement;
-
-                return _lastSeenInSettlement;
-            }
-            set => _lastSeenInSettlement = value;
-        }
-
-        public ISettlement LastSeenPlace
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _lastSeenPlace = new BaseSettlement(Origin.LastSeenPlace);
-
-                return _lastSeenPlace;
-            }
-            set => _lastSeenPlace = value;
-        }
-
-        public ICampaignTime LastSeenTime
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _lastSeenTime = new BaseCampaignTime(Origin.LastSeenTime);
-
-                return _lastSeenTime;
-            }
-            set => _lastSeenTime = value;
-        }
 
         public int Leadership
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _leadership = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Leadership"));
+                if (CampaignState.CurrentGameStarted()) _leadership = Origin.GetSkillValue(new SkillObject(Skills.Leadership.ToString()));
 
                 return _leadership;
             }
@@ -1143,15 +1021,15 @@ namespace TalesBase.TW
             set => _maxHitPoints = value;
         }
 
-        public int Medecine
+        public int Medicine
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _medecine = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Medecine"));
+                if (CampaignState.CurrentGameStarted()) _medicine = Origin.GetSkillValue(new SkillObject(Skills.Medicine.ToString()));
 
-                return _medecine;
+                return _medicine;
             }
-            set => _medecine = value;
+            set => _medicine = value;
         }
 
         public int Mercy { get; set; }
@@ -1180,61 +1058,18 @@ namespace TalesBase.TW
             set => _name = value;
         }
 
-        public bool NeverBecomePrisoner
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _neverBecomePrisoner = Origin.NeverBecomePrisoner;
-
-                return _neverBecomePrisoner;
-            }
-            set => _neverBecomePrisoner = value;
-        }
-
-        public bool Noncombatant
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _noncombatant = Origin.Noncombatant;
-
-                return _noncombatant;
-            }
-            set => _noncombatant = value;
-        }
-
 
         public int OneHanded
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _oneHanded = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "One Handed"));
+                if (CampaignState.CurrentGameStarted()) _oneHanded = Origin.GetSkillValue(new SkillObject(Skills.OneHanded.ToString()));
 
                 return _oneHanded;
             }
             set => _oneHanded = value;
         }
 
-        public IMobileParty PartyBelongedTo
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _partyBelongedTo = new BaseMobileParty(Origin.PartyBelongedTo);
-
-                return _partyBelongedTo;
-            }
-            set => _partyBelongedTo = value;
-        }
-
-        public IPartyBase PartyBelongedToAsPrisoner
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _partyBelongedToAsPrisoner = new BasePartyBase(Origin.PartyBelongedToAsPrisoner);
-
-                return _partyBelongedToAsPrisoner;
-            }
-            set => _partyBelongedToAsPrisoner = value;
-        }
 
         public float PassedTimeAtHomeSettlement
         {
@@ -1251,7 +1086,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _polearm = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Polearm"));
+                if (CampaignState.CurrentGameStarted()) _polearm = Origin.GetSkillValue(new SkillObject(Skills.Polearm.ToString()));
 
                 return _polearm;
             }
@@ -1280,20 +1115,6 @@ namespace TalesBase.TW
             set => _probabilityOfDeath = value;
         }
 
-        public FactionRank Rank
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted())
-                {
-                    Enum.TryParse(Origin.Rank.ToString(), true, out FactionRank f);
-                    _rank = f;
-                }
-
-                return _rank;
-            }
-            set => _rank = value;
-        }
 
         public float RelationScoreWithPlayer
         {
@@ -1310,7 +1131,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _riding = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Riding"));
+                if (CampaignState.CurrentGameStarted()) _riding = Origin.GetSkillValue(new SkillObject(Skills.Riding.ToString()));
 
                 return _riding;
             }
@@ -1321,7 +1142,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _roguery = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Roguery"));
+                if (CampaignState.CurrentGameStarted()) _roguery = Origin.GetSkillValue(new SkillObject(Skills.Roguery.ToString()));
 
                 return _roguery;
             }
@@ -1332,7 +1153,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _scouting = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Scouting"));
+                if (CampaignState.CurrentGameStarted()) _scouting = Origin.GetSkillValue(new SkillObject(Skills.Scouting.ToString()));
 
                 return _scouting;
             }
@@ -1358,7 +1179,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _social = Origin.GetAttributeValue(CharacterAttributesEnum.Social);
+                if (CampaignState.CurrentGameStarted()) _social = Origin.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Social.ToString()));
 
                 return _social;
             }
@@ -1376,22 +1197,12 @@ namespace TalesBase.TW
             set => _spouse = value;
         }
 
-        public ISettlement StayingInSettlementOfNotable
-        {
-            get
-            {
-                if (CampaignState.CurrentGameStarted()) _stayingInSettlementOfNotable = new BaseSettlement(Origin.StayingInSettlementOfNotable);
-
-                return _stayingInSettlementOfNotable;
-            }
-            set => _stayingInSettlementOfNotable = value;
-        }
 
         public int Steward
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _steward = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Steward"));
+                if (CampaignState.CurrentGameStarted()) _steward = Origin.GetSkillValue(new SkillObject(Skills.Steward.ToString()));
 
                 return _steward;
             }
@@ -1413,7 +1224,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _tactics = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Tactics"));
+                if (CampaignState.CurrentGameStarted()) _tactics = Origin.GetSkillValue(new SkillObject(Skills.Tactics.ToString()));
 
                 return _tactics;
             }
@@ -1424,7 +1235,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _throwing = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Throwing"));
+                if (CampaignState.CurrentGameStarted()) _throwing = Origin.GetSkillValue(new SkillObject(Skills.Throwing.ToString()));
 
                 return _throwing;
             }
@@ -1435,7 +1246,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _trade = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Trade"));
+                if (CampaignState.CurrentGameStarted()) _trade = Origin.GetSkillValue(new SkillObject(Skills.Trade.ToString()));
 
                 return _trade;
             }
@@ -1447,7 +1258,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _twoHanded = Origin.GetSkillValue(SkillObject.FindFirst(n => n.StringId == "Two Handed"));
+                if (CampaignState.CurrentGameStarted()) _twoHanded = Origin.GetSkillValue(new SkillObject(Skills.TwoHanded.ToString()));
 
                 return _twoHanded;
             }
@@ -1471,7 +1282,7 @@ namespace TalesBase.TW
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _vigor = Origin.GetAttributeValue(CharacterAttributesEnum.Vigor);
+                if (CampaignState.CurrentGameStarted()) _vigor = Origin.GetAttributeValue(new CharacterAttribute(CharacterAttributesEnum.Vigor.ToString()));
 
                 return _vigor;
             }
@@ -1493,12 +1304,12 @@ namespace TalesBase.TW
         {
             get
             {
-                var t = Campaign.Current.Heroes.FirstOrDefault(n => n.Id == Id);
+                var t = Campaign.Current.AliveHeroes.FirstOrDefault(n => n.Id == Id);
                 if (t == null)
                 {
                     t = _isHumanPlayerCharacter
-                        ? Campaign.Current.Heroes.First(n => n.IsHumanPlayerCharacter)
-                        : Campaign.Current.Heroes.First(n => n.IsPartyLeader);
+                        ? Campaign.Current.AliveHeroes.First(n => n.IsHumanPlayerCharacter)
+                        : Campaign.Current.AliveHeroes.First(n => n.IsPartyLeader);
                     Id = t.Id;
                 }
 

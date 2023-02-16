@@ -1,10 +1,10 @@
-﻿// Code written by Gabriel Mailhot, 12/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
-using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
+using System.IO;
 
 #endregion
 
@@ -17,7 +17,7 @@ namespace TalesDAL.Tests
         public void LoadXml_ShouldWork()
         {
             //Arrange
-            var file = new FileInfo("D:\\Program Files (x86)\\Steam\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\SandBoxCore\\ModuleData\\spitems\\body_armors.xml");
+            var file = new FileInfo("I:\\SteamLibrary\\steamapps\\common\\Mount & Blade II Bannerlord\\Modules\\SandBoxCore\\ModuleData\\items\\body_armors.xml");
             var sut = new BodyArmorImporter();
 
             //Act

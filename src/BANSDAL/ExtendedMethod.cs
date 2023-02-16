@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 #endregion
@@ -44,7 +45,10 @@ namespace TalesDAL
 
         public static string Reformat(this string line)
         {
-            var result = line.ToUpper().Trim();
+            var result = CultureInfo.CurrentCulture.TextInfo.ToLower(line);
+            result = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result).Trim();
+            
+            //var result = line.ToUpper().Trim();
 
             return result;
         }

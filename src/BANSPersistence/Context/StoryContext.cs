@@ -1,11 +1,11 @@
-﻿// Code written by Gabriel Mailhot, 26/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
+using _45_TalesGameState;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using _45_TalesGameState;
 using TalesContract;
 using TalesDAL;
 using TaleWorlds.Library;
@@ -151,9 +151,9 @@ namespace TalesPersistence.Context
 
         #region private
 
-        private bool TriggerActRefExist(ITrigger trigger, IStory S)
+        private bool TriggerActRefExist(ITrigger trigger, IStory s)
         {
-            foreach (var act in S.Acts)
+            foreach (var act in s.Acts)
                 if (trigger.Link == act.Name)
                     return true;
 
