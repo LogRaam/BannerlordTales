@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -18,5 +18,6 @@ namespace TalesContract
         public IPersona Persona { get; set; }
         public List<string> Tags { get; set; }
         public GameTime Time { get; set; }
+        bool IsEquivalentTo(IEvaluation evaluation);
     }
 }

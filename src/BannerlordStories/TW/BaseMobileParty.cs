@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/12/2023.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -90,7 +90,7 @@ namespace TalesBase.TW
         public float PartySizeRatio { get; set; }
         public int PartyTradeGold { get; set; }
         public int PartyTradeTaxGold { get; set; }
-        public PartyType PartyType { get; set; }
+        public PartyType PartyType { get; set; } = PartyType.NotAssigned;
         public ITroopRoster PrisonRoster { get; set; }
         public IHero Quartermaster { get; set; }
         public float RecentEventsMorale { get; set; }

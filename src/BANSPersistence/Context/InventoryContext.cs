@@ -1,4 +1,4 @@
-﻿// unset
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -21,7 +21,7 @@ namespace TalesPersistence.Context
         {
             get
             {
-                if (CampaignState.CurrentGameStarted()) _bodyArmorsFolder = new FileInfo(GameData.Instance.StoryContext.ModuleFolder.FullName + "\\Modules\\SandBoxCore\\ModuleData\\spitems\\body_armors.xml");
+                if (CampaignState.CurrentGameStarted()) _bodyArmorsFolder = new FileInfo(GameData.Instance.StoryContext.ModuleFolder.FullName.Replace("LogRaamBannerlordTales", "SandBoxCore\\ModuleData\\items\\body_armors.xml"));
 
                 return _bodyArmorsFolder;
             }

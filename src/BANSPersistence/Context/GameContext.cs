@@ -22,6 +22,7 @@ namespace TalesPersistence.Context
 
 
         public string LastGameMenuOpened { get; set; } = "Unknown";
+        public List<SpritePart> OriginalBackgroundSpriteParts { get; set; }
 
         public List<Texture> OriginalBackgroundSpriteSheets { get; set; }
 

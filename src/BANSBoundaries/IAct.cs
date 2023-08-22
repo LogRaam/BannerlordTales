@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -25,5 +25,6 @@ namespace TalesContract
         public IStory ParentStory { get; set; }
 
         public List<IEvaluation> Restrictions { get; set; }
+        bool IsEquivalentTo(IAct act);
     }
 }

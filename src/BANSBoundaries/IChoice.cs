@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 11/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -25,5 +25,6 @@ namespace TalesContract
         public string Text { get; set; }
 
         public List<ITrigger> Triggers { get; set; }
+        bool IsEquivalentTo(IChoice choice);
     }
 }

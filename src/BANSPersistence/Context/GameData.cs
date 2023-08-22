@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 26/10/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 namespace TalesPersistence.Context
 {
@@ -16,5 +16,10 @@ namespace TalesPersistence.Context
         public GameContext GameContext { get; set; } = new GameContext();
 
         public StoryContext StoryContext { get; set; } = new StoryContext();
+
+        public void Reset()
+        {
+            _instance = new GameData();
+        }
     }
 }

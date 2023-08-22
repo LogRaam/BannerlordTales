@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 14/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -15,5 +15,6 @@ namespace TalesContract
         public int RandomStart { get; set; }
         public string Value { get; set; }
         public bool ValueIsPercentage { get; set; }
+        void IsEquivalentTo(INumbers numbers);
     }
 }

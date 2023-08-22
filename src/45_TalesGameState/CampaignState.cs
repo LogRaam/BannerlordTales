@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 14/09/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.
 
 #region
 
@@ -12,7 +12,7 @@ namespace _45_TalesGameState
     {
         public static bool CurrentGameStarted()
         {
-            return Campaign.Current != null && Campaign.Current.GameStarted;
+            return Campaign.Current != null && (Campaign.Current.GameStarted || Campaign.Current.CampaignGameLoadingType == Campaign.GameLoadingType.NewCampaign);
         }
     }
 }

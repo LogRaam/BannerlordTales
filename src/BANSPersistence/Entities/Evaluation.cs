@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/12/2023.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -16,7 +16,10 @@ using TalesPersistence.Context;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
+using TaleWorlds.CampaignSystem.Extensions;
 using TaleWorlds.Core;
+using Attributes = TalesEnums.Attributes;
+using Skills = TalesEnums.Skills;
 
 #endregion
 
@@ -167,7 +170,13 @@ namespace TalesPersistence.Entities
 
         private void ApplyShouldEquip()
         {
-            throw new NotImplementedException();
+            var rags = Items.All.First(n => n.StringId.Contains("tattered_rags"));
+            var a = new EquipmentElement(rags);
+            var e = new Equipment();
+            e.AddEquipmentToSlotWithoutAgent(EquipmentIndex.Body, a);
+            var h = new Hero(GameData.Instance.GameContext.Heroes.Player).ToTwHero();
+
+            EquipmentHelper.AssignHeroEquipmentFromEquipment(h, e);
         }
 
         private void ApplyShouldUndress()
@@ -268,6 +277,7 @@ namespace TalesPersistence.Entities
             {
                 case PartyType.Unknown: return true;
                 case PartyType.Default: return true;
+                case PartyType.NotAssigned: return true;
 
                 default: throw new ArgumentOutOfRangeException();
             }

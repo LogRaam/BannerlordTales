@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 14/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -15,5 +15,6 @@ namespace TalesContract
         public PersonalityTraits? PersonalityTrait { get; set; }
         public Skills? Skill { get; set; }
         public Actor Subject { get; set; }
+        void IsEquivalentTo(IPersona persona);
     }
 }

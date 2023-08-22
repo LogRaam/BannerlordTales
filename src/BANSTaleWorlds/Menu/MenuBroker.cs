@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/12/2023.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/21/2023.
 
 #region
 
@@ -66,11 +66,15 @@ namespace TalesRuntime.Menu
         {
             if (imageName == "None") return;
 
-            GameData.Instance.GameContext.OriginalBackgroundSpriteSheets = UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets;
+            var background = "ui_fullbackgrounds";
 
-            for (var i = 0; i < UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets.Count; i++)
-                if (UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i].Width == 445)
-                    UIResourceManager.SpriteData.SpriteCategories["ui_fullbackgrounds"].SpriteSheets[i] = GameData.Instance.StoryContext.BackgroundImages.TextureList[imageName];
+            GameData.Instance.GameContext.OriginalBackgroundSpriteSheets = UIResourceManager.SpriteData.SpriteCategories[background].SpriteSheets;
+
+
+            for (var i = 0; i < UIResourceManager.SpriteData.SpriteCategories[background].SpriteSheets.Count; i++)
+            {
+                UIResourceManager.SpriteData.SpriteCategories[background].SpriteSheets[i] = GameData.Instance.StoryContext.BackgroundImages.TextureList[imageName];
+            }
         }
 
         public void ShowActMenu()

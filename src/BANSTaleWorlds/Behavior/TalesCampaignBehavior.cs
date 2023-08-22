@@ -60,6 +60,8 @@ namespace TalesRuntime.Behavior
 
         private static void SetupEncounterBackground(MenuCallbackArgs obj)
         {
+            //obj.MenuContext.SetBackgroundMeshName("encounter_looter");
+
             if (obj.MenuContext.CurrentBackgroundMeshName == "encounter_looter") new MenuBroker().SetBackgroundImage("LogEncounterLooter2");
             if (obj.MenuContext.CurrentBackgroundMeshName == "encounter_forest_bandit") new MenuBroker().SetBackgroundImage("LogEncounterLooter");
             if (obj.MenuContext.CurrentBackgroundMeshName == "encounter_desert_bandits") new MenuBroker().SetBackgroundImage("LogAserai2");

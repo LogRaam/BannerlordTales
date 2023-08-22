@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/12/2023.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 #region
 
@@ -23,24 +23,45 @@ namespace BannerlordTales.Tests
         ///     Load stories from disk.  Actually use hard coded path due to issue with NCrunch.  This method will create a new
         ///     instance of GameData.  It reset GameContext and StoryContext.
         /// </summary>
+        private const string Path = "P:\\OneDrive\\Programmation\\Bannerlord\\BannerlordTales";
+
         public void LoadStoriesFromDisk()
         {
-            var p = "P:\\OneDrive\\Programmation\\Bannerlord\\BannerlordTales";
-
             GameData.Instance = new GameData
             {
                 StoryContext = new StoryContext
                 {
                     PlayedStories = new List<IStory>(),
                     Stories = new List<IStory>(),
-                    StoryImagesFolder = new DirectoryInfo(p + "\\StoryImages"),
-                    ModuleFolder = new DirectoryInfo(p),
-                    CustomStoriesFolder = new DirectoryInfo(p + "\\CustomStories")
+                    StoryImagesFolder = new DirectoryInfo(Path + "\\StoryImages"),
+                    ModuleFolder = new DirectoryInfo(Path),
+                    CustomStoriesFolder = new DirectoryInfo(Path + "\\CustomStories")
                 }
             };
 
             GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk();
         }
+
+
+        public void LoadStoriesFromDisk(string fileName)
+        {
+            GameData.Instance = new GameData
+            {
+                StoryContext = new StoryContext
+                {
+                    PlayedStories = new List<IStory>(),
+                    Stories = new List<IStory>(),
+                    StoryImagesFolder = new DirectoryInfo(Path + "\\StoryImages"),
+                    ModuleFolder = new DirectoryInfo(Path),
+                    CustomStoriesFolder = new DirectoryInfo(Path + "\\CustomStories")
+                }
+            };
+
+            var f = new FileInfo(GameData.Instance.StoryContext.CustomStoriesFolder + "\\" + fileName);
+
+            GameData.Instance.StoryContext.Stories = GameData.Instance.StoryContext.ImportStoriesFromDisk(f);
+        }
+
 
         public void SetupKissTheBanner()
         {
@@ -53,25 +74,40 @@ namespace BannerlordTales.Tests
 
         private GameData KissTheBannerGameData()
         {
-            var g = new GameData();
-            g.GameContext = new GameContext();
-            g.GameContext.Tracking.IsCurrentlyInSettlement = false;
-            g.GameContext.Tracking.IsCurrentlyOnMap = true;
-            g.GameContext.Time.IsNight = false;
-            g.GameContext.Time.IsDay = true;
-            g.GameContext.Heroes.Player = new BaseHero
+            var g = new GameData
             {
-                Age = 18,
-                IsFemale = true,
-                IsHumanPlayerCharacter = true
+                GameContext = new GameContext
+                {
+                    Tracking =
+                    {
+                        IsCurrentlyInSettlement = false,
+                        IsCurrentlyOnMap = true
+                    },
+                    Time =
+                    {
+                        IsNight = false,
+                        IsDay = true
+                    },
+                    Heroes =
+                    {
+                        Player = new BaseHero
+                        {
+                            Age = 18,
+                            IsFemale = true,
+                            IsHumanPlayerCharacter = true
+                        },
+                        PlayerIsCaptor = true
+                    }
+                },
+                StoryContext = new StoryContext
+                {
+                    PlayedStories = new List<IStory>(),
+                    Stories = new List<IStory>(),
+                    StoryImagesFolder = new StoryLoader().GetStoryImagesDirectoryInfo(), //new DirectoryInfo(p + "\\StoryImages"),
+                    ModuleFolder = new StoryLoader().GetModuleDirectoryInfo(),
+                    CustomStoriesFolder = new StoryLoader().GetCustomStoriesDirectoryInfo()
+                }
             };
-            g.GameContext.Heroes.PlayerIsCaptor = true;
-            g.StoryContext = new StoryContext();
-            g.StoryContext.PlayedStories = new List<IStory>();
-            g.StoryContext.Stories = new List<IStory>();
-            g.StoryContext.StoryImagesFolder = new StoryLoader().GetStoryImagesDirectoryInfo(); //new DirectoryInfo(p + "\\StoryImages"),
-            g.StoryContext.ModuleFolder = new StoryLoader().GetModuleDirectoryInfo();
-            g.StoryContext.CustomStoriesFolder = new StoryLoader().GetCustomStoriesDirectoryInfo();
 
             return g;
         }

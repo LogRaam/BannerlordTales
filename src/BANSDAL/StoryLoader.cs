@@ -2,7 +2,7 @@
 
 #region
 
-using System;
+using _45_TalesGameState;
 using System.IO;
 using System.Linq;
 using TaleWorlds.ModuleManager;
@@ -25,15 +25,16 @@ namespace TalesDAL
         {
             DirectoryInfo result;
 
-            try
+            if (CampaignState.CurrentGameStarted())
             {
-                var p = ModuleHelper.GetModules().FirstOrDefault(n => n.Id == "BannerlordTales");
-                result = new DirectoryInfo(ModuleHelper.GetPath(p.Id));
+                var m = ModuleHelper.GetModules().First(n => n.Id == "LogRaamBannerlordTales");
+                result = new DirectoryInfo(ModuleHelper.GetPath(m.Id).Replace("\\SubModule.xml", ""));
+
+                return result;
             }
-            catch (Exception e)
-            {
-                result = new DirectoryInfo("P:\\OneDrive\\Programmation\\Bannerlord\\BannerlordTales");
-            }
+
+            //Game is not running
+            result = new DirectoryInfo("P:\\OneDrive\\Programmation\\Bannerlord\\BannerlordTales");
 
             return result;
         }

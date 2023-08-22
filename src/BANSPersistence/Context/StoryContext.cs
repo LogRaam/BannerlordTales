@@ -133,6 +133,13 @@ namespace TalesPersistence.Context
                 : new StoryDal().LoadStoriesFromFolder(CustomStoriesFolder);
         }
 
+        public List<IStory> ImportStoriesFromDisk(FileInfo filePath)
+        {
+            return ModuleFolder == null
+                ? new List<IStory>()
+                : new StoryDal().LoadStoriesFromFile(filePath);
+        }
+
         public bool MenuExist(string stringId)
         {
             foreach (var s in Stories)

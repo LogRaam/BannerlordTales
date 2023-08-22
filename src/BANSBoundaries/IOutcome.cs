@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 14/11/2020.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/19/2023.
 
 namespace TalesContract
 {
@@ -8,5 +8,6 @@ namespace TalesContract
         public bool PregnancyRisk { get; set; }
         public bool ShouldEquip { get; set; }
         public bool ShouldUndress { get; set; }
+        void IsEquivalentTo(IOutcome outcome);
     }
 }

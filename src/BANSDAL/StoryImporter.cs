@@ -1,4 +1,4 @@
-﻿// Code written by Gabriel Mailhot, 02/12/2023.
+﻿// Code written by Gabriel Mailhot, 02/12/2023.  Updated by  Gabriel Mailhot on 02/20/2023.
 
 #region
 
@@ -318,35 +318,12 @@ namespace TalesDAL
         {
             Enum.TryParse(line, true, out Attributes result);
 
-            /*switch (line)
-            {
-                case "VIGOR":        return Attributes.VIGOR;
-                case "CONTROL":      return Attributes.CONTROL;
-                case "ENDURANCE":    return Attributes.ENDURANCE;
-                case "CUNNING":      return Attributes.CUNNING;
-                case "SOCIAL":       return Attributes.SOCIAL;
-                case "INTELLIGENCE": return Attributes.INTELLIGENCE;
-            }
-
-            return Attributes.UNKNOWN;*/
-
             return result;
         }
 
         private Characteristics? GetCharacteristicFrom(string line)
         {
             Enum.TryParse(line, true, out Characteristics result);
-
-            /*switch (line)
-            {
-                case "AGE":     return Characteristics.AGE;
-                case "GENDER":  return Characteristics.GENDER;
-                case "HEALTH":  return Characteristics.HEALTH;
-                case "GOLD":    return Characteristics.GOLD;
-                case "CULTURE": return Characteristics.CULTURE;
-            }
-
-            return Characteristics.UNKNOWN;*/
 
             return result;
         }
@@ -412,29 +389,12 @@ namespace TalesDAL
         {
             Enum.TryParse(line, true, out PartyType result);
 
-            /*if (line.Contains("LORD")) return PartyType.LORD;
-            if (line.Contains("BANDIT")) return PartyType.BANDIT;
-            if (line.Contains("VILLAGER")) return PartyType.VILLAGER;
-            if (line.Contains("GARRISON")) return PartyType.GARRISONPARTY;
-
-            return PartyType.UNKNOWN;*/
-
             return result;
         }
 
         private PersonalityTraits? GetPersonalityTraitFrom(string line)
         {
             Enum.TryParse(line, true, out PersonalityTraits result);
-
-            /*switch (line)
-            {
-                case "MERCY":      return PersonalityTraits.MERCY;
-                case "GENEROSITY": return PersonalityTraits.GENEROSITY;
-                case "HONOR":      return PersonalityTraits.HONOR;
-                case "VALOR":      return PersonalityTraits.VALOR;
-            }
-
-            return PersonalityTraits.UNKNOWN;*/
 
             return result;
         }
@@ -502,31 +462,6 @@ namespace TalesDAL
         private Skills? GetSkillFrom(string line)
         {
             Enum.TryParse(line, true, out Skills result);
-
-            /*
-            switch (line)
-            {
-                case "ONEHANDED":   return Skills.ONEHANDED;
-                case "TWOHANDED":   return Skills.TWOHANDED;
-                case "POLEARM":     return Skills.POLEARM;
-                case "BOW":         return Skills.BOW;
-                case "CROSSBOW":    return Skills.CROSSBOW;
-                case "THROWING":    return Skills.THROWING;
-                case "RIDING":      return Skills.RIDING;
-                case "ATHLETICS":   return Skills.ATHLETICS;
-                case "CRAFTING":    return Skills.CRAFTING;
-                case "SCOUTING":    return Skills.SCOUTING;
-                case "TACTICS":     return Skills.TACTICS;
-                case "ROGUERY":     return Skills.ROGUERY;
-                case "CHARM":       return Skills.CHARM;
-                case "LEADERSHIP":  return Skills.LEADERSHIP;
-                case "TRADE":       return Skills.TRADE;
-                case "STEWARD":     return Skills.STEWARD;
-                case "MEDICINE":    return Skills.MEDICINE;
-                case "ENGINEERING": return Skills.ENGINEERING;
-            }
-            
-            return Skills.UNKNOWN;*/
 
             return result;
         }
